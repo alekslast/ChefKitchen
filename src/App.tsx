@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import ErrorPage from "./components/common/ErrorPage";
-import MainPage from "./components/MainPage";
+import MainPage from "./components/MainPage/MainPage";
 import RootLayout from "./layouts/RootLayout";
 import { AnimatePresence } from "framer-motion";
+import Login from "./components/Login/Login";
 
 // max-width 1200px
 export default function App() {
@@ -11,7 +12,7 @@ export default function App() {
         <AnimatePresence>
             <Routes location={location} key={location.pathname}>
                 <Route  index 
-                        element={<MainPage />}
+                        element={<RootLayout />}
                         errorElement={<ErrorPage />} 
                 />
 
@@ -24,6 +25,11 @@ export default function App() {
                             errorElement={<ErrorPage />}
                     />
                 </Route>
+
+                <Route  path="/login"
+                        element={<Login />}
+                        errorElement={<ErrorPage />}
+                />
             </Routes>
         </AnimatePresence>
     )

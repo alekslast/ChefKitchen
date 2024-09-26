@@ -1,13 +1,16 @@
+// React imports
+import { Link } from "react-router-dom";
+
+
 // Constants
 import { navItems } from "../../lib/constants";
 
 
 // Images
-import logo from "../../assets/icons/shef-site-logo.svg";
+import logo from "../../assets/images/logo.svg";
 import phone from "../../assets/icons/phone-icon.svg";
-import arrowDown from "../../assets/icons/arrow-down.svg";
 import userIcon from "../../assets/icons/user-icon.svg";
-import { Link } from "react-router-dom";
+import ChangeLangMenu from "./ChangeLangMenu";
 
 
 
@@ -20,10 +23,6 @@ type TNavListItem = {
 
 
 export default function Navbar() {
-
-
-
-
 
     return (
         <nav className="w-[1200px] flex flex-row justify-between items-center">
@@ -43,10 +42,7 @@ export default function Navbar() {
                     <span className="ms-1">591 902 883</span>
                 </div>
 
-                <div className="flex flex-row justify-center items-center">
-                    <span className="me-1 cursor-default">EN</span>
-                    <img src={arrowDown} className="hover:rotate-180 hover:cursor-pointer transition-all duration-300 ease-in-out" />
-                </div>
+                <ChangeLangMenu />
 
                 <Link   to="/login"
                         className="bg-[#FFA800] rounded-full flex flex-row items-center py-[2px] ps-[4px] ms-4 hover:bg-[#B0CC0D] transition-all duration-300"
