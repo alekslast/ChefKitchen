@@ -1,14 +1,15 @@
-// Constants
-import { loginNumberOfImgs, loginImages } from "../../lib/constants";
+// React imports
+import { AnimatePresence, motion } from "framer-motion";
 
 
-// Images
-import logo from "../../assets/images/Login/logo-login.svg";
-import { useEffect, useRef, useState } from "react";
-import ChangeLangMenu from "../common/ChangeLangMenu";
-import DefaultScreen from "./DefaultScreen";
+// Context
 import { useLoginMethodStore } from "../../stores/loginMethodStore";
+
+
+// Custom components
+import DefaultScreen from "./DefaultScreen";
 import AuthorizeScreen from "./AuthorizeScreen";
+import ConfirmAuthorization from "./ConfirmAuthorization";
 
 
 
@@ -16,42 +17,25 @@ import AuthorizeScreen from "./AuthorizeScreen";
 
 export default function Login() {
 
-    const randomInt = useRef<number | null>(null);
-    const [number, setNumber] = useState(0);
-
-    const { phoneLogin, emailLogin } = useLoginMethodStore();
-
-    useEffect(() => {
-        randomInt.current = Math.floor(Math.random() * loginNumberOfImgs);
-        setNumber(randomInt.current);
-    }, [])
+    const { 
+        phoneLogin,
+        emailLogin,
+        enterCode } = useLoginMethodStore();
 
 
 
 
 
     return (
-        <section className="w-screen flex flex-row font-['Montserrat']">
-            <div className="h-screen w-1/2 flex flex-row">
-                <img src={loginImages[number]} className="h-full" />
-            </div>
-
-            <div className="realative w-1/2 flex flex-col items-start">
-                    <div className="absolute right-[15%] top-11">
-                        <ChangeLangMenu />
-                    </div>
-
-                    <div className="h-full flex flex-col justify-center items-center">
-                        <div className="flex flex-col justify-center items-center">
-                            <img src={logo} />
-
-                            <form className="min-w-[400px] mt-14 flex flex-col justify-center items-center">
-                                { phoneLogin || emailLogin || <DefaultScreen /> }
-                                { (phoneLogin || emailLogin) && <AuthorizeScreen /> }
-                            </form>
-                        </div>
-                    </div>
-            </div>
-        </section>
+        <AnimatePresence>
+            <motion.div initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+            >
+                { phoneLogin || emailLogin || enterCode || <DefaultScreen /> }
+                { (phoneLogin || emailLogin) && !enterCode && <AuthorizeScreen /> }
+                { (enterCode) && <ConfirmAuthorization /> }
+            </motion.div>
+        </AnimatePresence>
     )
 }

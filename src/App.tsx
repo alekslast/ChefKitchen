@@ -4,6 +4,8 @@ import MainPage from "./components/MainPage/MainPage";
 import RootLayout from "./layouts/RootLayout";
 import { AnimatePresence } from "framer-motion";
 import Login from "./components/Login/Login";
+import RegisterScreen from "./components/Register/RegisterScreen";
+import AuthLayout from "./layouts/AuthLayout";
 
 // max-width 1200px
 export default function App() {
@@ -26,10 +28,18 @@ export default function App() {
                     />
                 </Route>
 
-                <Route  path="/login"
-                        element={<Login />}
+                <Route  path="/auth"
+                        element={<AuthLayout />}
                         errorElement={<ErrorPage />}
-                />
+                >
+                    <Route  path="/auth/login"
+                            element={<Login />}
+                    />
+
+                    <Route  path="/auth/register"
+                            element={<RegisterScreen />}
+                    />
+                </Route>
             </Routes>
         </AnimatePresence>
     )

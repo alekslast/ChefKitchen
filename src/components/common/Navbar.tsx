@@ -44,7 +44,7 @@ export default function Navbar() {
 
                 <ChangeLangMenu />
 
-                <Link   to="/login"
+                <Link   to="/auth/login"
                         className="bg-[#FFA800] rounded-full flex flex-row items-center py-[2px] ps-[4px] ms-4 hover:bg-[#B0CC0D] transition-all duration-300"
                 >
                     <img src={userIcon} />
