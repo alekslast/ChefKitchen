@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ErrorPage from "./components/common/ErrorPage";
 import MainPage from "./components/MainPage/MainPage";
 import RootLayout from "./layouts/RootLayout";
@@ -13,11 +13,15 @@ export default function App() {
     return (
         <AnimatePresence>
             <Routes location={location} key={location.pathname}>
-                <Route  index 
+                {/* <Route  index 
                         element={<RootLayout />}
                         errorElement={<ErrorPage />} 
-                />
+                /> */}
 
+                <Route  path="/"
+                        element={<Navigate to="/home" replace />}
+                        errorElement={<ErrorPage />}
+                />
                 <Route  path="/"
                         element={<RootLayout />}
                         errorElement={<ErrorPage />}
