@@ -20,7 +20,7 @@ export default function AuthorizeScreen() {
     }
 
 
-    
+
     return (
         <>
             <input  placeholder={ phoneLogin ? "Phone Number" : "E-mail" }
@@ -41,7 +41,7 @@ export default function AuthorizeScreen() {
 
             <div className="mt-11 flex flex-col justify-center items-center">
                 <a  href="#"
-                     className="text-base text-[#ACB6BE] font-['Montserrat']"
+                     className="text-base text-[#ACB6BE] font-['Montserrat'] mb-[10px]"
                 >
                     Forgot Password?
                 </a>
