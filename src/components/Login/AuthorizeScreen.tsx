@@ -7,7 +7,7 @@ import { useLoginMethodStore } from "../../stores/loginMethodStore";
 
 
 // Custom components
-import LoginBtn from "./LoginBtn";
+import { Button } from "../common/Button";
 
 
 
@@ -107,7 +107,7 @@ export default function AuthorizeScreen() {
                 </span>
 
 
-                <LoginBtn name="Send Code" func={ phoneLogin ? sendSms : sendEmail } />
+                <Button name="Send Code" func={ phoneLogin ? sendSms : sendEmail } color="green" />
                 
             </motion.form>
         </AnimatePresence>

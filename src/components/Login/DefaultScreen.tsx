@@ -7,7 +7,7 @@ import { useLoginMethodStore } from "../../stores/loginMethodStore";
 
 
 // Custom components
-import LoginBtn from "./LoginBtn";
+import { Button } from "../common/Button";
 
 
 
@@ -32,10 +32,10 @@ export default function DefaultScreen() {
             </span>
 
             <div className="flex flex-col gap-4">
-                <LoginBtn name="Previously ordered at Chef Kitchem" func={handleClick} />
+                <Button name="Previously ordered at Chef Kitchem" func={handleClick} color="green" />
 
                 <Link   to="../register"
-                        className="w-full py-[13px] px-[77px] text-white text-sm text-center leading-[22px] bg-[#8EC038] rounded-md hover:bg-[#B0CC0D] hover:scale-105 transition-all duration-300"
+                        className="w-full py-[13px] px-[77px] text-white text-sm text-center leading-[22px] bg-btnGreen rounded-md hover:bg-Olive hover:scale-105 transition-all duration-300"
                 >
                     This is my first order
                 </Link>

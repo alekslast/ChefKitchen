@@ -1,9 +1,9 @@
 // React imports
+import { AnimatePresence, motion } from "framer-motion";
 
 
 // Custom components
-import RegisterBtn from "./RegisterBtn";
-import { AnimatePresence, motion } from "framer-motion";
+import { Button } from "../common/Button";
 
 
 
@@ -46,7 +46,7 @@ export default function RegisterScreen() {
                     </div>
                 </div>
 
-                <RegisterBtn name="Register" func={handleSubmit} />
+                <Button name="Register" func={handleSubmit} color="orange" />
 
             </motion.form>
         </AnimatePresence>

@@ -6,11 +6,14 @@ import { Link } from "react-router-dom";
 import { navItems } from "../../lib/constants";
 
 
+// Custom components
+import ChangeLangMenu from "./ChangeLangMenu";
+
+
 // Images
 import logo from "../../assets/images/logo.svg";
 import phone from "../../assets/icons/phone-icon.svg";
 import userIcon from "../../assets/icons/user-icon.svg";
-import ChangeLangMenu from "./ChangeLangMenu";
 
 
 
@@ -25,7 +28,7 @@ type TNavListItem = {
 export default function Navbar() {
 
     return (
-        <nav className="w-[1200px] flex flex-row justify-between items-center">
+        <nav className="relative z-50 w-[1200px] flex flex-row justify-between items-center">
             <img src={logo} />
 
             <ul className="flex flex-row gap-[70px] text-base text-[#302929] font-['Montserrat'] font-medium">

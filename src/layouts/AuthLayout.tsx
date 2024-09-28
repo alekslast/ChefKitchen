@@ -1,6 +1,7 @@
 // React imports
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 
 // Constants
@@ -13,7 +14,6 @@ import ChangeLangMenu from "../components/common/ChangeLangMenu";
 
 // Images
 import logo from "../assets/images/Login/logo-login.svg";
-import { Link, Outlet } from "react-router-dom";
 
 
 

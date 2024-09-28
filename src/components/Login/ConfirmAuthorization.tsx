@@ -7,7 +7,7 @@ import { useLoginMethodStore } from "../../stores/loginMethodStore";
 
 
 // Custom components
-import LoginBtn from "./LoginBtn";
+import { Button } from "../common/Button";
 
 
 
@@ -57,7 +57,7 @@ export default function ConfirmAuthorization() {
                         className="w-full mb-7 py-[13px] px-5 bg-[#FCFDFE] border border-[#E9EDF4] rounded-[6px] text-base font-['Montserrat']" />
 
 
-                <LoginBtn name="Login" func={handleSubmit} />
+                <Button name="Login" func={handleSubmit} color="green" />
                 
             </motion.form>
         </AnimatePresence>
