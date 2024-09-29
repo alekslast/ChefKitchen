@@ -15,7 +15,7 @@ type TButton = {
 
 
 
-export function Button({
+export default function Button({
     name,
     func,
     color,

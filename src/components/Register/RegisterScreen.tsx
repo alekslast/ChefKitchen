@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 
 // Custom components
-import { Button } from "../common/Button";
+import Button from "../common/Button";
 
 
 

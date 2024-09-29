@@ -7,7 +7,7 @@ import { useLoginMethodStore } from "../../stores/loginMethodStore";
 
 
 // Custom components
-import { Button } from "../common/Button";
+import Button from "../common/Button";
 
 
 

@@ -1,7 +1,7 @@
 // Raect imports
 
 // Custom components
-import { Button } from "../common/Button";
+import Button from "../common/Button";
 
 
 // Images
@@ -14,7 +14,7 @@ import heroImgStandalone from "../../assets/images/MainPage/hero-img-standalone.
 
 export default function HeroSection() {
     return (
-        <div className="relative w-full h-[450px] mt-[60px] bg-Olive rounded-[55px]">
+        <div className="relative max-w-[1200px] w-full h-[450px] mt-[60px] bg-Olive rounded-[55px]">
             <img    src={heroImgStandalone}
                     className="absolute -bottom-[30%] -left-[8%]" />
             <img    src={heroImg}
