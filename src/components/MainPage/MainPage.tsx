@@ -9,6 +9,8 @@ import DeliveryAreas from "./DeliveryAreas";
 import AdvantagesSection from "./AdvantagesSection";
 import PromoSection from "./PromoSection";
 import FaqSection from "./FaqSection";
+import FormSection from "./FormSection";
+import Footer from "./Footer";
 
 
 
@@ -32,6 +34,10 @@ export default function MainPage() {
             <PromoSection />
 
             <FaqSection />
+
+            <FormSection />
+
+            <Footer />
 
         </motion.div>
     )
