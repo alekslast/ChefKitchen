@@ -1,0 +1,6 @@
+@ChefKitchenAPI_HostAddress = http://localhost:5047
+
+GET {{ChefKitchenAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
