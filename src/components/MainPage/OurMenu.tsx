@@ -21,7 +21,7 @@ import miscImg2 from "../../assets/images/MainPage/menuMiscImg2.png";
 
 export default function OurMenu() {
     return (
-        <section className="relative max-w-[1200px] w-full h-max pt-[135px]">
+        <section id="menu" className="relative max-w-[1200px] w-full h-max pt-[135px]">
 
             <img src={miscImg1} className="absolute top-[17%] -right-[5%]" />
             <img src={miscImg2} className="absolute z-10 -bottom-[8%] left-[50%]" />
@@ -122,14 +122,5 @@ export default function OurMenu() {
                 </div>
             </div>
         </section>
-    )
-}
-
-
-function WeekDayCard()
-{
-    return (
-        <>
-        </>
     )
 }

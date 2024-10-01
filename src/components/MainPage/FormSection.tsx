@@ -17,14 +17,14 @@ export default function FormSection() {
 
 
     return (
-        <section className="relative w-full max-w-[1200px] pt-[94px] pb-[120px] flex flex-row">
-            <img src={formDecorImg} className="absolute z-10 -top-[25%] -right-[6%]" />
+        <section id="formSection" className="relative w-full max-w-[1200px] pt-[94px] pb-[120px] flex flex-row">
+            
             
             <div className="w-1/3 flex flex-col justify-center items-start">
                 <img src={formMainIng} />
             </div>
 
-            <div className="w-1/3 flex flex-col justify-center items-start">
+            <div className="w-1/3 flex flex-col justify-center items-start cursor-default">
                 <h2 className="text-[64px] text-Olive font-bold leading-[120%]">
                     LET'S GET<br />IN TOUCH
                 </h2>
@@ -34,7 +34,8 @@ export default function FormSection() {
                 </span>
             </div>
 
-            <div className="w-1/3">
+            <div className="relative w-1/3 flex flex-col justify-center items-start">
+                <img src={formDecorImg} className="absolute z-10 -top-[55%] -right-[17%]" />
                 <form>
                     <div className="mb-6 flex flex-row gap-3">
                         <FormInputField>Your Name</FormInputField>

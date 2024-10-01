@@ -1,5 +1,4 @@
 // Constants
-import { div } from "framer-motion/client";
 import { faqCards, questionList } from "../../lib/constants";
 
 
@@ -13,12 +12,14 @@ import { useEffect, useState } from "react";
 
 export default function FaqSection() {
     return (
-        <section className="max-w-[1200px] w-full h-max pt-[100px]">
+        <section id="faqSection" className="max-w-[1200px] w-full h-max pt-[100px]">
+
             <Heading2>FAQ</Heading2>
 
             <FaqCards />
 
             <Answers />
+
         </section>
     )
 }
