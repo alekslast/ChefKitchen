@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using DataAccess.Implementations;
+using DataAccess.Interfaces;
 
 
 
@@ -22,6 +20,14 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddControllers();
+
+
+
+builder.Services.AddScoped<IUserRepository,         UserRepository>();
+builder.Services.AddScoped<IOrderRepository,        OrderRepository>();
+builder.Services.AddScoped<IMenuItemRepository,     MenuItemRepository>();
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
