@@ -7,7 +7,9 @@
         public DateTime                 Date            { get; set; }
         public DateTime                 Time            { get; set; }
 
+        public int                      UserId          { get; set; }
         public UserModel                User            { get; set; }
+
         public List<MenuItemModel>      MenuItems       { get; set; }
     }
 }

@@ -1,5 +1,7 @@
+using DataAccess;
 using DataAccess.Implementations;
 using DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -17,6 +19,10 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
+
+
+builder.Services.AddDbContext<RestaurantContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddControllers();

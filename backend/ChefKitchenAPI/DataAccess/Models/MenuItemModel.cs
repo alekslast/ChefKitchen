@@ -11,5 +11,8 @@
         public int          Energy          { get; set; }
         public int          TotalWeight     { get; set; }
 
+        public int          OrderId         { get; set; }
+        public OrderModel   Order           { get; set; }
+
     }
 }

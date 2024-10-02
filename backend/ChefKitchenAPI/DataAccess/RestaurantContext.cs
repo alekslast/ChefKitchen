@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 
 
@@ -9,13 +10,54 @@ namespace DataAccess
 {
     public class RestaurantContext : DbContext
     {
-        public RestaurantContext(DbContextOptions<RestaurantContext> contextOptions) : base(contextOptions)
-        {
+        private readonly IConfiguration _configuration;
 
+
+
+        public RestaurantContext(DbContextOptions<RestaurantContext> contextOptions, IConfiguration configuration)
+            : base(contextOptions)
+        {
+            _configuration = configuration;
         }
 
-        public DbSet<MenuItemModel>     MenuItems       { get; set; }
-        public DbSet<OrderModel>        Orders          { get; set; }
-        public DbSet<UserModel>         Users           { get; set; }
+
+
+        public DbSet<MenuItemModel> MenuItems { get; set; }
+        public DbSet<OrderModel> Orders { get; set; }
+        public DbSet<UserModel> Users { get; set; }
+
+
+
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
+            }
+        }
+
+
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserModel>()
+                .HasMany(u => u.Orders)
+                .WithOne(o => o.User)
+                .HasForeignKey(o => o.UserId);
+
+            modelBuilder.Entity<MenuItemModel>()
+                .HasKey(o => o.Id);
+
+            modelBuilder.Entity<OrderModel>()
+                .HasMany(o => o.MenuItems)
+                .WithOne(mi => mi.Order)
+                .HasForeignKey(mi => mi.OrderId);
+        }
     }
 }
