@@ -1,6 +1,0 @@
-@ChefKitchenAPI_HostAddress = http://localhost:5047
-
-GET {{ChefKitchenAPI_HostAddress}}/chefKitchen/
-Accept: application/json
-
-###

@@ -1,5 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -9,9 +10,13 @@ namespace DataAccess.Implementations
 {
     public class UserRepository : IUserRepository
     {
-        public UserRepository()
-        {
+        readonly RestaurantContext _dbContext;
 
+
+
+        public UserRepository(RestaurantContext dbContext)
+        {
+            _dbContext = dbContext;
         }
 
 
@@ -20,6 +25,9 @@ namespace DataAccess.Implementations
 
         public int Create(UserModel user)
         {
+            _dbContext.Users.Add(user);
+
+            _dbContext.SaveChanges();
 
             return user.Id;
         }
@@ -30,6 +38,10 @@ namespace DataAccess.Implementations
 
         public bool Update(UserModel user)
         {
+            _dbContext.Users.Update(user);
+
+            _dbContext.SaveChanges();
+
             return true;
         }
 
@@ -39,9 +51,7 @@ namespace DataAccess.Implementations
 
         public UserModel GetOne(int id)
         {
-            UserModel user = new();
-
-            return user;
+            return _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id) ?? new UserModel();
         }
 
 
@@ -50,9 +60,7 @@ namespace DataAccess.Implementations
 
         public List<UserModel> GetAll()
         {
-            List<UserModel> userList = new();
-
-            return userList;
+            return _dbContext.Users.Include(x => x.Orders).ToList();
         }
 
 
@@ -61,6 +69,15 @@ namespace DataAccess.Implementations
 
         public bool Delete(int id)
         {
+            UserModel? foundUser = _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id);
+
+            if (foundUser is not null)
+                _dbContext.Users.Remove(foundUser);
+
+            _dbContext.SaveChanges();
+
+
+
             return true;
         }
     }

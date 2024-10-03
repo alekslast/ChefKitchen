@@ -1,7 +1,11 @@
+using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
 using DataAccess;
 using DataAccess.Implementations;
 using DataAccess.Interfaces;
+using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 
 
@@ -29,15 +33,29 @@ builder.Services.AddControllers();
 
 
 
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<IUserRepository,         UserRepository>();
 builder.Services.AddScoped<IOrderRepository,        OrderRepository>();
 builder.Services.AddScoped<IMenuItemRepository,     MenuItemRepository>();
+builder.Services.AddScoped<IMenuItemService,        MenuItemService>();
+builder.Services.AddScoped<IOrderService,           OrderService>();
+builder.Services.AddScoped<IUserService,            UserService>();
 
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "ChefKitchen API",
+        Description = "Key endpoints to address while working with ChefKitchen",
+    });
+    // var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    // options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+});
 
 var app = builder.Build();
 
@@ -49,7 +67,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.RoutePrefix = string.Empty;
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    });
 }
 
 app.UseHttpsRedirection();

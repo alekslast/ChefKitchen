@@ -1,5 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -9,9 +10,13 @@ namespace DataAccess.Implementations
 {
     public class OrderRepository : IOrderRepository
     {
-        public OrderRepository()
-        {
+        readonly RestaurantContext _dbContext;
 
+
+
+        public OrderRepository(RestaurantContext dbContext)
+        {
+            _dbContext = dbContext;
         }
 
 
@@ -20,6 +25,10 @@ namespace DataAccess.Implementations
 
         public int Create(OrderModel order)
         {
+            _dbContext.Orders.Add(order);
+
+            _dbContext.SaveChanges();
+
             return order.Id;
         }
 
@@ -29,6 +38,10 @@ namespace DataAccess.Implementations
 
         public bool Update(OrderModel order)
         {
+            _dbContext.Orders.Update(order);
+
+            _dbContext.SaveChanges();
+
             return true;
         }
 
@@ -38,9 +51,7 @@ namespace DataAccess.Implementations
 
         public OrderModel GetOne(int id)
         {
-            OrderModel order = new();
-
-            return order;
+            return _dbContext.Orders.Include(x => x.MenuItems).Include(x => x.User).FirstOrDefault(x => x.Id == id) ?? new OrderModel();
         }
 
 
@@ -49,9 +60,7 @@ namespace DataAccess.Implementations
 
         public List<OrderModel> GetAll()
         {
-            List<OrderModel> orderList = new();
-
-            return orderList;
+            return _dbContext.Orders.Include(x => x.MenuItems).Include(x => x.User).ToList();
         }
 
 
@@ -60,6 +69,15 @@ namespace DataAccess.Implementations
 
         public bool DeleteOne(int id)
         {
+            OrderModel? foundOrder = _dbContext.Orders.FirstOrDefault(x => x.Id == id);
+
+            if (foundOrder is not null)
+                _dbContext.Orders.Remove(foundOrder);
+
+            _dbContext.SaveChanges();
+
+
+
             return true;
         }
 
@@ -68,6 +86,14 @@ namespace DataAccess.Implementations
 
         public bool DeleteAll()
         {
+            List<OrderModel> allRecords = _dbContext.Orders.Include(x => x.MenuItems).Include(x => x.User).ToList();
+
+            _dbContext.Orders.RemoveRange(allRecords);
+
+            _dbContext.SaveChanges();
+
+
+
             return true;
         }
     }
