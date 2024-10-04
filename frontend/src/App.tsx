@@ -1,11 +1,23 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import ErrorPage from "./components/common/ErrorPage";
-import MainPage from "./components/MainPage/MainPage";
-import RootLayout from "./layouts/RootLayout";
-import { AnimatePresence } from "framer-motion";
-import Login from "./components/Login/Login";
-import RegisterScreen from "./components/Register/RegisterScreen";
-import AuthLayout from "./layouts/AuthLayout";
+// React imports
+import { Navigate, Route, Routes }  from    "react-router-dom";
+import { AnimatePresence }          from    "framer-motion";
+
+
+// Layouts
+import RootLayout                   from    "./layouts/RootLayout";
+import AuthLayout                   from    "./layouts/AuthLayout";
+
+
+// Custom components
+import ErrorPage                    from    "./components/common/ErrorPage";
+import MainPage                     from    "./components/MainPage/MainPage";
+import Login                        from    "./components/Login/Login";
+import RegisterScreen               from    "./components/Register/RegisterScreen";
+import UserSettings                 from    "./components/UserPage/UserSettings";
+
+
+
+
 
 // max-width 1200px
 export default function App() {
@@ -26,10 +38,16 @@ export default function App() {
                         element={<RootLayout />}
                         errorElement={<ErrorPage />}
                 >
-                    <Route path="/home"
+                    <Route  path="/home"
                             element={<MainPage />}
                             errorElement={<ErrorPage />}
                     />
+
+                    <Route  path="/user"
+                            element={<UserSettings />}
+                            errorElement={<ErrorPage />}
+                    />
+                        
                 </Route>
 
                 <Route  path="/auth"

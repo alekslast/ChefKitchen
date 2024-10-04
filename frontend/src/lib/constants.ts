@@ -39,13 +39,32 @@ import faqStorage       from    "..//assets/images/MainPage/FAQ/storage.svg";
 
 
 
+import menuIcon         from    "../assets/icons/UserSettings/sidebar-menu.svg";
+import orderIcon        from    "../assets/icons/UserSettings/sidebar-order.svg";
+import deliveryIcon     from    "../assets/icons/UserSettings/sidebar-delivery.svg";
+import gearIcon         from    "../assets/icons/UserSettings/settings-gear.svg";
+
+
+
 
 
 export const navItems = [
-    "Menu",
-    "Delivery",
-    "FAQ",
-    "Contacts",
+    {
+        text: "Menu",
+        link: "/home#menu"
+    },
+    {
+        text: "Delivery",
+        link: "/home#delivery"
+    },
+    {
+        text: "FAQ",
+        link: "/home#faqSection"
+    },
+    {
+        text: "Contacts",
+        link: "/home#formSection"
+    },
 ]
 
 
@@ -326,4 +345,31 @@ export const questionList = [
         answer: "Make orders, take part in promotions, recommend us to friends or connect a family tariff. We will refund up to 50% of the order value.",
         show: false,
     },
+]
+
+
+
+
+
+export const userSettings_Sidebar = [
+    {
+        icon: menuIcon,
+        text: "Menu"
+    },
+    {
+        icon: orderIcon,
+        text: "Orders"
+    },
+    {
+        icon: deliveryIcon,
+        text: "Deliveries"
+    },
+    {
+        icon: gearIcon,
+        text: "Settings"
+    },
+    // {
+    //     icon: ,
+    //     text: ""
+    // },
 ]

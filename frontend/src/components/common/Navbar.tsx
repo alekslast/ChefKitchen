@@ -14,11 +14,13 @@ import ChangeLangMenu from "./ChangeLangMenu";
 import logo from "../../assets/images/logo.svg";
 import phone from "../../assets/icons/phone-icon.svg";
 import userIcon from "../../assets/icons/user-icon.svg";
+import { HashLink } from "react-router-hash-link";
 
 
 
 type TNavListItem = {
-    itemName: string
+    text: string,
+    link: string,
 }
 
 
@@ -29,12 +31,14 @@ export default function Navbar() {
 
     return (
         <nav className="relative z-50 w-[1200px] flex flex-row justify-between items-center">
-            <img src={logo} />
+            <Link to="/home">
+                <img src={logo} />
+            </Link>
 
             <ul className="flex flex-row gap-[70px] text-base text-[#302929] font-['Montserrat'] font-medium">
 
-                {navItems.map((itemName) => (
-                    <NavListItem key={itemName} itemName={itemName} />
+                {navItems.map((item) => (
+                    <NavListItem key={item.text} text={item.text} link={item.link} />
                 ))}
                 
             </ul>
@@ -62,7 +66,11 @@ export default function Navbar() {
 
 
 
-function NavListItem({ itemName } : TNavListItem) {
+function NavListItem({
+    text,
+    link
+} : TNavListItem)
+{
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         event.stopPropagation();
@@ -83,7 +91,9 @@ function NavListItem({ itemName } : TNavListItem) {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <a href="#">{itemName}</a>
+            <HashLink to={link}>
+                {text}
+            </HashLink>
             <div className="line-to-show self-center border-b-2 border-b-[#B0CC0D] w-full scale-0 transition-all duration-300"></div>
         </li>
     )
