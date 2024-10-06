@@ -47,7 +47,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Protein")
@@ -147,9 +147,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DataAccess.Models.OrderModel", "Order")
                         .WithMany("MenuItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.Navigation("Order");
                 });

@@ -32,8 +32,20 @@ namespace BusinessLogic.Services
 
         public int Create(MenuItemDto menuItemDto)
         {
-            MenuItemModel menuItem  =   _mapper.Map<MenuItemModel>(menuItemDto);
-            int newItemId           =   _menuItemRepository.Create(menuItem);
+            MenuItemModel menuItem          =   _mapper.Map<MenuItemModel>(menuItemDto);
+            int newItemId                   =   _menuItemRepository.Create(menuItem);
+
+            return newItemId;
+        }
+
+
+
+
+
+        public bool CreateMultiple(List<MenuItemDto> menuItemsDto)
+        {
+            List<MenuItemModel> menuItems   =   _mapper.Map<List<MenuItemModel>>(menuItemsDto);
+            bool newItemId                  =   _menuItemRepository.CreateMultiple(menuItems);
 
             return newItemId;
         }

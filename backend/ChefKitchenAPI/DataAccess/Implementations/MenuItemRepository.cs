@@ -36,6 +36,24 @@ namespace DataAccess.Implementations
 
 
 
+        public bool CreateMultiple(List<MenuItemModel> menuItems)
+        {
+            int length0     =   _dbContext.MenuItems.ToList().Count;
+
+            _dbContext.MenuItems.AddRange(menuItems);
+
+            _dbContext.SaveChanges();
+
+            int length1     =   _dbContext.MenuItems.ToList().Count;
+            int length      =   length0 - length1;
+
+            return length < 0;
+        }
+
+
+
+
+
         public bool Update(MenuItemModel menuItem)
         {
             _dbContext.MenuItems.Update(menuItem);
