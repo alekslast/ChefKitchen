@@ -1,16 +1,16 @@
 // React imports
-import { motion } from "framer-motion";
+import { motion }           from    "framer-motion";
 
 
 // Custom components
-import HeroSection from "./HeroSection";
-import OurMenu from "./OurMenu";
-import DeliveryAreas from "./DeliveryAreas";
-import AdvantagesSection from "./AdvantagesSection";
-import PromoSection from "./PromoSection";
-import FaqSection from "./FaqSection";
-import FormSection from "./FormSection";
-import Footer from "./Footer";
+import HeroSection          from    "./HeroSection";
+import OurMenu              from    "./OurMenu/OurMenu";
+import DeliveryAreas        from    "./DeliveryAreas";
+import AdvantagesSection    from    "./AdvantagesSection";
+import PromoSection         from    "./PromoSection";
+import FaqSection           from    "./FaqSection";
+import FormSection          from    "./FormSection";
+import Footer               from    "./Footer";
 
 
 

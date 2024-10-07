@@ -256,6 +256,67 @@ export const meals = [
 
 
 
+export const mealsDummy = [
+    {
+        mealType: 'BREAKFAST 1',
+        mealName: 'Chicken fricassee with mushrooms and bulgur',
+        protein: 15,
+        fats: 7,
+        carbs: 24,
+        energy: 285,
+        totalWeight: 345,
+    },
+    {
+        mealType: 'BREAKFAST 2',
+        mealName: 'Chicken fricassee with mushrooms and bulgur',
+        protein: 15,
+        fats: 7,
+        carbs: 24,
+        energy: 285,
+        totalWeight: 345,
+    },
+    {
+        mealType: 'LUNCH',
+        mealName: 'Chicken fricassee with mushrooms and bulgur',
+        protein: 15,
+        fats: 7,
+        carbs: 24,
+        energy: 285,
+        totalWeight: 345,
+    },
+    {
+        mealType: 'SNACK',
+        mealName: 'Chicken fricassee with mushrooms and bulgur',
+        protein: 15,
+        fats: 7,
+        carbs: 24,
+        energy: 285,
+        totalWeight: 345,
+    },
+    {
+        mealType: 'DINNER 1',
+        mealName: 'Chicken fricassee with mushrooms and bulgur',
+        protein: 15,
+        fats: 7,
+        carbs: 24,
+        energy: 285,
+        totalWeight: 345,
+    },
+    {
+        mealType: 'DINNER 2',
+        mealName: 'Chicken fricassee with mushrooms and bulgur',
+            protein: 15,
+        fats: 7,
+        carbs: 24,
+        energy: 285,
+        totalWeight: 345,
+    },
+]
+
+
+
+
+
 export const advantages = [
     {
         image: advantage1,
