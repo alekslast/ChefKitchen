@@ -1,4 +1,7 @@
-﻿using Domain.Models;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -8,14 +11,28 @@ namespace ChefKitchenAPI.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        [HttpGet]
-        public string GetAllUsers()
+        readonly IMapper _mapper;
+        readonly IUserService _userService;
+
+
+
+        public UsersController(
+            IMapper mapper,
+            IUserService userService
+        )
         {
-            User menuItems = new();
+            _mapper = mapper;
+            _userService = userService;
+        }
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+
+
+        [HttpGet]
+        public List<UserDto> GetAllUsers()
+        {
+            return _userService.GetAll();
         }
 
 
@@ -37,13 +54,29 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPost]
-        public string CreateUser([FromBody] User user)
+        //public int CreateUser([FromBody] User user)
+        public int CreateUser()
         {
-            User menuItems = new();
+            User newUser        =   new()
+            {
+                FirstName       =   "Mihai",
+                LastName        =   "Vasilean",
+                Password        =   "111",
+                PhoneNumber     =   "123456789",
+                Telegram        =   "misha007",
+                Email           =   "user1@gmail.com",
+                Country         =   "Moldova",
+                City            =   "Chisinau",
+                Street          =   "Alba-Iulie 13/1",
+                PostalCode      =   "25",
+            };
 
-            string json = JsonConvert.SerializeObject(menuItems);
+            //string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+            UserDto userDto     =   _mapper.Map<UserDto>(newUser);
+            int response        =   _userService.Create(userDto);
+
+            return response;
         }
 
 

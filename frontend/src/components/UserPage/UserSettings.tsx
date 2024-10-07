@@ -14,12 +14,18 @@ import Heading4                 from    "../common/Heading4";
 // Images
 import exitIcon                 from    "../../assets/icons/UserSettings/user-settings-logOut.svg";
 import bonusIcon                from    "../../assets/icons/UserSettings/user-settings-bonuses.svg";
+import { useEffect } from "react";
 
 
 
 
 
 export default function UserSettings() {
+
+    useEffect(() => {
+
+    }, [])
+
 
     const logoutClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
@@ -156,6 +162,7 @@ function SidebarListItem({
 
 type TUserInputElem = {
     label: string,
+    valueAttr?: string,
     placeholder: string,
     nameAttr: string,
     typeAttr?: string,
@@ -165,6 +172,7 @@ type TUserInputElem = {
 
 function UserInputElem({
     label,
+    valueAttr,
     placeholder,
     nameAttr,
     typeAttr
@@ -177,6 +185,7 @@ function UserInputElem({
             </label>
 
             <input  name={nameAttr}
+                    value={}
                     type={typeAttr || "text"}
                     placeholder={placeholder}
                     className="px-[18px] py-[13px] font-normal border border-[#E7E7E7] rounded-[5px] outline-none"

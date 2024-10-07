@@ -15,4 +15,13 @@ body {
         overflow-x: hidden;
         font-family: "Montserrat", system-ui;
     }
+
+    .custom-scrollbar {
+        overflow-x: auto; /* Enables horizontal scroll */
+        scrollbar-width: none; /* Hides horizontal scrollbar for Firefox */
+    }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none; /* Hides horizontal scrollbar for Chrome, Safari */
+        }
 }
