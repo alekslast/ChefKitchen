@@ -1,27 +1,10 @@
 // React imports
-import { useEffect, useRef, useState }  from    'react';
+import { useRef, useState }     from    'react';
 
 
 // Constants
-import { mealsDummy, meals }            from    '../../../lib/constants';
-
-
-
-export type TMenuItems = {
-    mealType    :   string,
-    mealName    :   string,
-    protein     :   number,
-    fats        :   number,
-    carbs       :   number,
-    energy      :   number,
-    totalWeight :   number
-}
-
-
-
-type TMenuItemNutritionSpan = {
-    children    :   React.ReactNode,
-}
+import { meals }                from    '../../../lib/constants';
+import { useMenuItems }         from    '../../../lib/hooks';
 
 
 
@@ -32,28 +15,26 @@ const INITIAL_WIDTH     =   1120;
 
 
 
+function MenuItemNutritionSpan({ children } : { children: React.ReactNode })
+{
+    return (
+        <span className="text-xs font-light leading-[180%]">
+            {children}
+        </span>
+    )
+}
+
+
+
+
+
 export default function MenuItemsSlider() {
 
-    const needToScroll                          =   (ITEM_WIDTH + 12) * mealsDummy.length - 12 - INITIAL_WIDTH;
+    const [ menuItems, isLoading ]              =   useMenuItems();
 
-    const [menuItems, setMenuItems]             =   useState<TMenuItems[]>(mealsDummy);
+    const needToScroll                          =   (ITEM_WIDTH + 12) * menuItems.length - 12 - INITIAL_WIDTH;
     const [scrollPosition, setScrollPosition]   =   useState(0);
     const containerRef                          =   useRef<HTMLInputElement>(null);
-
-
-    useEffect(() => {
-        fetch("https://localhost:44338/MenuItems",
-            {
-                method: "GET"
-            }
-        )
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                setMenuItems(data);
-            });
-    }, []);
 
 
 
@@ -111,18 +92,5 @@ export default function MenuItemsSlider() {
 
             </div>
         </>
-    )
-}
-
-
-
-
-
-function MenuItemNutritionSpan({ children } : TMenuItemNutritionSpan)
-{
-    return (
-        <span className="text-xs font-light leading-[180%]">
-            {children}
-        </span>
     )
 }

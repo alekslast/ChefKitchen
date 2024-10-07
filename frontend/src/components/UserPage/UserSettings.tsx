@@ -1,5 +1,6 @@
 // Custom components
 import Button                   from    "../common/Button"
+import { useEffect }            from    "react";
 
 
 // Constants
@@ -8,13 +9,14 @@ import { userSettings_Sidebar } from    "../../lib/constants";
 
 // Custom components
 import Heading4                 from    "../common/Heading4";
+import UserSectionCard          from    "./UserSectionCard";
+import UserInputElem            from    "./UserInputElem";
 
 
 
 // Images
 import exitIcon                 from    "../../assets/icons/UserSettings/user-settings-logOut.svg";
 import bonusIcon                from    "../../assets/icons/UserSettings/user-settings-bonuses.svg";
-import { useEffect } from "react";
 
 
 
@@ -153,70 +155,5 @@ function SidebarListItem({
                 {text}
             </span>
         </li>
-    )
-}
-
-
-
-
-
-type TUserInputElem = {
-    label: string,
-    valueAttr?: string,
-    placeholder: string,
-    nameAttr: string,
-    typeAttr?: string,
-}
-
-
-
-function UserInputElem({
-    label,
-    valueAttr,
-    placeholder,
-    nameAttr,
-    typeAttr
-} : TUserInputElem)
-{
-    return (
-        <div className="mb-[13px] flex flex-col text-base text-[#212B36]">
-            <label className="mb-[10px] font-medium">
-                {label}
-            </label>
-
-            <input  name={nameAttr}
-                    value={}
-                    type={typeAttr || "text"}
-                    placeholder={placeholder}
-                    className="px-[18px] py-[13px] font-normal border border-[#E7E7E7] rounded-[5px] outline-none"
-            />
-        </div>
-    )
-}
-
-
-
-
-
-type TUserSectionCard = {
-    heading: string,
-    children?: React.ReactNode
-}
-
-
-
-function UserSectionCard({
-    heading,
-    children
-} : TUserSectionCard)
-{
-    return (
-        <div className="flex flex-col mt-[30px]">
-            <Heading4 styling="ms-1">{heading}</Heading4>
-
-            <div className="mt-1 px-[30px] py-[20px] flex flex-row flex-wrap gap-x-6 border border-[#D9D9D9] rounded-[10px]">
-                {children}
-            </div>
-        </div>
     )
 }

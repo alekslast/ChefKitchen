@@ -1,6 +1,10 @@
 // Constants
 import { menuTypes } from '../../../lib/constants'
 
+
+
+
+
 export default function MenuTypesBar() {
     return (
         <div className="relative my-10 flex flex-row gap-7 cursor-pointer">
