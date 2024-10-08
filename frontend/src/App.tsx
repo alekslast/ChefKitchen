@@ -14,6 +14,10 @@ import MainPage                     from    "./components/MainPage/MainPage";
 import Login                        from    "./components/Login/Login";
 import RegisterScreen               from    "./components/Register/RegisterScreen";
 import UserSettings                 from    "./components/UserPage/UserSettings";
+import UserAccountLayout from "./layouts/UserAccountLayout";
+import UserMenus from "./components/UserPage/UserMenus";
+import UserOrders from "./components/UserPage/UserOrders";
+import UserDeliveries from "./components/UserPage/UserDeliveries";
 
 
 
@@ -44,9 +48,25 @@ export default function App() {
                     />
 
                     <Route  path="/user"
-                            element={<UserSettings />}
+                            element={<UserAccountLayout />}
                             errorElement={<ErrorPage />}
-                    />
+                    >
+                        <Route  path="/user/menus"
+                                element={<UserMenus />}
+                        />
+                        
+                        <Route  path="/user/orders"
+                                element={<UserOrders />}
+                        />
+
+                        <Route  path="/user/deliveries"
+                                element={<UserDeliveries />}
+                        />
+
+                        <Route  path="/user/settings"
+                                element={<UserSettings />}
+                        />
+                    </Route>
                         
                 </Route>
 

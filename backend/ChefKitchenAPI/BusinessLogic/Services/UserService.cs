@@ -30,6 +30,46 @@ namespace BusinessLogic.Services
 
 
 
+        public UserDto? AuthWithEmail(string email)
+        {
+            UserModel? foundUser        =   _userRepository.AuthWithEmail(email);
+
+            if (foundUser is null)
+                return null;
+
+
+
+            UserDto user                =   _mapper.Map<UserDto>(foundUser);
+
+
+
+            return user;
+        }
+
+
+
+
+
+        public UserDto? AuthWithPhone(string phone)
+        {
+            UserModel? foundUser = _userRepository.AuthWithPhone(phone);
+
+            if (foundUser is null)
+                return null;
+
+
+
+            UserDto user = _mapper.Map<UserDto>(foundUser);
+
+
+
+            return user;
+        }
+
+
+
+
+
         public int Create(UserDto userDto)
         {
             UserModel user              =   _mapper.Map<UserModel>(userDto);

@@ -7,6 +7,10 @@ import { meals }                from    '../../../lib/constants';
 import { useMenuItems }         from    '../../../lib/hooks';
 
 
+// Custom components
+import Spinner                  from    '../../common/Spinner';
+
+
 
 const ITEM_WIDTH        =   245;
 const INITIAL_WIDTH     =   1120;
@@ -30,11 +34,24 @@ function MenuItemNutritionSpan({ children } : { children: React.ReactNode })
 
 export default function MenuItemsSlider() {
 
-    const [ menuItems, isLoading ]              =   useMenuItems();
+    const { menuItems, isLoading }              =   useMenuItems();
 
-    const needToScroll                          =   (ITEM_WIDTH + 12) * menuItems.length - 12 - INITIAL_WIDTH;
     const [scrollPosition, setScrollPosition]   =   useState(0);
     const containerRef                          =   useRef<HTMLInputElement>(null);
+
+
+
+    if (isLoading) {
+        return <Spinner />
+    }
+    
+
+    if (!menuItems) {
+        return <EmptySlider />
+    }
+
+
+    const needToScroll                          =   (ITEM_WIDTH + 12) * menuItems.length - 12 - INITIAL_WIDTH;
 
 
 
@@ -92,5 +109,17 @@ export default function MenuItemsSlider() {
 
             </div>
         </>
+    )
+}
+
+
+
+
+
+function EmptySlider() {
+    return (
+        <div  className="relative w-full h-[150px] pt-5 flex flex-row justify-center items-center text-2xl text-white cursor-default font-semibold">
+            No items so far...
+        </div>
     )
 }

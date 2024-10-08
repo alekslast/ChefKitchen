@@ -3,7 +3,10 @@ using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+
+
+
+
 
 namespace ChefKitchenAPI.Controllers
 {
@@ -11,18 +14,71 @@ namespace ChefKitchenAPI.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        readonly IMapper _mapper;
-        readonly IUserService _userService;
+        readonly IMapper        _mapper;
+        readonly IUserService   _userService;
+
+        readonly int            ERROR_CODE = 400;
 
 
 
         public UsersController(
-            IMapper mapper,
-            IUserService userService
+            IMapper             mapper,
+            IUserService        userService
         )
         {
-            _mapper = mapper;
-            _userService = userService;
+            _mapper         =   mapper;
+            _userService    =   userService;
+        }
+
+
+
+
+
+        [HttpGet("AuthEmail/{email}")]
+        public ActionResult AuthWithEmail(string email)
+        {
+            try
+            {
+                UserDto userDto = _userService.AuthWithEmail(email);
+
+
+
+                if (userDto is null)
+                    return new ContentResult { Content = "User not found", ContentType = "text/plain", StatusCode = 404 };
+
+
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
+        }
+
+
+
+
+
+        [HttpGet("AuthPhone/{phone}")]
+        public ActionResult AuthWithPhone(string phone)
+        {
+            try
+            {
+                UserDto userDto = _userService.AuthWithPhone(phone);
+
+
+                if (userDto is null)
+                    return new ContentResult { Content = "User not found", ContentType = "text/plain", StatusCode = 404 };
+
+
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -30,9 +86,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpGet]
-        public List<UserDto> GetAllUsers()
+        public ActionResult<List<User>> GetAllUsers()
         {
-            return _userService.GetAll();
+            try
+            {
+                List<UserDto> foundList     =   _userService.GetAll();
+                List<User> users            =   _mapper.Map<List<User>>(foundList);
+
+
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -40,13 +108,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpGet("{userId:int}")]
-        public string GetSingleUser(int userId)
+        public ActionResult<User> GetSingleUser(int userId)
         {
-            User menuItems = new();
+            try
+            {
+                UserDto foundUser           =   _userService.GetOne(userId);
+                User user                   =   _mapper.Map<User>(foundUser);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -54,29 +130,35 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPost]
-        //public int CreateUser([FromBody] User user)
-        public int CreateUser()
+        public ActionResult CreateUser([FromBody] User user)
         {
-            User newUser        =   new()
+            try
             {
-                FirstName       =   "Mihai",
-                LastName        =   "Vasilean",
-                Password        =   "111",
-                PhoneNumber     =   "123456789",
-                Telegram        =   "misha007",
-                Email           =   "user1@gmail.com",
-                Country         =   "Moldova",
-                City            =   "Chisinau",
-                Street          =   "Alba-Iulie 13/1",
-                PostalCode      =   "25",
-            };
+                //User newUser        =   new()
+                //{
+                //    FirstName       =   "Mihai",
+                //    LastName        =   "Vasilean",
+                //    Password        =   "111",
+                //    PhoneNumber     =   "123456789",
+                //    Telegram        =   "misha007",
+                //    Email           =   "user1@gmail.com",
+                //    Country         =   "Moldova",
+                //    City            =   "Chisinau",
+                //    Street          =   "Alba-Iulie 13/1",
+                //    PostalCode      =   "25",
+                //};
 
-            //string json = JsonConvert.SerializeObject(menuItems);
+                UserDto userDto             =   _mapper.Map<UserDto>(user);
+                int newUserId               =   _userService.Create(userDto);
 
-            UserDto userDto     =   _mapper.Map<UserDto>(newUser);
-            int response        =   _userService.Create(userDto);
 
-            return response;
+
+                return CreatedAtAction(nameof(GetSingleUser), new { userId = newUserId }, value: newUserId);
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -84,13 +166,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPatch]
-        public string UpdateUser([FromBody] User user)
+        public ActionResult UpdateUser([FromBody] User user)
         {
-            User menuItems = new();
+            try
+            {
+                UserDto userDto             =   _mapper.Map<UserDto>(user);
+                bool response               =   _userService.Update(userDto);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -98,13 +188,20 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpDelete("{userId:int}")]
-        public string GetUser(int userId)
+        public ActionResult GetUser(int userId)
         {
-            User menuItems = new();
+            try
+            {
+                _userService.Delete(userId);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
     }
 }

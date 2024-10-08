@@ -9,6 +9,8 @@ namespace BusinessLogic.Interfaces
 {
     public interface IUserService
     {
+        UserDto? AuthWithEmail(string email);
+        UserDto? AuthWithPhone(string phone);
         int Create(UserDto user);
         bool Update(UserDto user);
         UserDto GetOne(int id);

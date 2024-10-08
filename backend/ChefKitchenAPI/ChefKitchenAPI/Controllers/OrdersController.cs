@@ -1,7 +1,12 @@
-﻿using DataAccess.Models;
+﻿using AutoMapper;
+using BusinessLogic.DTOs;
+using BusinessLogic.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+
+
+
+
 
 namespace ChefKitchenAPI.Controllers
 {
@@ -9,14 +14,42 @@ namespace ChefKitchenAPI.Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        [HttpGet]
-        public string GetAllOrders()
+        readonly IOrderService  _orderService;
+        readonly IMapper        _mapper;
+
+        readonly int            ERROR_CODE = 400;
+
+
+
+        public OrdersController(
+            IMapper             mapper,
+            IOrderService       orderService
+        )
         {
-            List<OrderModel> menuItems = new();
+            _orderService   =   orderService;
+            _mapper         =   mapper;
+        }
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+
+
+        [HttpGet]
+        public ActionResult<List<Order>> GetAllOrders()
+        {
+            try
+            {
+                List<OrderDto> orderDtos    =   _orderService.GetAll();
+                List<Order> orders          =   _mapper.Map<List<Order>>(orderDtos);
+
+
+
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -24,13 +57,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpGet("{orderId:int}")]
-        public string GetSingleOrder(int orderId)
+        public ActionResult<Order> GetSingleOrder(int orderId)
         {
-            List<OrderModel> menuItems = new();
+            try
+            {
+                OrderDto foundOrder         =   _orderService.GetOne(orderId);
+                Order order                 =   _mapper.Map<Order>(foundOrder);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return order;
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -38,13 +79,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPost]
-        public string CreateOrder([FromBody] Order order)
+        public ActionResult CreateOrder([FromBody] Order order)
         {
-            List<OrderModel> menuItems = new();
+            try
+            {
+                OrderDto orederDto          =   _mapper.Map<OrderDto>(order);
+                int newOrderId              =   _orderService.Create(orederDto);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return CreatedAtAction(nameof(GetSingleOrder), new { orderId = newOrderId }, value: newOrderId);
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -52,26 +101,41 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPatch]
-        public string UpdateOrder([FromBody] Order order)
+        public ActionResult<string> UpdateOrder([FromBody] Order order)
         {
-            List<OrderModel> menuItems = new();
+            try
+            {
+                OrderDto orderDto           =   _mapper.Map<OrderDto>(order);
+                bool response               =   _orderService.Update(orderDto);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
 
 
         [HttpDelete]
-        public string DeleteAllOrders()
+        public ActionResult DeleteAllOrders()
         {
-            List<OrderModel> menuItems = new();
+            try
+            {
+                _orderService.DeleteAll();
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -79,13 +143,20 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpDelete("{orderId:int}")]
-        public string DeleteSingleOrder(int orderId)
+        public ActionResult DeleteSingleOrder(int orderId)
         {
-            List<OrderModel> menuItems = new();
+            try
+            {
+                _orderService.DeleteOne(orderId);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
     }
 }

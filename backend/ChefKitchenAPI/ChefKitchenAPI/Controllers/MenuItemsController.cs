@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
-using DataAccess.Models;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 
 
@@ -18,6 +16,8 @@ namespace ChefKitchenAPI.Controllers
     {
         readonly IMapper            _mapper;
         readonly IMenuItemService   _menuItemService;
+
+        readonly int                ERROR_CODE = 400;
 
 
 
@@ -35,12 +35,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpGet]
-        public List<MenuItemDto> GetMenuItems()
+        public ActionResult<List<MenuItem>> GetMenuItems()
         {
-            //List<MenuItemDto> menuItemsDto = _mapper.Map<List<MenuItemDto>>(menuItems);
-            //List<MenuItemDto> response = _menuItemService.GetAll();
+            try
+            {
+                List<MenuItemDto> menuItemsDtos =   _menuItemService.GetAll();
+                List<MenuItem> menuItems        =   _mapper.Map<List<MenuItem>>(menuItemsDtos);
 
-            return _menuItemService.GetAll();
+
+
+                return menuItems;
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -48,13 +57,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpGet("{menuItemId:int}")]
-        public string GetSingle(int menuItemId)
+        public ActionResult<MenuItem> GetSingle(int menuItemId)
         {
-            List<MenuItemModel> menuItems = new();
+            try
+            {
+                MenuItemDto response            =   _menuItemService.GetOne(menuItemId);
+                MenuItem menuItem               =   _mapper.Map<MenuItem>(response);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return menuItem;
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -62,13 +79,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPost("Single")]
-        public string CreateMenuItem([FromBody] MenuItem menuItem)
+        public ActionResult CreateMenuItem([FromBody] MenuItem menuItem)
         {
-            List<MenuItemModel> menuItems = new() { };
+            try
+            {
+                MenuItemDto menuItemDto         =   _mapper.Map<MenuItemDto>(menuItem);
+                int newMenuItemId               =   _menuItemService.Create(menuItemDto);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return CreatedAtAction(nameof(GetSingle), new { menuItemId = newMenuItemId }, value: newMenuItemId);
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -76,74 +101,80 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPost("Multiple")]
-        // [FromBody] List<MenuItemModel> menuItems1
-        public bool CreateMultipleMenuItems()
+        public ActionResult<bool> CreateMultipleMenuItems([FromBody] List<MenuItem> menuItemDtos)
         {
-            List<MenuItemModel> menuItems = new()
+            try
             {
-                new MenuItemModel() {
-                    MealType = "BREAKFAST 1",
-                    MealName = "Chicken fricassee with mushrooms and bulgur",
-                    Protein = 15,
-                    Fats = 7,
-                    Carbs = 24,
-                    Energy = 285,
-                    TotalWeight = 345
-                },
-                new MenuItemModel() {
-                    MealType = "BREAKFAST 2",
-                    MealName = "Chicken fricassee with mushrooms and bulgur",
-                    Protein = 15,
-                    Fats = 7,
-                    Carbs = 24,
-                    Energy = 285,
-                    TotalWeight = 345
-                },
-                new MenuItemModel() {
-                    MealType = "LUNCH",
-                    MealName = "Chicken fricassee with mushrooms and bulgur",
-                    Protein = 15,
-                    Fats = 7,
-                    Carbs = 24,
-                    Energy = 285,
-                    TotalWeight = 345
-                },
-                new MenuItemModel() {
-                    MealType = "SNACK",
-                    MealName = "Chicken fricassee with mushrooms and bulgur",
-                    Protein = 15,
-                    Fats = 7,
-                    Carbs = 24,
-                    Energy = 285,
-                    TotalWeight = 345
-                },
-                new MenuItemModel() {
-                    MealType = "DINNER 2",
-                    MealName = "Chicken fricassee with mushrooms and bulgur",
-                    Protein = 15,
-                    Fats = 7,
-                    Carbs = 24,
-                    Energy = 285,
-                    TotalWeight = 345
-                },
-                new MenuItemModel() {
-                    MealType = "DINNER 2",
-                    MealName = "Chicken fricassee with mushrooms and bulgur",
-                    Protein = 15,
-                    Fats = 7,
-                    Carbs = 24,
-                    Energy = 285,
-                    TotalWeight = 345
-                },
-            };
+                //List<MenuItemModel> menuItems = new()
+                //{
+                //    new MenuItemModel() {
+                //        MealType = "BREAKFAST 1",
+                //        MealName = "Chicken fricassee with mushrooms and bulgur",
+                //        Protein = 15,
+                //        Fats = 7,
+                //        Carbs = 24,
+                //        Energy = 285,
+                //        TotalWeight = 345
+                //    },
+                //    new MenuItemModel() {
+                //        MealType = "BREAKFAST 2",
+                //        MealName = "Chicken fricassee with mushrooms and bulgur",
+                //        Protein = 15,
+                //        Fats = 7,
+                //        Carbs = 24,
+                //        Energy = 285,
+                //        TotalWeight = 345
+                //    },
+                //    new MenuItemModel() {
+                //        MealType = "LUNCH",
+                //        MealName = "Chicken fricassee with mushrooms and bulgur",
+                //        Protein = 15,
+                //        Fats = 7,
+                //        Carbs = 24,
+                //        Energy = 285,
+                //        TotalWeight = 345
+                //    },
+                //    new MenuItemModel() {
+                //        MealType = "SNACK",
+                //        MealName = "Chicken fricassee with mushrooms and bulgur",
+                //        Protein = 15,
+                //        Fats = 7,
+                //        Carbs = 24,
+                //        Energy = 285,
+                //        TotalWeight = 345
+                //    },
+                //    new MenuItemModel() {
+                //        MealType = "DINNER 2",
+                //        MealName = "Chicken fricassee with mushrooms and bulgur",
+                //        Protein = 15,
+                //        Fats = 7,
+                //        Carbs = 24,
+                //        Energy = 285,
+                //        TotalWeight = 345
+                //    },
+                //    new MenuItemModel() {
+                //        MealType = "DINNER 2",
+                //        MealName = "Chicken fricassee with mushrooms and bulgur",
+                //        Protein = 15,
+                //        Fats = 7,
+                //        Carbs = 24,
+                //        Energy = 285,
+                //        TotalWeight = 345
+                //    },
+                //};
 
 
-            List<MenuItemDto> menuItemsDto  =   _mapper.Map<List<MenuItemDto>>(menuItems);
-            bool response                   =   _menuItemService.CreateMultiple(menuItemsDto);
+                List<MenuItemDto> menuItemsDto  =   _mapper.Map<List<MenuItemDto>>(menuItemDtos);
+                bool response                   =   _menuItemService.CreateMultiple(menuItemsDto);
 
 
 
-            return response;
+                return CreatedAtAction(nameof(GetMenuItems), value: _menuItemService.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -151,13 +182,21 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpPatch]
-        public string UpdateMenuItem([FromBody] MenuItem menuItem)
+        public ActionResult UpdateMenuItem([FromBody] MenuItem menuItem)
         {
-            List<MenuItemModel> menuItems = new();
+            try
+            {
+                MenuItemDto menuItemDto         =   _mapper.Map<MenuItemDto>(menuItem);
+                bool response                   =   _menuItemService.Update(menuItemDto);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
 
 
@@ -165,13 +204,20 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpDelete("{menuItemId:int}")]
-        public string DeleteMenuItem(int menuItemId)
+        public ActionResult DeleteMenuItem(int menuItemId)
         {
-            List<MenuItemModel> menuItems = new();
+            try
+            {
+                _menuItemService.DeleteOne(menuItemId);
 
-            string json = JsonConvert.SerializeObject(menuItems);
 
-            return json;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
         }
     }
 }

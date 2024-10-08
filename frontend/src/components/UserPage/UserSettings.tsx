@@ -4,7 +4,7 @@ import { useEffect }            from    "react";
 
 
 // Constants
-import { userSettings_Sidebar } from    "../../lib/constants"; 
+// import { userSettings_Sidebar } from    "../../lib/constants";
 
 
 // Custom components
@@ -39,15 +39,15 @@ export default function UserSettings() {
 
 
     return (
-        <div className="w-full max-w-[1200px] pt-[77px] pb-16 flex flex-row justify-between items-start gap-[102px]">
+        // <div className="w-full max-w-[1200px] pt-[77px] pb-16 flex flex-row justify-between items-start gap-[102px]">
 
-            <aside className="pt-[30px] pb-[50px] rounded-[10px] shadow-[0_0_15px_0_rgba(0,0,0,.18)]">
-                <ul className="w-max">
-                    {userSettings_Sidebar.map((item) => (
-                        <SidebarListItem key={item.text} icon={item.icon} text={item.text} />
-                    ))}
-                </ul>
-            </aside>
+        //     <aside className="pt-[30px] pb-[50px] rounded-[10px] shadow-[0_0_15px_0_rgba(0,0,0,.18)]">
+        //         <ul className="w-max">
+        //             {userSettings_Sidebar.map((item) => (
+        //                 <SidebarListItem key={item.text} icon={item.icon} text={item.text} />
+        //             ))}
+        //         </ul>
+        //     </aside>
 
 
 
@@ -128,7 +128,7 @@ export default function UserSettings() {
                     <Button name="Save Info" color="orange" func={buttonSubmitClick} styling="w-max mt-10 self-end" />
                 </form>
             </section>
-        </div>
+        // </div>
     )
 }
 
@@ -136,24 +136,4 @@ export default function UserSettings() {
 
 
 
-type TSidebarListItem = {
-    icon: string,
-    text: string,
-}
 
-
-
-function SidebarListItem({
-    icon,
-    text
-} :TSidebarListItem)
-{
-    return (
-        <li className="px-6 py-[13px] flex flex-row gap-[15px] hover:bg-[#F4F4F4] transition-all duration-300 ease-in-out cursor-pointer">
-            <img src={icon} />
-            <span className="text-base text-[#302929] font-medium leading-6">
-                {text}
-            </span>
-        </li>
-    )
-}

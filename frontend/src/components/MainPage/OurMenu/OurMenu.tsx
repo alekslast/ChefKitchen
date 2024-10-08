@@ -23,7 +23,7 @@ export default function OurMenu() {
     return (
         <section id="menu" className="relative max-w-[1200px] w-full h-max pt-[135px]">
 
-            <img src={miscImg1} className="absolute top-[17%] -right-[5%]" />
+            <img src={miscImg1} className="absolute top-[16.5%] -right-[4%]" />
             <img src={miscImg2} className="absolute z-10 -bottom-[8%] left-[50%]" />
 
             <Heading2>our menu</Heading2>

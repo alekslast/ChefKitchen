@@ -48,6 +48,12 @@ import gearIcon         from    "../assets/icons/UserSettings/settings-gear.svg"
 
 
 
+export const BASE_URL = "https://localhost:44338";
+
+
+
+
+
 export const navItems = [
     {
         text: "Menu",
@@ -415,7 +421,7 @@ export const questionList = [
 export const userSettings_Sidebar = [
     {
         icon: menuIcon,
-        text: "Menu"
+        text: "Menus"
     },
     {
         icon: orderIcon,

@@ -23,11 +23,43 @@ namespace DataAccess.Implementations
 
 
 
+        public UserModel? AuthWithEmail(string email)
+        {
+            UserModel? foundUser = _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.Email == email);
+
+
+            return foundUser;
+        }
+
+
+
+
+
+        public UserModel? AuthWithPhone(string phone)
+        {
+            UserModel? foundUser = _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.PhoneNumber == phone);
+
+
+            return foundUser;
+        }
+
+
+
+
+
         public int Create(UserModel user)
         {
-            _dbContext.Users.Add(user);
+            UserModel? foundEmail = _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.Email == user.Email);
+            UserModel? foundPhone = _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.PhoneNumber == user.PhoneNumber);
 
+
+            if (foundEmail is not null || foundPhone is not null)
+                return -1;
+
+
+            _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
+
 
             return user.Id;
         }
