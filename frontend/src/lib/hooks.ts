@@ -154,3 +154,22 @@ export function useAuthUser(emailOrPhone: string, authMethod: string) {
     
     return { data, isLoading } as const;
 }
+
+
+
+
+
+type TRegisterUser = {
+    email: string,
+    phone: string,
+    name: string
+}
+export const registerUser = async ({ email, phone, name } : TRegisterUser) => {
+    const response = await fetch(
+        BASE_URL + "/Users",
+        { 
+            method  : "POST",
+            body    : JSON.stringify({  })
+        }
+    )
+}
