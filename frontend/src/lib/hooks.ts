@@ -110,30 +110,42 @@ export function useGetSingleUser(id: number | null) {
 
 
 
-const authEmail = async (email: string) => {
+export const authUser = async (emailOrPhone: string, authMethod: string) => {
+
+    debugger
+
     const response = await fetch(
-        BASE_URL + `/Users/AuthEmail/${email}`,
+        BASE_URL + `/Users/Auth${authMethod}/${emailOrPhone}`,
         { method: "GET" }
     );
 
 
-    if (!response.ok) {
-        const errorData = await response.json();
+    if (response.status === 404) {
+
+        const errorText = await response.text();
+
+        if (errorText === "User not found") {
+            return errorText;
+        }
+
+    }
+    else if (!response.ok) {
+        const errorData = await response.text();
         throw new Error(errorData);
     }
 
 
-    const data      =   await response.json();
+    const data      =   await response;
     return data;
 }
 
 
 
-export function useAuthWithEmail(email: string) {
+export function useAuthUser(emailOrPhone: string, authMethod: string) {
 
     const { data, isLoading } = useQuery({
-        queryKey: ["auth-email", email],
-        queryFn : () => (email ? authEmail(email) : null)
+        queryKey: [`auth-${authMethod}`, emailOrPhone],
+        queryFn : () => (emailOrPhone ? authUser(emailOrPhone, authMethod) : null)
     });
 
 

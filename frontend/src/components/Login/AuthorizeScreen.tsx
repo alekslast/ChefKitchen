@@ -1,19 +1,29 @@
 // React imports
-import { AnimatePresence, motion } from "framer-motion";
+import { useState }                 from    "react";
+import { AnimatePresence, motion }  from    "framer-motion";
 
 
 // Context
-import { useLoginMethodStore } from "../../stores/loginMethodStore";
+import { useLoginMethodStore }      from    "../../stores/loginMethodStore";
 
 
 // Custom components
-import Button from "../common/Button";
+import Button                       from    "../common/Button";
+import { authUser }                 from    "../../lib/hooks";
+
+
+
+const EMAIL_AUTH_TYPE = "Email";
+const PHONE_AUTH_TYPE = "Phone";
 
 
 
 
 
 export default function AuthorizeScreen() {
+
+    const [authMethod, setAuthMethod] = useState("");
+
 
     const { 
         phoneLogin,
@@ -38,8 +48,7 @@ export default function AuthorizeScreen() {
     }
 
 
-
-    const sendEmail = () => {
+    const sendEmail = async () => {
         const inputElem = document.querySelector("input");
 
         if (!inputElem?.value) {
@@ -47,7 +56,13 @@ export default function AuthorizeScreen() {
             return;
         };
 
-        alert("Simulating Email sending");
+        const response = await authUser(inputElem.value, EMAIL_AUTH_TYPE);
+
+        if (response === "User not found") {
+            document.querySelector(".errorSpan")?.classList.replace("hidden", "flex");
+            setAuthMethod(EMAIL_AUTH_TYPE);
+            return;
+        }
 
         setEmailLogin(false);
         setPhoneLogin(false);
@@ -56,7 +71,8 @@ export default function AuthorizeScreen() {
 
 
 
-    const sendSms = () => {
+    const sendSms = async () => {
+
         const inputElem = document.querySelector("input");
 
         if (!inputElem?.value) {
@@ -64,7 +80,14 @@ export default function AuthorizeScreen() {
             return;
         };
 
-        alert("Simulating SMS sending");
+        
+        const response = await authUser(inputElem.value, PHONE_AUTH_TYPE);
+
+        if (response === "User not found") {
+            document.querySelector(".errorSpan")?.classList.replace("hidden", "flex");
+            setAuthMethod(PHONE_AUTH_TYPE);
+            return;
+        }
 
         setEmailLogin(false);
         setPhoneLogin(false);
@@ -91,6 +114,11 @@ export default function AuthorizeScreen() {
                             exit={{ opacity: 0 }}
                             className="min-w-[400px] mt-14 flex flex-col justify-center items-center"
             >
+
+                <span className="errorSpan hidden self-start text-sm text-red-700">
+                    <span className="font-semibold">{authMethod}</span>&nbsp;is not registered
+                </span>
+
                 <input  required={true}
                         placeholder={ phoneLogin ? "Phone Number" : "E-mail" }
                         onChange={handleInputChange}
