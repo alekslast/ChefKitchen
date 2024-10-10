@@ -440,3 +440,24 @@ export const userSettings_Sidebar = [
     //     text: ""
     // },
 ]
+
+
+
+
+export const sumUpItem = [
+    {
+        image: protein,
+        amount: 71,
+        name: "Proteins"
+    },
+    {
+        image: fat,
+        amount: 70,
+        name: "Fats"
+    },
+    {
+        image: sugar,
+        amount: 129,
+        name: "Sugars"
+    },
+]

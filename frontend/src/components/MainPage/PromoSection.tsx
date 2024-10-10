@@ -12,9 +12,9 @@ import promoImg2 from "../../assets/images/MainPage/promoImg2.png";
 
 export default function PromoSection() {
     return (
-        <section className="w-screen h-80 bg-Olive">
-            <div className="relative w-full h-full flex flex-row">
-                <div className="max-w-[380px] h-max flex flex-col ms-[120px] mt-5">
+        <section className="relative w-screen h-80 flex flex-row justify-center bg-Olive">
+            <div className="relative w-[1200px] h-full flex flex-row">
+                <div className="max-w-[380px] h-max flex flex-col mt-5">
                     <h2 className="uppercase text-[40px] text-white font-bold leading-[120%]">
                         1 day at the<br />price of 23&#36;
                     </h2>
@@ -32,9 +32,9 @@ export default function PromoSection() {
                     </Link>
                 </div>
 
-                <img src={promoImg1} className="absolute -top-[28%] right-[23%]" />
-                <img src={promoImg2} className="absolute -top-[13%] right-4 w-max h-max" />
             </div>
+                <img src={promoImg1} className="absolute -top-[28%] right-[19%]" />
+                <img src={promoImg2} className="absolute -top-[13%] right-4 w-max h-max" />
         </section>
     )
 }

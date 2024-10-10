@@ -74,7 +74,8 @@ export default function Button({
                     ${styling}
                     ${btnColor}
                     ${rounded ? "rounded-[32px]" : "rounded-md"}
-                    w-full py-[13px] px-[77px] text-white text-sm leading-[22px] hover:scale-105 transition-all duration-300`}
+                    w-full py-[13px] px-[77px] text-white text-sm leading-[22px] hover:scale-105 transition-all duration-300
+                `}
         >
             {name}
         </button>

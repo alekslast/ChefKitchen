@@ -1,20 +1,20 @@
 // React imports
-import { Link } from "react-router-dom";
+import { Link }         from    "react-router-dom";
+import { HashLink }     from    "react-router-hash-link";
 
 
 // Constants
-import { navItems } from "../../lib/constants";
+import { navItems }     from    "../../lib/constants";
 
 
 // Custom components
-import ChangeLangMenu from "./ChangeLangMenu";
+import ChangeLangMenu   from    "./ChangeLangMenu";
 
 
 // Images
-import logo from "../../assets/images/logo.svg";
-import phone from "../../assets/icons/phone-icon.svg";
-import userIcon from "../../assets/icons/user-icon.svg";
-import { HashLink } from "react-router-hash-link";
+import logo             from    "../../assets/images/logo.svg";
+import phone            from    "../../assets/icons/phone-icon.svg";
+import userIcon         from    "../../assets/icons/user-icon.svg";
 
 
 
@@ -30,7 +30,7 @@ type TNavListItem = {
 export default function Navbar() {
 
     return (
-        <nav className="relative z-50 w-[1200px] flex flex-row justify-between items-center">
+        <nav className="relative z-50 w-[1200px] mt-[15px] flex flex-row justify-between items-center">
             <Link to="/home">
                 <img src={logo} />
             </Link>

@@ -164,6 +164,9 @@ type TRegisterUser = {
     phone: string,
     name: string
 }
+
+
+
 export const registerUser = async ({ email, phone, name } : TRegisterUser) => {
     const response = await fetch(
         BASE_URL + "/Users",

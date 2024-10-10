@@ -21,7 +21,7 @@ body {
         scrollbar-width: none; /* Hides horizontal scrollbar for Firefox */
     }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            display: none; /* Hides horizontal scrollbar for Chrome, Safari */
-        }
+    .custom-scrollbar::-webkit-scrollbar {
+        display: none; /* Hides horizontal scrollbar for Chrome, Safari */
+    }
 }

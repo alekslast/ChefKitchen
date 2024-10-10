@@ -6,6 +6,7 @@ import { AnimatePresence }          from    "framer-motion";
 // Layouts
 import RootLayout                   from    "./layouts/RootLayout";
 import AuthLayout                   from    "./layouts/AuthLayout";
+import UserAccountLayout            from    "./layouts/UserAccountLayout";
 
 
 // Custom components
@@ -14,10 +15,9 @@ import MainPage                     from    "./components/MainPage/MainPage";
 import Login                        from    "./components/Login/Login";
 import RegisterScreen               from    "./components/Register/RegisterScreen";
 import UserSettings                 from    "./components/UserPage/UserSettings";
-import UserAccountLayout from "./layouts/UserAccountLayout";
-import UserMenus from "./components/UserPage/UserMenus";
-import UserOrders from "./components/UserPage/UserOrders";
-import UserDeliveries from "./components/UserPage/UserDeliveries";
+import UserMenus                    from    "./components/UserPage/UserMenus";
+import UserOrders                   from    "./components/UserPage/UserOrders";
+import UserDeliveries               from    "./components/UserPage/UserDeliveries";
 
 
 
@@ -47,6 +47,11 @@ export default function App() {
                             errorElement={<ErrorPage />}
                     />
 
+
+                    <Route  path="/user"
+                        element={<Navigate to="/user/settings" replace />}
+                        errorElement={<ErrorPage />}
+                    />
                     <Route  path="/user"
                             element={<UserAccountLayout />}
                             errorElement={<ErrorPage />}
