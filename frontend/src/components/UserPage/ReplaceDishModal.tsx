@@ -8,6 +8,7 @@ import Button from "../common/Button";
 import xButton from "../../assets/icons/xButton.svg";
 import GlobalModal from "../common/GlobalModal";
 import { useShowGlobalModalStore } from "../../stores/showGlobalModal";
+import { useEffect } from "react";
 
 
 
@@ -21,6 +22,20 @@ export default function ReplaceDishModal() {
     const handleModalClose = () => {
         setModalShow(false);
     }
+
+    
+    useEffect(() => {
+
+        if (modalShow) {
+            // document.querySelector("body")?.setAttribute("overflow-y", "hidden");
+            document.body.classList.add('overflow-y-hidden');
+        }
+        else {
+            // document.querySelector("body")?.setAttribute("overflow-y", "auto");
+            document.body.classList.remove('overflow-y-hidden');
+        }
+
+    }, [modalShow])
 
     return (
 
@@ -41,7 +56,7 @@ export default function ReplaceDishModal() {
 
             </div>
 
-            <div className="flex flex-row flex-wrap gap-5 blur-none">
+            <div className="custom-horizontal-scroll p-2 flex flex-row flex-wrap justify-center items-center gap-5 overflow-y-scroll">
                 {menuItems?.map((mealItem, index) => (
                     <div key={index} className={`w-max max-w-[220px] h-max px-[13px] pb-[13px] flex flex-col justify-center items-center rounded-[16px] shadow-[0_0_7px_0_rgba(0,0,0,0.2)] cursor-pointer`}>
                         <img src={meals[index].image} />

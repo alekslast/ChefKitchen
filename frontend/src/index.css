@@ -24,4 +24,12 @@ body {
     .custom-scrollbar::-webkit-scrollbar {
         display: none; /* Hides horizontal scrollbar for Chrome, Safari */
     }
+
+    .custom-horizontal-scroll {
+        scrollbar-width: none;
+    }
+
+    .custom-horizontal-scroll::-webkit-scrollbar {
+        display: none; /* Hides horizontal scrollbar for Chrome, Safari */
+    }
 }
