@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
+using static BusinessLogic.Services.UserService;
 
 
 
@@ -10,12 +14,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChefKitchenAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
         readonly IMapper        _mapper;
         readonly IUserService   _userService;
+        readonly ITokenProvider _tokenProvider;
 
         readonly int            ERROR_CODE = 400;
 
@@ -23,17 +29,20 @@ namespace ChefKitchenAPI.Controllers
 
         public UsersController(
             IMapper             mapper,
-            IUserService        userService
+            IUserService        userService,
+            ITokenProvider      tokenProvider
         )
         {
             _mapper         =   mapper;
             _userService    =   userService;
+            _tokenProvider  =   tokenProvider;
         }
 
 
 
 
 
+        [AllowAnonymous]
         [HttpGet("AuthEmail/{email}")]
         public ActionResult AuthWithEmail(string email)
         {
@@ -60,6 +69,7 @@ namespace ChefKitchenAPI.Controllers
 
 
 
+        [AllowAnonymous]
         [HttpGet("AuthPhone/{phone}")]
         public ActionResult AuthWithPhone(string phone)
         {
@@ -74,6 +84,35 @@ namespace ChefKitchenAPI.Controllers
 
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+            }
+        }
+
+
+
+
+
+        //public record LoginRequest(string Email, string Password);
+
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public ActionResult<string> LoginUser(LoginRequest request)
+        {
+            try
+            {
+                UserDto userDto = _userService.Login(request);
+
+
+                if (userDto is null)
+                    return new ContentResult { Content = "User not found", ContentType = "text/plain", StatusCode = 404 };
+
+                string token = _tokenProvider.Create(userDto);
+
+                //return Ok();
+                return token;
             }
             catch (Exception ex)
             {
@@ -129,26 +168,26 @@ namespace ChefKitchenAPI.Controllers
 
 
 
+        [AllowAnonymous]
         [HttpPost]
-        public ActionResult CreateUser([FromBody] User user)
+        public ActionResult CreateUser()
         {
             try
             {
-                //User newUser        =   new()
-                //{
-                //    FirstName       =   "Mihai",
-                //    LastName        =   "Vasilean",
-                //    Password        =   "111",
-                //    PhoneNumber     =   "123456789",
-                //    Telegram        =   "misha007",
-                //    Email           =   "user1@gmail.com",
-                //    Country         =   "Moldova",
-                //    City            =   "Chisinau",
-                //    Street          =   "Alba-Iulie 13/1",
-                //    PostalCode      =   "25",
-                //};
+                User newUser = new()
+                {
+                    Name = "Mihai Vasilean",
+                    Password = "111",
+                    PhoneNumber = "+321456789123",
+                    Telegram = "misha007",
+                    Email = "user2@gmail.com",
+                    Country = "UK",
+                    City = "London",
+                    Street = "Alba-Iulie 13/1",
+                    PostalCode = "25",
+                };
 
-                UserDto userDto             =   _mapper.Map<UserDto>(user);
+                UserDto userDto             =   _mapper.Map<UserDto>(newUser);
                 int newUserId               =   _userService.Create(userDto);
 
 

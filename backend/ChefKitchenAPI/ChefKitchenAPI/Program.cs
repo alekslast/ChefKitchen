@@ -4,8 +4,11 @@ using DataAccess;
 using DataAccess.Implementations;
 using DataAccess.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 
 
@@ -34,6 +37,24 @@ builder.Services.AddControllers();
 
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+builder.Services.AddSingleton<IPasswordHasher,      PasswordHasher>();
+builder.Services.AddSingleton<ITokenProvider,       TokenProvider>();
+
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o =>
+    {
+        o.RequireHttpsMetadata  =   false;
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey    =   new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
+            ValidIssuer         =   builder.Configuration["Jwt:Issuer"],
+            ValidAudience       =   builder.Configuration["Jwt:Audience"],
+            ClockSkew           =   TimeSpan.Zero
+        };
+    });
+
 builder.Services.AddScoped<IUserRepository,         UserRepository>();
 builder.Services.AddScoped<IOrderRepository,        OrderRepository>();
 builder.Services.AddScoped<IMenuItemRepository,     MenuItemRepository>();
@@ -75,6 +96,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
