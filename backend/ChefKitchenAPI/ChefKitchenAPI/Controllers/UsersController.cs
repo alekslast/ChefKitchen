@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
-using BusinessLogic.Services;
 using Domain.Models;
+using Infrastructure;
+using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Numerics;
-using static BusinessLogic.Services.UserService;
 
 
 
@@ -21,7 +20,7 @@ namespace ChefKitchenAPI.Controllers
     {
         readonly IMapper        _mapper;
         readonly IUserService   _userService;
-        readonly ITokenProvider _tokenProvider;
+        readonly IInfrastructureServices _infrastructure;
 
         readonly int            ERROR_CODE = 400;
 
@@ -30,12 +29,12 @@ namespace ChefKitchenAPI.Controllers
         public UsersController(
             IMapper             mapper,
             IUserService        userService,
-            ITokenProvider      tokenProvider
+            IInfrastructureServices infrastructure
         )
         {
             _mapper         =   mapper;
             _userService    =   userService;
-            _tokenProvider  =   tokenProvider;
+            _infrastructure =   infrastructure;
         }
 
 
@@ -94,22 +93,20 @@ namespace ChefKitchenAPI.Controllers
 
 
 
-
-        //public record LoginRequest(string Email, string Password);
-
+                
         [AllowAnonymous]
         [HttpPost("Login")]
         public ActionResult<string> LoginUser(LoginRequest request)
         {
             try
             {
-                UserDto userDto = _userService.Login(request);
+                UserDto userDto = _infrastructure.Login(request);
 
 
                 if (userDto is null)
                     return new ContentResult { Content = "User not found", ContentType = "text/plain", StatusCode = 404 };
 
-                string token = _tokenProvider.Create(userDto);
+                string token = _infrastructure.CreateToken(userDto);
 
                 //return Ok();
                 return token;
@@ -188,7 +185,7 @@ namespace ChefKitchenAPI.Controllers
                 };
 
                 UserDto userDto             =   _mapper.Map<UserDto>(newUser);
-                int newUserId               =   _userService.Create(userDto);
+                int newUserId               =   _infrastructure.CreateNewUser(userDto);
 
 
 

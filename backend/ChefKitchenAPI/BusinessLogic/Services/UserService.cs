@@ -14,19 +14,16 @@ namespace BusinessLogic.Services
     {
         readonly IUserRepository            _userRepository;
         readonly IMapper                    _mapper;
-        readonly IPasswordHasher            _passwordHasher;
 
 
 
         public UserService(
             IUserRepository                 userRepository,
-            IMapper                         mapper,
-            IPasswordHasher                 passwordHasher
+            IMapper                         mapper
         )
         {
             _userRepository             =   userRepository;
             _mapper                     =   mapper;
-            _passwordHasher             =   passwordHasher;
         }
 
 
@@ -67,43 +64,6 @@ namespace BusinessLogic.Services
 
 
             return user;
-        }
-
-
-
-
-        public record LoginRequest(string Email, string Password);
-        public UserDto Login(LoginRequest loginRequest)
-        {
-            UserModel? foundUser = _userRepository.AuthWithEmail(loginRequest.Email);
-
-            if (foundUser is null)
-            {
-                throw new Exception("User not found");
-            }
-
-            bool verified = _passwordHasher.Verify(loginRequest.Password, foundUser.Password);
-
-            if (!verified)
-            {
-                throw new Exception("Incorrect password");
-            }
-
-            return _mapper.Map<UserDto>(foundUser);
-        }
-
-
-
-
-
-        public int Create(UserDto userDto)
-        {
-            userDto.Password            =   _passwordHasher.Hash(userDto.Password);
-            
-            UserModel user              =   _mapper.Map<UserModel>(userDto);
-            int newUserId               =   _userRepository.Create(user);
-
-            return newUserId;
         }
 
 

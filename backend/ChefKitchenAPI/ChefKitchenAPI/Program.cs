@@ -4,6 +4,8 @@ using DataAccess;
 using DataAccess.Implementations;
 using DataAccess.Interfaces;
 using Domain;
+using Infrastructure.Implementations;
+using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,8 +40,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-builder.Services.AddSingleton<IPasswordHasher,      PasswordHasher>();
-builder.Services.AddSingleton<ITokenProvider,       TokenProvider>();
+//builder.Services.AddSingleton<IPasswordHasher,      PasswordHasher>();
+//builder.Services.AddSingleton<ITokenProvider,       TokenProvider>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -55,6 +57,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddScoped<IInfrastructureServices, InfrastructureServices>();
 builder.Services.AddScoped<IUserRepository,         UserRepository>();
 builder.Services.AddScoped<IOrderRepository,        OrderRepository>();
 builder.Services.AddScoped<IMenuItemRepository,     MenuItemRepository>();
