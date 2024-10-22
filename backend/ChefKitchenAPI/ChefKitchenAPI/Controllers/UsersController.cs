@@ -6,6 +6,7 @@ using Infrastructure;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 
 
@@ -52,7 +53,7 @@ namespace ChefKitchenAPI.Controllers
 
 
                 if (userDto is null)
-                    return new ContentResult { Content = "User not found", ContentType = "text/plain", StatusCode = 404 };
+                    return new ContentResult { Content = JsonConvert.SerializeObject("User not found"), ContentType = "application/json", StatusCode = 404 };
 
 
 
@@ -60,7 +61,7 @@ namespace ChefKitchenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
 
@@ -78,7 +79,7 @@ namespace ChefKitchenAPI.Controllers
 
 
                 if (userDto is null)
-                    return new ContentResult { Content = "User not found", ContentType = "text/plain", StatusCode = 404 };
+                    return new ContentResult { Content = JsonConvert.SerializeObject("User not found"), ContentType = "application/json", StatusCode = 404 };
 
 
 
@@ -86,7 +87,7 @@ namespace ChefKitchenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
 
@@ -100,20 +101,32 @@ namespace ChefKitchenAPI.Controllers
         {
             try
             {
-                UserDto userDto = _infrastructure.Login(request);
+                var (tokenJwt, tokenRefresh) = _infrastructure.Login(request);
+
+                if (string.IsNullOrEmpty(tokenJwt) || tokenRefresh is null)
+                    return new ContentResult { Content = JsonConvert.SerializeObject("Error creating tokens"), ContentType = "application/json", StatusCode = ERROR_CODE };
 
 
-                if (userDto is null)
-                    return new ContentResult { Content = "User not found", ContentType = "text/plain", StatusCode = 404 };
 
-                string token = _infrastructure.CreateToken(userDto);
+                HttpContext.Response.Cookies.Append(
+                    "refreshToken",
+                    tokenRefresh.Token,
+                    new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = tokenRefresh.Expires
+                    }
+                );
 
-                //return Ok();
-                return token;
+
+
+                return Ok( new { token = tokenJwt } );
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
 
@@ -135,7 +148,7 @@ namespace ChefKitchenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
 
@@ -157,7 +170,7 @@ namespace ChefKitchenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
 
@@ -193,7 +206,7 @@ namespace ChefKitchenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
 
@@ -215,7 +228,7 @@ namespace ChefKitchenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
 
@@ -236,7 +249,7 @@ namespace ChefKitchenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new ContentResult { Content = ex.Message, ContentType = "text/plain", StatusCode = ERROR_CODE };
+                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
     }

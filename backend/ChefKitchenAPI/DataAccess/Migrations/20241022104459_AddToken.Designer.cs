@@ -3,6 +3,7 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20241022104459_AddToken")]
+    partial class AddToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,37 +93,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.RefreshTokenModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
-                });
-
             modelBuilder.Entity("DataAccess.Models.UserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -159,6 +131,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Telegram")
                         .HasColumnType("text");
 
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -184,17 +159,6 @@ namespace DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.RefreshTokenModel", b =>
-                {
-                    b.HasOne("DataAccess.Models.UserModel", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DataAccess.Models.OrderModel", b =>
                 {
                     b.Navigation("MenuItems");
@@ -203,8 +167,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Models.UserModel", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

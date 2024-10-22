@@ -19,7 +19,8 @@ namespace Infrastructure.Implementations
     public class InfrastructureServices(
         IMapper _mapper,
         IConfiguration _configuration,
-        IUserRepository _userRepository
+        IUserRepository _userRepository,
+        IInfrastructureRepository _infrastructureRepository
     ) : IInfrastructureServices
 
     {
@@ -34,21 +35,31 @@ namespace Infrastructure.Implementations
 
 
 
-        public UserDto Login(LoginRequest loginRequest)
+        public (string tokenJwt, RefreshTokenModel? tokenRefresh) Login(LoginRequest loginRequest)
         {
-            UserModel? foundUser    =   _userRepository.AuthWithEmail(loginRequest.Email)
-                                        ?? throw new Exception("User not found");
-
-            bool verified           =   Verify(loginRequest.Password, foundUser.Password);
+            UserModel? foundUser            =   _userRepository.AuthWithEmail(loginRequest.Email);
+            bool verified                   =   Verify(loginRequest.Password, foundUser.Password);
 
 
             if (!verified)
-            {
                 throw new Exception("Incorrect password");
-            }
 
 
-            return _mapper.Map<UserDto>(foundUser);
+            UserDto mappedUser              =   _mapper.Map<UserDto>(foundUser);
+
+
+            string tokenJwt                 =   CreateToken(mappedUser);
+            RefreshTokenModel tokenRefresh  =   GenerateRefreshToken(mappedUser);
+
+            var response = _infrastructureRepository.SaveRefreshToken(tokenRefresh);
+
+            if (response < 0)
+                return ("", null);
+
+
+
+            return (tokenJwt, tokenRefresh);
+
         }
 
 
@@ -95,6 +106,54 @@ namespace Infrastructure.Implementations
 
 
             return token;
+        }
+
+
+
+
+
+        public RefreshTokenModel GenerateRefreshToken(UserDto userDto)
+        {
+            UserModel user      =   _mapper.Map<UserModel>(userDto);
+            var randomNumber    =   new byte[32];
+
+
+            using (var numberGenerator = RandomNumberGenerator.Create())
+            {
+                numberGenerator.GetBytes(randomNumber);
+            }
+
+
+            string convertedValue = Convert.ToBase64String(randomNumber);
+
+
+            RefreshTokenModel newRefreshToken = new()
+            {
+                Created         =   DateTime.Now,
+                Expires         =   DateTime.Now.AddDays(30),
+                IsRevoked       =   false,
+                Token           =   convertedValue,
+                UserId          =   user.Id,
+            };
+
+
+            return newRefreshToken;
+        }
+
+
+
+
+
+        public string RefreshToken(string expiredToken)
+        {
+            var handler = new JsonWebTokenHandler();
+            string refreshedToken = string.Empty;
+            var jsonToken = handler.ReadToken(expiredToken);
+
+
+
+
+            return refreshedToken;
         }
 
 

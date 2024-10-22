@@ -57,13 +57,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddScoped<IInfrastructureServices, InfrastructureServices>();
-builder.Services.AddScoped<IUserRepository,         UserRepository>();
-builder.Services.AddScoped<IOrderRepository,        OrderRepository>();
-builder.Services.AddScoped<IMenuItemRepository,     MenuItemRepository>();
-builder.Services.AddScoped<IMenuItemService,        MenuItemService>();
-builder.Services.AddScoped<IOrderService,           OrderService>();
-builder.Services.AddScoped<IUserService,            UserService>();
+builder.Services.AddScoped<IInfrastructureServices,     InfrastructureServices>();
+builder.Services.AddScoped<IInfrastructureRepository,   InfrastructureRepository>();
+builder.Services.AddScoped<IUserRepository,             UserRepository>();
+builder.Services.AddScoped<IOrderRepository,            OrderRepository>();
+builder.Services.AddScoped<IMenuItemRepository,         MenuItemRepository>();
+builder.Services.AddScoped<IMenuItemService,            MenuItemService>();
+builder.Services.AddScoped<IOrderService,               OrderService>();
+builder.Services.AddScoped<IUserService,                UserService>();
 
 
 

@@ -18,6 +18,7 @@ import UserSettings                 from    "./components/UserPage/UserSettings"
 import UserMenus                    from    "./components/UserPage/UserMenus";
 import UserOrders                   from    "./components/UserPage/UserOrders";
 import UserDeliveries               from    "./components/UserPage/UserDeliveries";
+import LoginTestToken from "./components/Login/LoginTestToken";
 
 
 
@@ -87,6 +88,8 @@ export default function App() {
                             element={<RegisterScreen />}
                     />
                 </Route>
+
+                <Route path="/tokenTest" element={<LoginTestToken />} />
             </Routes>
         </AnimatePresence>
     )

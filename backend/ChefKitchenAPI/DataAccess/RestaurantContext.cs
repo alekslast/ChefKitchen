@@ -25,6 +25,7 @@ namespace DataAccess
         public DbSet<MenuItemModel> MenuItems { get; set; }
         public DbSet<OrderModel> Orders { get; set; }
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<RefreshTokenModel> RefreshTokens { get; set; } 
 
 
 
@@ -58,6 +59,19 @@ namespace DataAccess
                 .HasMany(o => o.MenuItems)
                 .WithOne(mi => mi.Order)
                 .HasForeignKey(mi => mi.OrderId);
+
+            modelBuilder.Entity<UserModel>()
+                .HasMany(u => u.RefreshTokens)
+                .WithOne(refreshToken => refreshToken.User)
+                .HasForeignKey(refreshToken => refreshToken.UserId);
+
+            modelBuilder.Entity<RefreshTokenModel>()
+                .Property(e => e.Expires)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<RefreshTokenModel>()
+                .Property(e => e.Created)
+                .HasColumnType("timestamp without time zone");
         }
     }
 }

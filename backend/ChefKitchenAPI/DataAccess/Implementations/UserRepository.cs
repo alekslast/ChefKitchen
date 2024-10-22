@@ -83,7 +83,7 @@ namespace DataAccess.Implementations
 
         public UserModel GetOne(int id)
         {
-            return _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id) ?? new UserModel();
+            return _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id) ?? new UserModel() { Name = "", Email = "", Password = ""};
         }
 
 
