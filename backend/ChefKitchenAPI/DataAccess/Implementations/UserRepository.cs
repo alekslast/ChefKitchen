@@ -1,4 +1,5 @@
-﻿using DataAccess.Interfaces;
+﻿using DataAccess.Errors.UserErrors;
+using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,10 +26,7 @@ namespace DataAccess.Implementations
 
         public UserModel? AuthWithEmail(string email)
         {
-            UserModel? foundUser = _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.Email == email);
-
-
-            return foundUser;
+            return _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.Email == email) ?? throw new UserNotFoundException();
         }
 
 
@@ -37,10 +35,7 @@ namespace DataAccess.Implementations
 
         public UserModel? AuthWithPhone(string phone)
         {
-            UserModel? foundUser = _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.PhoneNumber == phone);
-
-
-            return foundUser;
+            return _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.PhoneNumber == phone) ?? throw new UserNotFoundException();
         }
 
 
@@ -53,8 +48,10 @@ namespace DataAccess.Implementations
             UserModel? foundPhone = _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.PhoneNumber == user.PhoneNumber);
 
 
-            if (foundEmail is not null || foundPhone is not null)
-                return -1;
+            if (foundEmail is not null)
+                throw new EmailExistsException(user.Email);
+            else if (foundPhone is not null)
+                throw new PhoneExistsException(user.PhoneNumber!);
 
 
             _dbContext.Users.Add(user);
@@ -83,7 +80,7 @@ namespace DataAccess.Implementations
 
         public UserModel GetOne(int id)
         {
-            return _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id) ?? new UserModel() { Name = "", Email = "", Password = ""};
+            return _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id) ?? throw new UserIdNotFoundException(id);
         }
 
 
@@ -101,11 +98,10 @@ namespace DataAccess.Implementations
 
         public bool Delete(int id)
         {
-            UserModel? foundUser = _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id);
+            UserModel foundUser    =   _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id)
+                                            ?? throw new UserIdNotFoundException(id);
 
-            if (foundUser is not null)
-                _dbContext.Users.Remove(foundUser);
-
+            _dbContext.Users.Remove(foundUser);
             _dbContext.SaveChanges();
 
 

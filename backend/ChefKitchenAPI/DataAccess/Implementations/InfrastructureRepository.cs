@@ -5,6 +5,20 @@ namespace DataAccess.Implementations
 {
     public class InfrastructureRepository(RestaurantContext dbContext) : IInfrastructureRepository
     {
+        public RefreshTokenModel? GetToken(string token)
+        {
+            RefreshTokenModel? foundToken = dbContext.RefreshTokens.FirstOrDefault(x => x.Token == token);
+
+            if (foundToken is null)
+                return null;
+
+
+            return foundToken;
+        }
+
+
+
+
 
         public int SaveRefreshToken(RefreshTokenModel refreshToken)
         {

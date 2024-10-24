@@ -3,6 +3,7 @@ using BusinessLogic.DTOs;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -42,7 +43,7 @@ namespace Infrastructure.Implementations
 
 
             if (!verified)
-                throw new Exception("Incorrect password");
+                throw new Exception("Incorrect credentials");
 
 
             UserDto mappedUser              =   _mapper.Map<UserDto>(foundUser);
@@ -146,14 +147,56 @@ namespace Infrastructure.Implementations
 
         public string RefreshToken(string expiredToken)
         {
-            var handler = new JsonWebTokenHandler();
-            string refreshedToken = string.Empty;
-            var jsonToken = handler.ReadToken(expiredToken);
+            try
+            {
+                UserDto? finalUser                  =   null;
+                List<UserModel> allUsers            =   _userRepository.GetAll();
+
+                bool validToken                     =   ValidateRefreshToken(expiredToken);
+
+
+                if (!validToken)
+                    return string.Empty;
+
+
+                foreach (UserModel user in allUsers)
+                {
+                    if (user.RefreshTokens.FirstOrDefault(x => x.Token == expiredToken) is not null)
+                        finalUser = _mapper.Map<UserDto>(user);
+                }
+
+
+                if (finalUser is null)
+                    return string.Empty;
+
+
+                string newToken_Jwt                 =   CreateToken(finalUser);
+                RefreshTokenModel newToken_Refresh  =   GenerateRefreshToken(finalUser);
+                _infrastructureRepository.SaveRefreshToken(newToken_Refresh);
+
+
+
+                return newToken_Jwt;
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+        }
 
 
 
 
-            return refreshedToken;
+
+        public bool ValidateRefreshToken(string refreshToken)
+        {
+            var storedToken = _infrastructureRepository.GetToken(refreshToken);
+
+            if (storedToken is null || storedToken.Expires < DateTime.Now || storedToken.IsRevoked)
+                return false;
+
+
+            return true;
         }
 
 

@@ -1,5 +1,6 @@
 // React inputs
 import { useEffect, useState }  from    "react";
+import axios, { HttpStatusCode }                    from    "axios";
 import { useQuery }             from    "@tanstack/react-query";
 
 
@@ -24,13 +25,15 @@ export function useMenuItems() {
     useEffect(() => {
         setIsLoading(true);
 
-        fetch(BASE_URL + `/MenuItems`,
-            {
-                method: "GET"
-            }
-        )
+        // fetch(BASE_URL + `/MenuItems`,
+        //     {
+        //         method: "GET"
+        //     }
+        // )
+        axios.get(BASE_URL + `/MenuItems`)
             .then(response => {
-                return response.json();
+                console.log(response.data)
+                return response.data;
             })
             .then(data => {
                 setMenuItems(data);
@@ -76,14 +79,16 @@ export function useMenuItems() {
 
 
 const fetchMenuItem = async (id: number): Promise<TMenuItems> => {
-    const response  =   await fetch(BASE_URL + `/MenuItems/${id}`);
+    // const response  =   await fetch(BASE_URL + `/MenuItems/${id}`);
+    const response  =   await axios.get(BASE_URL + `/MenuItems/${id}`);
 
-    if (!response.ok) {
-        const errorData = await response.json();
+    // if (!response.ok) {
+    if (response.status !== HttpStatusCode.Ok) {
+        const errorData = await response.data;
         throw new Error(errorData)
     }
 
-    const data      =   await response.json();
+    const data      =   await response.data;
     return data;
 }
 
@@ -114,23 +119,27 @@ export const authUser = async (emailOrPhone: string, authMethod: string) => {
 
     debugger
 
-    const response = await fetch(
-        BASE_URL + `/Users/Auth${authMethod}/${emailOrPhone}`,
-        { method: "GET" }
-    );
+    // const response = await fetch(
+    //     BASE_URL + `/Users/Auth${authMethod}/${emailOrPhone}`,
+    //     { method: "GET" }
+    // );
+
+    const response = await axios.get(BASE_URL + `/Users/Auth${authMethod}/${emailOrPhone}`);
 
 
-    if (response.status === 404) {
+    if (response.status === HttpStatusCode.Ok) {
 
-        const errorText = await response.text();
+        // const errorText = await response.text();
+        const errorText = await response.data();
 
         if (errorText === "User not found") {
             return errorText;
         }
 
     }
-    else if (!response.ok) {
-        const errorData = await response.text();
+    else if (response.status != HttpStatusCode.Ok) {
+        // const errorData = await response.text();
+        const errorData = await response.data();
         throw new Error(errorData);
     }
 
@@ -176,3 +185,32 @@ export const registerUser = async ({ email, phone, name } : TRegisterUser) => {
         }
     )
 }
+
+
+
+
+
+export const useAuthToken = () => {
+    const [token, setToken] = useState(localStorage.getItem('token'));
+
+    const refreshToken = async () => {
+
+        debugger
+
+        return axios.get("https://localhost:44338/Users/RefreshToken")
+            .then(response => {
+                debugger
+                console.log("At least we're here...");
+                localStorage.setItem('token', response.data.token); // Сохраняем новый JWT токен
+                setToken(response.data.token); // Обновляем состояние токена
+                return response.data.token;
+            })
+            .catch(error => {
+                debugger
+                console.error('Error refreshing token:', error);
+                // Логика выхода или другие действия
+            });
+    };
+
+    return { token, refreshToken };
+};

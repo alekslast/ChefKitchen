@@ -2,6 +2,7 @@
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -34,6 +35,7 @@ namespace ChefKitchenAPI.Controllers
 
 
 
+        [Authorize]
         [HttpGet]
         public ActionResult<List<MenuItem>> GetMenuItems()
         {

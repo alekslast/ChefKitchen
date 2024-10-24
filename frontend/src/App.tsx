@@ -1,4 +1,5 @@
 // React imports
+import { useEffect }                from    "react";
 import { Navigate, Route, Routes }  from    "react-router-dom";
 import { AnimatePresence }          from    "framer-motion";
 
@@ -18,7 +19,15 @@ import UserSettings                 from    "./components/UserPage/UserSettings"
 import UserMenus                    from    "./components/UserPage/UserMenus";
 import UserOrders                   from    "./components/UserPage/UserOrders";
 import UserDeliveries               from    "./components/UserPage/UserDeliveries";
-import LoginTestToken from "./components/Login/LoginTestToken";
+import LoginTestToken               from    "./components/Login/LoginTestToken";
+
+
+// Custom hooks
+import { useAuthToken }             from    "./lib/hooks";
+
+
+// Helpers
+import { setupAxiosInterceptors }   from    "./lib/helpers";
 
 
 
@@ -26,6 +35,12 @@ import LoginTestToken from "./components/Login/LoginTestToken";
 
 // max-width 1200px
 export default function App() {
+    
+    const { refreshToken } = useAuthToken();
+
+    useEffect(() => {
+        setupAxiosInterceptors(refreshToken)
+    }, [])
 
     return (
         <AnimatePresence>

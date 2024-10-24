@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace ChefKitchenAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -94,7 +94,7 @@ namespace ChefKitchenAPI.Controllers
 
 
 
-                
+        
         [AllowAnonymous]
         [HttpPost("Login")]
         public ActionResult<string> LoginUser(LoginRequest request)
@@ -134,6 +134,30 @@ namespace ChefKitchenAPI.Controllers
 
 
 
+        
+        [HttpGet("RefreshToken")]
+        public IActionResult RefreshToken()
+        {
+            string? refreshToken        =   HttpContext.Request.Cookies["refreshToken"];
+
+            if (refreshToken is null || !_infrastructure.ValidateRefreshToken(refreshToken))
+                return Unauthorized("Invalid or expired refresh token");
+
+
+            string newToken = _infrastructure.RefreshToken(refreshToken);
+
+            if (string.IsNullOrEmpty(newToken))
+                return Forbid("Token failed");
+
+
+
+            return Ok(new { token = newToken });
+        }
+
+
+
+
+
         [HttpGet]
         public ActionResult<List<User>> GetAllUsers()
         {
@@ -159,19 +183,19 @@ namespace ChefKitchenAPI.Controllers
         [HttpGet("{userId:int}")]
         public ActionResult<User> GetSingleUser(int userId)
         {
-            try
-            {
+            //try
+            //{
                 UserDto foundUser           =   _userService.GetOne(userId);
                 User user                   =   _mapper.Map<User>(foundUser);
 
 
 
                 return user;
-            }
-            catch (Exception ex)
-            {
-                return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
+            //}
         }
 
 
