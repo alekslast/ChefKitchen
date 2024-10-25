@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace ChefKitchenAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -114,15 +114,31 @@ namespace ChefKitchenAPI.Controllers
                     new CookieOptions
                     {
                         HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
+                        Secure = false,
+                        IsEssential = true,
+                        //Domain = "localhost",
+                        SameSite = SameSiteMode.None,
                         Expires = tokenRefresh.Expires
+                    }
+                );
+
+                HttpContext.Response.Cookies.Append(
+                    "token",
+                    tokenJwt,
+                    new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = false,
+                        IsEssential = true,
+                        //Domain = "localhost",
+                        SameSite = SameSiteMode.None,
+                        Expires = DateTime.UtcNow.AddMinutes(2)
                     }
                 );
 
 
 
-                return Ok( new { token = tokenJwt } );
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -261,7 +277,7 @@ namespace ChefKitchenAPI.Controllers
 
 
         [HttpDelete("{userId:int}")]
-        public ActionResult GetUser(int userId)
+        public ActionResult DeleteUser(int userId)
         {
             try
             {

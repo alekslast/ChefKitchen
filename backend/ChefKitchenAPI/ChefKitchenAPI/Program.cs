@@ -41,8 +41,9 @@ try
             builder =>
             {
                 builder.WithOrigins("http://localhost:5173")
-                       .AllowAnyHeader()
-                       .AllowAnyMethod();
+                        .AllowCredentials()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
             });
     });
 
@@ -57,85 +58,95 @@ try
 
     builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-
-
-    builder.Services.AddAuthentication();
-    //builder.Services.AddAuthentication(options =>
-    //{
-    //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    //})
-    //    .AddJwtBearer(o =>
-    //    {
-    //        o.RequireHttpsMetadata = false;
-    //        o.TokenValidationParameters = new TokenValidationParameters
-    //        {
-    //            ValidateIssuerSigningKey = true,
-    //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
-
-    //            ValidateIssuer = true,
-    //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-
-    //            ValidateAudience = true,
-    //            ValidAudience = builder.Configuration["Jwt:Audience"],
-
-    //            ValidateLifetime = true,
-    //            ClockSkew = TimeSpan.Zero
-    //        };
-    //        o.Events = new JwtBearerEvents
-    //        {
-    //            OnAuthenticationFailed = async context =>
-    //            {
-    //                if (context.Exception is SecurityTokenExpiredException)
-    //                {
-    //                    logger.Info("Token expired. Generating new token.");
-                        
-
-    //                    string? refreshToken            =   context.HttpContext.Request.Cookies["refreshToken"];
-
-    //                    if (string.IsNullOrEmpty(refreshToken))
-    //                    {
-    //                        logger.Error("Refresh token is missing");
-
-    //                        context.Response.Redirect("/tokenTest");
-                            
-    //                        return;
-    //                    }
-
-    //                    var tokenService                =   context.HttpContext.RequestServices.GetRequiredService<IInfrastructureServices>();
-    //                    string newTokenJwt              =   tokenService.RefreshToken(refreshToken);
-
-    //                    context.Response.Headers.Add("Authorization", $"Bearer {newTokenJwt}");
-    //                    context.Response.StatusCode     =   StatusCodes.Status200OK;
-    //                    context.Response.ContentType    =   "application/json";
-    //                    await context.Response.WriteAsync(newTokenJwt);
-
-    //                    logger.Info("New token generated and sent to the client.");
-    //                }
-    //                else
-    //                {
-    //                    logger.Error("Authentication failed: " + context.Exception.Message);
-
-    //                    context.Response.StatusCode     =   StatusCodes.Status401Unauthorized;
-    //                    context.Response.ContentType    =   "application/json";
-    //                    await context.Response.WriteAsync("Invalid token");
-    //                }
-                    
-    //            },
-    //            OnTokenValidated = context =>
-    //            {
-    //                logger.Info("Token validated: " + context.SecurityToken);
-    //                return Task.CompletedTask;
-    //            }
-    //        };
-    //    });
-
     builder.Services.AddAuthorization(options =>
     {
         options.DefaultPolicy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .Build();
     });
+
+    //builder.Services.AddAuthentication();
+    builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+        .AddJwtBearer(o =>
+        {
+            o.RequireHttpsMetadata = false;
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
+
+                ValidateIssuer = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+            o.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    context.Request.Cookies.TryGetValue("token", out var accessToken);
+                    if (!string.IsNullOrEmpty(accessToken))
+                        context.Token = accessToken;
+
+                    return Task.CompletedTask;
+                }
+
+
+                //OnAuthenticationFailed = async context =>
+                //{
+                //    if (context.Exception is SecurityTokenExpiredException)
+                //    {
+                //        logger.Info("Token expired. Generating new token.");
+
+
+                //        string? refreshToken = context.HttpContext.Request.Cookies["refreshToken"];
+
+                //        if (string.IsNullOrEmpty(refreshToken))
+                //        {
+                //            logger.Error("Refresh token is missing");
+
+                //            context.Response.Redirect("/tokenTest");
+
+                //            return;
+                //        }
+
+                //        var tokenService = context.HttpContext.RequestServices.GetRequiredService<IInfrastructureServices>();
+                //        string newTokenJwt = tokenService.RefreshToken(refreshToken);
+
+                //        context.Response.Headers.Add("Authorization", $"Bearer {newTokenJwt}");
+                //        context.Response.StatusCode = StatusCodes.Status200OK;
+                //        context.Response.ContentType = "application/json";
+                //        await context.Response.WriteAsync(newTokenJwt);
+
+                //        logger.Info("New token generated and sent to the client.");
+                //    }
+                //    else
+                //    {
+                //        logger.Error("Authentication failed: " + context.Exception.Message);
+
+                //        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                //        context.Response.ContentType = "application/json";
+                //        await context.Response.WriteAsync("Invalid token");
+                //    }
+
+                //},
+                //OnTokenValidated = context =>
+                //{
+                //    logger.Info("Token validated: " + context.SecurityToken);
+                //    return Task.CompletedTask;
+                //}
+            };
+        });
+
+
 
     //builder.Services.AddTransient<ExceptionHandlingMiddleware>();
     builder.Services.AddScoped<IInfrastructureServices,     InfrastructureServices>();
@@ -180,6 +191,7 @@ try
         });
     }
 
+    app.UseMiddleware<TokenMiddleware>();
     app.UseHttpsRedirection();
     app.UseAuthentication();
     app.UseAuthorization();

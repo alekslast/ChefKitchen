@@ -15,6 +15,7 @@ namespace Infrastructure.Interfaces
         RefreshTokenModel   GenerateRefreshToken    (UserDto userDto);
         string              RefreshToken            (string expiredToken);
         bool                ValidateRefreshToken    (string refreshToken);
+        bool                ValidateJwtToken        (string token);
         string              Hash                    (string password);
         bool                Verify                  (string password, string passwordHash);
     }

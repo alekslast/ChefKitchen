@@ -197,7 +197,7 @@ export const useAuthToken = () => {
 
         debugger
 
-        return axios.get("https://localhost:44338/Users/RefreshToken")
+        return await axios.post("https://localhost:44338/Users/RefreshToken")
             .then(response => {
                 debugger
                 console.log("At least we're here...");

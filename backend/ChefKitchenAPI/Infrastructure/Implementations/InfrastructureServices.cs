@@ -203,6 +203,16 @@ namespace Infrastructure.Implementations
 
 
 
+        public bool ValidateJwtToken(string token)
+        {
+            var jwtToken = new JsonWebTokenHandler().ReadJsonWebToken(token);
+            return jwtToken.ValidTo < DateTime.UtcNow;
+        }
+
+
+
+
+
         public string Hash(string password)
         {
             byte[] salt             =   RandomNumberGenerator.GetBytes(SaltSize);

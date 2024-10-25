@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChefKitchenAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class MenuItemsController : ControllerBase
@@ -35,7 +36,7 @@ namespace ChefKitchenAPI.Controllers
 
 
 
-        [Authorize]
+        
         [HttpGet]
         public ActionResult<List<MenuItem>> GetMenuItems()
         {
