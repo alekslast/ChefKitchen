@@ -21,7 +21,7 @@ namespace ChefKitchenAPI.Controllers
     {
         readonly IMapper        _mapper;
         readonly IUserService   _userService;
-        readonly IInfrastructureServices _infrastructure;
+        readonly IInfrastructureServices _infrastructureServices;
 
         readonly int            ERROR_CODE = 400;
 
@@ -30,12 +30,12 @@ namespace ChefKitchenAPI.Controllers
         public UsersController(
             IMapper             mapper,
             IUserService        userService,
-            IInfrastructureServices infrastructure
+            IInfrastructureServices infrastructureServices
         )
         {
             _mapper         =   mapper;
             _userService    =   userService;
-            _infrastructure =   infrastructure;
+            _infrastructureServices = infrastructureServices;
         }
 
 
@@ -101,7 +101,7 @@ namespace ChefKitchenAPI.Controllers
         {
             try
             {
-                var (tokenJwt, tokenRefresh) = _infrastructure.Login(request);
+                var (tokenJwt, tokenRefresh) = _infrastructureServices.Login(request);
 
                 if (string.IsNullOrEmpty(tokenJwt) || tokenRefresh is null)
                     return new ContentResult { Content = JsonConvert.SerializeObject("Error creating tokens"), ContentType = "application/json", StatusCode = ERROR_CODE };
@@ -114,7 +114,7 @@ namespace ChefKitchenAPI.Controllers
                     new CookieOptions
                     {
                         HttpOnly = true,
-                        Secure = false,
+                        Secure = true,
                         IsEssential = true,
                         //Domain = "localhost",
                         SameSite = SameSiteMode.None,
@@ -128,7 +128,7 @@ namespace ChefKitchenAPI.Controllers
                     new CookieOptions
                     {
                         HttpOnly = true,
-                        Secure = false,
+                        Secure = true,
                         IsEssential = true,
                         //Domain = "localhost",
                         SameSite = SameSiteMode.None,
@@ -156,11 +156,11 @@ namespace ChefKitchenAPI.Controllers
         {
             string? refreshToken        =   HttpContext.Request.Cookies["refreshToken"];
 
-            if (refreshToken is null || !_infrastructure.ValidateRefreshToken(refreshToken))
+            if (refreshToken is null || !_infrastructureServices.ValidateRefreshToken(refreshToken))
                 return Unauthorized("Invalid or expired refresh token");
 
 
-            string newToken = _infrastructure.RefreshToken(refreshToken);
+            string newToken = _infrastructureServices.RefreshToken(refreshToken);
 
             if (string.IsNullOrEmpty(newToken))
                 return Forbid("Token failed");
@@ -238,7 +238,7 @@ namespace ChefKitchenAPI.Controllers
                 };
 
                 UserDto userDto             =   _mapper.Map<UserDto>(newUser);
-                int newUserId               =   _infrastructure.CreateNewUser(userDto);
+                int newUserId               =   _infrastructureServices.CreateNewUser(userDto);
 
 
 

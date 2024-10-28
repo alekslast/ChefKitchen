@@ -20,5 +20,6 @@ namespace BusinessLogic.DTOs
         public string?              PostalCode      { get; set; }
 
         public List<OrderModel>?    Orders          { get; set; }
+        public ICollection<RefreshTokenModel>? RefreshTokens { get; set; }
     }
 }

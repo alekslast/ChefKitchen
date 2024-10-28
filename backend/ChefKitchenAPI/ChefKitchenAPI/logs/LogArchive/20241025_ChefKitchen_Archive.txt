@@ -1,0 +1,253 @@
+2024-10-25 08:05:00.1682|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:05:00.2379|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:05:00.2379|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 08:07:30.0779|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:07:30.1296|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:07:30.1368|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 08:07:37.8763|0|ERROR|ChefKitchenAPI.Program|Authentication failed: IDX14100: JWT is not well formed, there are no dots (.).
+The token needs to be in JWS or JWE Compact Serialization Format. (JWS): 'EncodedHeader.EncodedPayload.EncodedSignature'. (JWE): 'EncodedProtectedHeader.EncodedEncryptedKey.EncodedInitializationVector.EncodedCiphertext.EncodedAuthenticationTag'. |url: https://localhost/MenuItems|action: GetMenuItems|ChefKitchenAPI.Program.<Main
+2024-10-25 08:07:37.8979|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: StatusCode cannot be set because the response has already started.
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.ThrowResponseAlreadyStartedException(String name)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.set_StatusCode(Int32 value)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 08:07:37.9082|2|WARN|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|The response has already started, the error page middleware will not be executed. |url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke
+2024-10-25 08:07:37.9082|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: StatusCode cannot be set because the response has already started.
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.ThrowResponseAlreadyStartedException(String name)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.set_StatusCode(Int32 value)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 08:07:37.9082|2|WARN|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|The response has already started, the error page middleware will not be executed. |url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke
+2024-10-25 08:07:37.9082|2|ERROR|Microsoft.AspNetCore.Server.IIS.Core.IISHttpServer|Connection ID "18302628895834276204", Request ID "8000816d-0002-fe00-b63f-84710c7967bb": An unhandled exception was thrown by the application. System.InvalidOperationException: StatusCode cannot be set because the response has already started.
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.ThrowResponseAlreadyStartedException(String name)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.set_StatusCode(Int32 value)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContextOfT`1.ProcessRequestAsync()|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext+Log.ApplicationError
+2024-10-25 08:07:43.8188|0|ERROR|ChefKitchenAPI.Program|Authentication failed: IDX14100: JWT is not well formed, there are no dots (.).
+The token needs to be in JWS or JWE Compact Serialization Format. (JWS): 'EncodedHeader.EncodedPayload.EncodedSignature'. (JWE): 'EncodedProtectedHeader.EncodedEncryptedKey.EncodedInitializationVector.EncodedCiphertext.EncodedAuthenticationTag'. |url: https://localhost/MenuItems|action: GetMenuItems|ChefKitchenAPI.Program.<Main
+2024-10-25 08:07:43.8188|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: StatusCode cannot be set because the response has already started.
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.ThrowResponseAlreadyStartedException(String name)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.set_StatusCode(Int32 value)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 08:07:43.8188|2|WARN|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|The response has already started, the error page middleware will not be executed. |url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke
+2024-10-25 08:07:43.8256|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: StatusCode cannot be set because the response has already started.
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.ThrowResponseAlreadyStartedException(String name)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.set_StatusCode(Int32 value)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 08:07:43.8256|2|WARN|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|The response has already started, the error page middleware will not be executed. |url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke
+2024-10-25 08:07:43.8256|2|ERROR|Microsoft.AspNetCore.Server.IIS.Core.IISHttpServer|Connection ID "18086456126605361633", Request ID "800001e2-0005-fb00-b63f-84710c7967bb": An unhandled exception was thrown by the application. System.InvalidOperationException: StatusCode cannot be set because the response has already started.
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.ThrowResponseAlreadyStartedException(String name)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext.set_StatusCode(Int32 value)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+   at Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISHttpContextOfT`1.ProcessRequestAsync()|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Server.IIS.Core.IISHttpContext+Log.ApplicationError
+2024-10-25 08:10:41.5223|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:10:41.5776|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:10:41.5776|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 08:19:49.3512|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:19:49.4002|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 08:19:49.4002|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 09:31:04.2646|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:31:04.3348|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:31:04.3404|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 09:31:10.8551|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: No authenticationScheme was specified, and there was no DefaultChallengeScheme found. The default schemes can be set using either AddAuthentication(string defaultScheme) or AddAuthentication(Action<AuthenticationOptions> configureOptions).
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 09:31:10.8836|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: No authenticationScheme was specified, and there was no DefaultChallengeScheme found. The default schemes can be set using either AddAuthentication(string defaultScheme) or AddAuthentication(Action<AuthenticationOptions> configureOptions).
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 09:33:02.2826|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: No authenticationScheme was specified, and there was no DefaultChallengeScheme found. The default schemes can be set using either AddAuthentication(string defaultScheme) or AddAuthentication(Action<AuthenticationOptions> configureOptions).
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 09:33:02.2826|1|ERROR|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|An unhandled exception has occurred while executing the request. System.InvalidOperationException: No authenticationScheme was specified, and there was no DefaultChallengeScheme found. The default schemes can be set using either AddAuthentication(string defaultScheme) or AddAuthentication(Action<AuthenticationOptions> configureOptions).
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.ChallengeAsync(HttpContext context, String scheme, AuthenticationProperties properties)
+   at Microsoft.AspNetCore.Authorization.Policy.AuthorizationMiddlewareResultHandler.<>c__DisplayClass0_0.<<HandleAsync>g__Handle|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)|url: https://localhost/MenuItems|action: GetMenuItems|Microsoft.AspNetCore.Diagnostics.DiagnosticsTelemetry.ReportUnhandledException
+2024-10-25 09:36:09.0477|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:36:09.0971|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:36:09.0971|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 09:38:44.6549|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:38:44.7127|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:38:44.7127|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 09:40:23.5696|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:40:23.6456|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:40:23.6456|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 09:44:07.1703|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:44:07.2284|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:44:07.2322|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 09:46:08.6749|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:46:08.7529|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 09:46:08.7529|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 10:04:00.8747|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:04:00.9629|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:04:00.9672|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 10:17:26.3845|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:17:26.4743|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:17:26.4789|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 10:20:23.5481|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:20:23.6020|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:20:23.6020|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 10:25:41.0166|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:25:41.0700|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:25:41.0700|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 10:27:42.5763|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:27:42.6385|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:27:42.6431|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 10:31:53.3802|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:31:53.4569|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:31:53.4569|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 10:33:30.0782|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:33:30.1248|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 10:33:30.1248|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:00:51.0334|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:00:51.0953|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:00:51.0991|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:16:15.7108|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:16:15.7626|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:16:15.7626|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:23:28.6220|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:23:28.6730|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:23:28.6730|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:27:01.0500|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:27:01.1059|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:27:01.1087|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:34:19.0054|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:34:19.0555|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:34:19.0555|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:38:15.3174|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:38:15.3685|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:38:15.3685|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:39:24.1719|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:39:24.2210|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:39:24.2238|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 11:41:46.4871|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:41:46.5407|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 11:41:46.5437|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 16:12:41.1088|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 16:12:41.1692|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 16:12:41.1692|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 16:15:01.1470|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:15:02.2910|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:21:47.0686|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:21:47.0703|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:23:25.9020|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:23:25.9020|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:26:19.0084|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:26:19.0084|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:27:55.7378|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 16:27:55.7709|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 16:27:55.7946|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 16:28:52.3957|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:28:52.4119|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:29:34.7887|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 16:29:34.8506|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 16:29:34.8506|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 16:50:36.0895|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:50:36.1056|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:52:04.8765|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:52:04.8765|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:53:17.9440|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 16:53:17.9440|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 17:11:09.3281|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 17:11:09.3281|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 17:28:39.6860|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 17:28:39.7468|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 17:28:39.7468|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 17:30:56.3975|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 17:30:56.4494|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 17:30:56.4494|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 17:31:23.9867|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 17:31:24.0059|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 17:33:37.2649|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 17:33:37.3487|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: |Microsoft.Extensions.Hosting.Internal.ConsoleLifetime.OnApplicationStarted
+2024-10-25 17:33:37.3487|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\apuskin\Development\JS\ChefKitchen\backend\ChefKitchenAPI\ChefKitchenAPI |url: |action: |Microsoft.Extensions.Hosting.Internal.ApplicationLifetime.NotifyStarted
+2024-10-25 17:34:01.8828|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'refreshToken' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append
+2024-10-25 17:34:01.8945|1|WARN|Microsoft.AspNetCore.Http.ResponseCookies|The cookie 'token' has set 'SameSite=None' and must also set 'Secure'. |url: https://localhost/Users/Login|action: LoginUser|Microsoft.AspNetCore.Http.ResponseCookies.Append

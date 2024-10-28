@@ -1,15 +1,15 @@
 // React inputs
-import { useEffect, useState }  from    "react";
-import axios, { HttpStatusCode }                    from    "axios";
-import { useQuery }             from    "@tanstack/react-query";
+import { useEffect, useState }      from    "react";
+import axios, { HttpStatusCode }    from    "axios";
+import { useQuery }                 from    "@tanstack/react-query";
 
 
 // Types
-import { TMenuItems }           from    "./types";
+import { TMenuItems }               from    "./types";
 
 
 // Constants
-import { BASE_URL }             from    "./constants";
+import { BASE_URL }                 from    "./constants";
 
 
 
@@ -30,7 +30,7 @@ export function useMenuItems() {
         //         method: "GET"
         //     }
         // )
-        axios.get(BASE_URL + `/MenuItems`)
+        axios.get(BASE_URL + `/MenuItems`, { withCredentials: true })
             .then(response => {
                 console.log(response.data)
                 return response.data;
@@ -80,7 +80,7 @@ export function useMenuItems() {
 
 const fetchMenuItem = async (id: number): Promise<TMenuItems> => {
     // const response  =   await fetch(BASE_URL + `/MenuItems/${id}`);
-    const response  =   await axios.get(BASE_URL + `/MenuItems/${id}`);
+    const response  =   await axios.get(BASE_URL + `/MenuItems/${id}`, { withCredentials: true });
 
     // if (!response.ok) {
     if (response.status !== HttpStatusCode.Ok) {
@@ -124,7 +124,7 @@ export const authUser = async (emailOrPhone: string, authMethod: string) => {
     //     { method: "GET" }
     // );
 
-    const response = await axios.get(BASE_URL + `/Users/Auth${authMethod}/${emailOrPhone}`);
+    const response = await axios.get(BASE_URL + `/Users/Auth${authMethod}/${emailOrPhone}`, { withCredentials: true });
 
 
     if (response.status === HttpStatusCode.Ok) {
@@ -144,7 +144,7 @@ export const authUser = async (emailOrPhone: string, authMethod: string) => {
     }
 
 
-    const data      =   await response;
+    const data      =   response;
     return data;
 }
 
@@ -197,7 +197,7 @@ export const useAuthToken = () => {
 
         debugger
 
-        return await axios.post("https://localhost:44338/Users/RefreshToken")
+        return await axios.post("https://localhost:44338/Users/RefreshToken", { withCredentials: true })
             .then(response => {
                 debugger
                 console.log("At least we're here...");

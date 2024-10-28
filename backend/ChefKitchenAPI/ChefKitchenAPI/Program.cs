@@ -1,6 +1,5 @@
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
-using ChefKitchenAPI.Abstractions;
 using ChefKitchenAPI.Middleware;
 using DataAccess;
 using DataAccess.Implementations;
@@ -11,12 +10,10 @@ using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Web;
-using System;
 using System.Text;
 
 
@@ -40,7 +37,7 @@ try
         options.AddPolicy("AllowReactApp",
             builder =>
             {
-                builder.WithOrigins("http://localhost:5173")
+                builder.WithOrigins("https://localhost:3001")
                         .AllowCredentials()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
@@ -86,7 +83,7 @@ try
                 ValidAudience = builder.Configuration["Jwt:Audience"],
 
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.FromMinutes(2)
             };
             o.Events = new JwtBearerEvents
             {
@@ -95,54 +92,16 @@ try
                     context.Request.Cookies.TryGetValue("token", out var accessToken);
                     if (!string.IsNullOrEmpty(accessToken))
                         context.Token = accessToken;
+                    else if (context.Request.Headers.TryGetValue("Authorization", out var authHeader))
+                        context.Token = authHeader.ToString().Replace("Bearer ", "");
 
                     return Task.CompletedTask;
+                },
+                OnAuthenticationFailed = context =>
+                {
+                    Console.WriteLine("Authentication failed: " + context.Exception.Message);
+                    return Task.CompletedTask;
                 }
-
-
-                //OnAuthenticationFailed = async context =>
-                //{
-                //    if (context.Exception is SecurityTokenExpiredException)
-                //    {
-                //        logger.Info("Token expired. Generating new token.");
-
-
-                //        string? refreshToken = context.HttpContext.Request.Cookies["refreshToken"];
-
-                //        if (string.IsNullOrEmpty(refreshToken))
-                //        {
-                //            logger.Error("Refresh token is missing");
-
-                //            context.Response.Redirect("/tokenTest");
-
-                //            return;
-                //        }
-
-                //        var tokenService = context.HttpContext.RequestServices.GetRequiredService<IInfrastructureServices>();
-                //        string newTokenJwt = tokenService.RefreshToken(refreshToken);
-
-                //        context.Response.Headers.Add("Authorization", $"Bearer {newTokenJwt}");
-                //        context.Response.StatusCode = StatusCodes.Status200OK;
-                //        context.Response.ContentType = "application/json";
-                //        await context.Response.WriteAsync(newTokenJwt);
-
-                //        logger.Info("New token generated and sent to the client.");
-                //    }
-                //    else
-                //    {
-                //        logger.Error("Authentication failed: " + context.Exception.Message);
-
-                //        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                //        context.Response.ContentType = "application/json";
-                //        await context.Response.WriteAsync("Invalid token");
-                //    }
-
-                //},
-                //OnTokenValidated = context =>
-                //{
-                //    logger.Info("Token validated: " + context.SecurityToken);
-                //    return Task.CompletedTask;
-                //}
             };
         });
 

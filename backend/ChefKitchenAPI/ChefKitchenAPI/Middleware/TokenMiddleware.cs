@@ -5,6 +5,7 @@ using DataAccess.Interfaces;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http.Extensions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 
@@ -14,18 +15,18 @@ namespace ChefKitchenAPI.Middleware
 {
     public class TokenMiddleware
     {
-        readonly RequestDelegate _next;
-        readonly IMapper _mapper;
+        readonly RequestDelegate    _next;
+        readonly IMapper            _mapper;
 
 
 
         public TokenMiddleware(
-            RequestDelegate next,
-            IMapper mapper
+            RequestDelegate         next,
+            IMapper                 mapper
         )
         {
-            _next = next;
-            _mapper = mapper;
+            _next               =   next;
+            _mapper             =   mapper;
         }
 
 
@@ -34,11 +35,10 @@ namespace ChefKitchenAPI.Middleware
 
         public async Task Invoke(HttpContext context, IInfrastructureRepository infrastructureRepo, IInfrastructureServices infrastructure)
         {
-            string? jwtToken = context.Request.Cookies["token"];
-            string? refreshToken = context.Request.Cookies["refreshToken"];
-            var recievedUrl = context.Request.Path;
-            string loginUrl = "/Users/Login";
-            //var x = url.Target;
+            string? jwtToken        =   context.Request.Cookies["token"];
+            string? refreshToken    =   context.Request.Cookies["refreshToken"];
+            var recievedUrl         =   context.Request.Path;
+            string loginUrl         =   "/Users/Login";
 
             if (recievedUrl == loginUrl)
             {
@@ -52,38 +52,38 @@ namespace ChefKitchenAPI.Middleware
                 {
                     var foundToken = infrastructureRepo.GetToken(refreshToken);
 
-                    if (foundToken.User is null)
+                    if (foundToken.User is not null)
                     {
-                        UserDto userDto = _mapper.Map<UserDto>(foundToken.User);
-                        var newJwtToken = infrastructure.CreateToken(userDto);
+                        UserDto userDto         =   _mapper.Map<UserDto>(foundToken.User);
+                        var newJwtToken         =   infrastructure.CreateToken(userDto);
+
                         context.Response.Cookies.Append(
                             "token",
                             newJwtToken,
                             new CookieOptions
                             {
-                                HttpOnly = true,
-                                Secure = true,
-                                IsEssential = true,
-                                SameSite = SameSiteMode.None,
-                                Expires = DateTime.UtcNow.AddMinutes(2)
+                                HttpOnly        =   true,
+                                Secure          =   true,
+                                IsEssential     =   true,
+                                SameSite        =   SameSiteMode.None,
+                                Expires         =   DateTime.UtcNow.AddMinutes(2)
                             }
                         );
-                        //context.Response.WriteAsync(JsonConvert.SerializeObject(newJwtToken));
 
 
-                        // Продолжаем обработку запроса с новым JWT токеном
+                        context.Request.Headers.Add("Authorization", $"Bearer {newJwtToken}");
+
+
                         await _next(context);
                         return;
                     }
                 }
 
-                //context.Response.Redirect("/tokenTest");
 
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
                 return;
             }
 
-            // Если JWT токен валиден, продолжаем обработку запроса
             await _next(context);
         }
     }

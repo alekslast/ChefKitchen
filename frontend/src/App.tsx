@@ -36,10 +36,10 @@ import { setupAxiosInterceptors }   from    "./lib/helpers";
 // max-width 1200px
 export default function App() {
     
-    const { refreshToken } = useAuthToken();
+//     const { refreshToken } = useAuthToken();
 
     useEffect(() => {
-        setupAxiosInterceptors(refreshToken)
+        setupAxiosInterceptors()
     }, [])
 
     return (

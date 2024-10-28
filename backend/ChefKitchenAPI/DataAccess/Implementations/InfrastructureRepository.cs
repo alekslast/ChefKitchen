@@ -1,5 +1,6 @@
 ﻿using DataAccess.Interfaces;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Implementations
 {
@@ -7,7 +8,7 @@ namespace DataAccess.Implementations
     {
         public RefreshTokenModel? GetToken(string token)
         {
-            RefreshTokenModel? foundToken = dbContext.RefreshTokens.FirstOrDefault(x => x.Token == token);
+            RefreshTokenModel? foundToken = dbContext.RefreshTokens.Include(rt => rt.User).FirstOrDefault(x => x.Token == token);
 
             if (foundToken is null)
                 return null;
@@ -24,7 +25,9 @@ namespace DataAccess.Implementations
         {
             try
             {
-                dbContext.RefreshTokens.Add(refreshToken);
+                var user = dbContext.Users.Include(x => x.RefreshTokens).FirstOrDefault(x => x.Id == refreshToken.User.Id);
+                user.RefreshTokens.Add(refreshToken);
+                //dbContext.RefreshTokens.Add(refreshToken);
                 dbContext.SaveChanges();
 
 

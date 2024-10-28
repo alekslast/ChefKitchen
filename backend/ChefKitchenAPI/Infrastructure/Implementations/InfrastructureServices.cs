@@ -52,9 +52,12 @@ namespace Infrastructure.Implementations
             string tokenJwt                 =   CreateToken(mappedUser);
             RefreshTokenModel tokenRefresh  =   GenerateRefreshToken(mappedUser);
 
-            var response = _infrastructureRepository.SaveRefreshToken(tokenRefresh);
+            foundUser.RefreshTokens.Add(tokenRefresh);
+            var response = _userRepository.Update(foundUser);
 
-            if (response < 0)
+            //var response = _infrastructureRepository.SaveRefreshToken(tokenRefresh);
+
+            if (!response)
                 return ("", null);
 
 
@@ -115,7 +118,7 @@ namespace Infrastructure.Implementations
 
         public RefreshTokenModel GenerateRefreshToken(UserDto userDto)
         {
-            UserModel user      =   _mapper.Map<UserModel>(userDto);
+            //UserModel user      =   _mapper.Map<UserModel>(userDto);
             var randomNumber    =   new byte[32];
 
 
@@ -134,8 +137,14 @@ namespace Infrastructure.Implementations
                 Expires         =   DateTime.Now.AddDays(30),
                 IsRevoked       =   false,
                 Token           =   convertedValue,
-                UserId          =   user.Id,
+                //UserId          =   user.Id,
+                //User            =   user
             };
+
+            //userDto.RefreshTokens.Add(newRefreshToken);
+            //UserModel user      =   _mapper.Map<UserModel>(userDto);
+
+            //_userRepository.Update(user);
 
 
             return newRefreshToken;

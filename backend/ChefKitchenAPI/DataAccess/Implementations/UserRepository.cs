@@ -26,7 +26,7 @@ namespace DataAccess.Implementations
 
         public UserModel? AuthWithEmail(string email)
         {
-            return _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.Email == email) ?? throw new UserNotFoundException();
+            return _dbContext.Users.Include(u => u.Orders).Include(u => u.RefreshTokens).FirstOrDefault(u => u.Email == email) ?? throw new UserNotFoundException();
         }
 
 
@@ -35,7 +35,7 @@ namespace DataAccess.Implementations
 
         public UserModel? AuthWithPhone(string phone)
         {
-            return _dbContext.Users.Include(u => u.Orders).FirstOrDefault(u => u.PhoneNumber == phone) ?? throw new UserNotFoundException();
+            return _dbContext.Users.Include(u => u.Orders).Include(u => u.RefreshTokens).FirstOrDefault(u => u.PhoneNumber == phone) ?? throw new UserNotFoundException();
         }
 
 
@@ -80,7 +80,7 @@ namespace DataAccess.Implementations
 
         public UserModel GetOne(int id)
         {
-            return _dbContext.Users.Include(x => x.Orders).FirstOrDefault(x => x.Id == id) ?? throw new UserIdNotFoundException(id);
+            return _dbContext.Users.Include(x => x.Orders).Include(u => u.RefreshTokens).FirstOrDefault(x => x.Id == id) ?? throw new UserIdNotFoundException(id);
         }
 
 
@@ -89,7 +89,7 @@ namespace DataAccess.Implementations
 
         public List<UserModel> GetAll()
         {
-            return _dbContext.Users.Include(x => x.Orders).ToList();
+            return _dbContext.Users.Include(x => x.Orders).Include(u => u.RefreshTokens).ToList();
         }
 
 
