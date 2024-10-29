@@ -1,16 +1,14 @@
-# Restaurant Order & Delivery (Pet-project)
+# Restaurant Order & Delivery (Fullstack pet-project)
 
-> - [Project Description](#Project Description)
-> - [Frontend Technologies](#Frontend Technologies)
-> - [Backend Techologies](#Backend Techologies)
+> - [Project Description](#description)
+> - [Frontend Technologies](#fe)
+> - [Backend Techologies](#be)
 
-#### Project Description
+### <a name="description"></a>Project Description
 
-Website for a restaurant with the opportunity to place an order, as well as request a delivery. Services are enabled for both non-authenticated and authenticated users, providing the last mentioned with individual diet creation option (for the entire week
-or month) with daily delivery, calories calculation for a single and multiple dishes, order and delivery history and personal account editting features.
-Non-registered users still have the opportunity to place a single or multiple orders, calculate calories for one dish at a time and request a delivery. To obtain additional functions, registration is required, which is prompted to users by clicking certain buttons.
+Website for a restaurant with the opportunity to place an order, as well as request a delivery. Services are enabled for both non-authenticated and authenticated users, providing the last mentioned with individual diet creation option (for the entire week or month) with daily delivery, calories calculation for a single and multiple dishes, order and delivery history and personal account editting features. Non-registered users still have the opportunity to place a single or multiple orders, calculate calories for one dish at a time and request a delivery. To obtain additional functions, registration is required, which is prompted to users by clicking certain buttons.
 
-#### Frontend Technologies:
+### <a name="fe"></a>Frontend Technologies:
 
 > - Typescript
 > - React.js
@@ -20,7 +18,7 @@ Non-registered users still have the opportunity to place a single or multiple or
 > - Zustand
 > - Framer Motion
 
-#### Backend Technologies:
+### <a name="be"></a>Backend Technologies:
 
 > - ASP.NET Core
 > - EntityFramework
