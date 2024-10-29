@@ -2,8 +2,8 @@
 using BusinessLogic.DTOs;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using Infrastructure.InfrastructErrors;
 using Infrastructure.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -18,10 +18,10 @@ using System.Text;
 namespace Infrastructure.Implementations
 {
     public class InfrastructureServices(
-        IMapper _mapper,
-        IConfiguration _configuration,
-        IUserRepository _userRepository,
-        IInfrastructureRepository _infrastructureRepository
+        IMapper                     _mapper,
+        IConfiguration              _configuration,
+        IUserRepository             _userRepository,
+        IInfrastructureRepository   _infrastructureRepository
     ) : IInfrastructureServices
 
     {
@@ -38,27 +38,38 @@ namespace Infrastructure.Implementations
 
         public (string tokenJwt, RefreshTokenModel? tokenRefresh) Login(LoginRequest loginRequest)
         {
+            // TODO: Add password validation
+            // TODO: Add hash validation
+            // TODO: Add email validation
+
+
+            string tokenJwt                 =   string.Empty;
+            RefreshTokenModel? tokenRefresh =   null;
+
             UserModel? foundUser            =   _userRepository.AuthWithEmail(loginRequest.Email);
-            bool verified                   =   Verify(loginRequest.Password, foundUser.Password);
 
 
+            bool verified                   =   VerifyPasswordAgainstHash(loginRequest.Password, foundUser.Password);
             if (!verified)
-                throw new Exception("Incorrect credentials");
+                throw new WrongPasswordException();
 
 
             UserDto mappedUser              =   _mapper.Map<UserDto>(foundUser);
+            tokenJwt                        =   CreateJwtToken(mappedUser);
 
 
-            string tokenJwt                 =   CreateToken(mappedUser);
-            RefreshTokenModel tokenRefresh  =   GenerateRefreshToken(mappedUser);
+            RefreshTokenModel? lastToken    =   foundUser.RefreshTokens.LastOrDefault();
+            if (lastToken is not null && lastToken.Expires > DateTime.Now)
+                return (tokenJwt, lastToken);
 
+
+            tokenRefresh                    =   GenerateRefreshToken();
             foundUser.RefreshTokens.Add(tokenRefresh);
-            var response = _userRepository.Update(foundUser);
 
-            //var response = _infrastructureRepository.SaveRefreshToken(tokenRefresh);
 
+            bool response                   =   _userRepository.Update(foundUser);
             if (!response)
-                return ("", null);
+                throw new TokenRefreshException();
 
 
 
@@ -72,10 +83,10 @@ namespace Infrastructure.Implementations
 
         public int CreateNewUser(UserDto userDto)
         {
-            userDto.Password = Hash(userDto.Password);
+            userDto.Password    =   Hash(userDto.Password);
 
-            UserModel user = _mapper.Map<UserModel>(userDto);
-            int newUserId = _userRepository.Create(user);
+            UserModel user      =   _mapper.Map<UserModel>(userDto);
+            int newUserId       =   _userRepository.Create(user);
 
             return newUserId;
         }
@@ -84,7 +95,7 @@ namespace Infrastructure.Implementations
 
 
 
-        public string CreateToken(UserDto user)
+        public string CreateJwtToken(UserDto user)
         {
             string secretKey        =   _configuration["Jwt:Secret"]!;
             var securityKey         =   new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -116,35 +127,28 @@ namespace Infrastructure.Implementations
 
 
 
-        public RefreshTokenModel GenerateRefreshToken(UserDto userDto)
+        public RefreshTokenModel GenerateRefreshToken()
         {
-            //UserModel user      =   _mapper.Map<UserModel>(userDto);
-            var randomNumber    =   new byte[32];
+            var randomNumber            =   new byte[32];
 
 
-            using (var numberGenerator = RandomNumberGenerator.Create())
+            using (var numberGenerator  =   RandomNumberGenerator.Create())
             {
                 numberGenerator.GetBytes(randomNumber);
             }
 
 
-            string convertedValue = Convert.ToBase64String(randomNumber);
+            string convertedValue       =   Convert.ToBase64String(randomNumber);
 
 
             RefreshTokenModel newRefreshToken = new()
             {
-                Created         =   DateTime.Now,
-                Expires         =   DateTime.Now.AddDays(30),
-                IsRevoked       =   false,
-                Token           =   convertedValue,
-                //UserId          =   user.Id,
-                //User            =   user
+                Created                 =   DateTime.Now,
+                Expires                 =   DateTime.Now.AddDays(30),
+                IsRevoked               =   false,
+                Token                   =   convertedValue
             };
 
-            //userDto.RefreshTokens.Add(newRefreshToken);
-            //UserModel user      =   _mapper.Map<UserModel>(userDto);
-
-            //_userRepository.Update(user);
 
 
             return newRefreshToken;
@@ -154,7 +158,7 @@ namespace Infrastructure.Implementations
 
 
 
-        public string RefreshToken(string expiredToken)
+        public string RegenerateRefreshToken(string expiredToken)
         {
             try
             {
@@ -162,8 +166,6 @@ namespace Infrastructure.Implementations
                 List<UserModel> allUsers            =   _userRepository.GetAll();
 
                 bool validToken                     =   ValidateRefreshToken(expiredToken);
-
-
                 if (!validToken)
                     return string.Empty;
 
@@ -179,8 +181,8 @@ namespace Infrastructure.Implementations
                     return string.Empty;
 
 
-                string newToken_Jwt                 =   CreateToken(finalUser);
-                RefreshTokenModel newToken_Refresh  =   GenerateRefreshToken(finalUser);
+                string newToken_Jwt                 =   CreateJwtToken(finalUser);
+                RefreshTokenModel newToken_Refresh  =   GenerateRefreshToken();
                 _infrastructureRepository.SaveRefreshToken(newToken_Refresh);
 
 
@@ -200,6 +202,7 @@ namespace Infrastructure.Implementations
         public bool ValidateRefreshToken(string refreshToken)
         {
             var storedToken = _infrastructureRepository.GetToken(refreshToken);
+
 
             if (storedToken is null || storedToken.Expires < DateTime.Now || storedToken.IsRevoked)
                 return false;
@@ -234,16 +237,16 @@ namespace Infrastructure.Implementations
 
 
 
-        public bool Verify(string password, string passwordHash)
+        public bool VerifyPasswordAgainstHash(string password, string passwordHash)
         {
-            string[] hashParts      =   passwordHash.Split("-");
-            byte[] hash             =   Convert.FromHexString(hashParts[0]);
-            byte[] salt             =   Convert.FromHexString(hashParts[1]);
+            string[] hashParts              =   passwordHash.Split("-");
+            byte[] hash                     =   Convert.FromHexString(hashParts[0]);
+            byte[] salt                     =   Convert.FromHexString(hashParts[1]);
 
-            byte[] convertedInputPassword = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, Algorithm, HashSize);
+            byte[] convertedInputPassword   =   Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, Algorithm, HashSize);
 
-            //return hash.SequenceEqual(convertedInputPassword);
             return CryptographicOperations.FixedTimeEquals(hash, convertedInputPassword); // compares based on the length of the array, not on how long it takes to compare the individual values
         }
+    
     }
 }

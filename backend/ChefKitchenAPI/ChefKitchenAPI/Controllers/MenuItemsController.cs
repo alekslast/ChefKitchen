@@ -36,7 +36,7 @@ namespace ChefKitchenAPI.Controllers
 
 
 
-        
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<List<MenuItem>> GetMenuItems()
         {
@@ -59,6 +59,7 @@ namespace ChefKitchenAPI.Controllers
 
 
 
+        [AllowAnonymous]
         [HttpGet("{menuItemId:int}")]
         public ActionResult<MenuItem> GetSingle(int menuItemId)
         {

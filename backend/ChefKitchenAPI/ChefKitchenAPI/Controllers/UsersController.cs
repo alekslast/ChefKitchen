@@ -113,12 +113,11 @@ namespace ChefKitchenAPI.Controllers
                     tokenRefresh.Token,
                     new CookieOptions
                     {
-                        HttpOnly = true,
-                        Secure = true,
-                        IsEssential = true,
-                        //Domain = "localhost",
-                        SameSite = SameSiteMode.None,
-                        Expires = tokenRefresh.Expires
+                        HttpOnly        =   true,
+                        Secure          =   true,
+                        IsEssential     =   true,
+                        SameSite        =   SameSiteMode.None,
+                        Expires         =   tokenRefresh.Expires
                     }
                 );
 
@@ -127,12 +126,11 @@ namespace ChefKitchenAPI.Controllers
                     tokenJwt,
                     new CookieOptions
                     {
-                        HttpOnly = true,
-                        Secure = true,
-                        IsEssential = true,
-                        //Domain = "localhost",
-                        SameSite = SameSiteMode.None,
-                        Expires = DateTime.UtcNow.AddMinutes(2)
+                        HttpOnly        =   true,
+                        Secure          =   true,
+                        IsEssential     =   true,
+                        SameSite        =   SameSiteMode.None,
+                        Expires         =   DateTime.UtcNow.AddMinutes(2)
                     }
                 );
 
@@ -160,7 +158,7 @@ namespace ChefKitchenAPI.Controllers
                 return Unauthorized("Invalid or expired refresh token");
 
 
-            string newToken = _infrastructureServices.RefreshToken(refreshToken);
+            string newToken = _infrastructureServices.RegenerateRefreshToken(refreshToken);
 
             if (string.IsNullOrEmpty(newToken))
                 return Forbid("Token failed");

@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs;
-using BusinessLogic.Interfaces;
 using DataAccess.Interfaces;
 using Infrastructure.Interfaces;
-using Microsoft.AspNetCore.Http.Extensions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 
 
@@ -55,7 +51,7 @@ namespace ChefKitchenAPI.Middleware
                     if (foundToken.User is not null)
                     {
                         UserDto userDto         =   _mapper.Map<UserDto>(foundToken.User);
-                        var newJwtToken         =   infrastructure.CreateToken(userDto);
+                        var newJwtToken         =   infrastructure.CreateJwtToken(userDto);
 
                         context.Response.Cookies.Append(
                             "token",
