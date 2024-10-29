@@ -1,8 +1,8 @@
 # Restaurant Order & Delivery (Fullstack pet-project)
 
-> - [Project Description](#description)
-> - [Frontend Technologies](#fe)
-> - [Backend Techologies](#be)
+ - [Project Description](#description)
+ - [Frontend Technologies](#fe)
+ - [Backend Techologies](#be)
 
 ### <a name="description"></a>Project Description
 
@@ -10,20 +10,20 @@ Website for a restaurant with the opportunity to place an order, as well as requ
 
 ### <a name="fe"></a>Frontend Technologies:
 
-> - Typescript
-> - React.js
-> - React Router
-> - React Query
-> - Axios
-> - Zustand
-> - Framer Motion
+ - Typescript
+ - React.js
+ - React Router
+ - React Query
+ - Axios
+ - Zustand
+ - Framer Motion
 
 ### <a name="be"></a>Backend Technologies:
 
-> - ASP.NET Core
-> - EntityFramework
-> - Code-First approach for DB creation and management
-> - PostgreSQL
-> - JWT Authentication
-> - AutoMapper
-> - NLog
+ - ASP.NET Core
+ - EntityFramework
+ - Code-First approach for DB creation and management
+ - PostgreSQL
+ - JWT Authentication
+ - AutoMapper
+ - NLog
