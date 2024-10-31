@@ -101,6 +101,9 @@ namespace ChefKitchenAPI.Controllers
         {
             try
             {
+                //if (!ModelState.IsValid)
+                //    throw new Exception();
+
                 var (tokenJwt, tokenRefresh) = _userService.Login(request);
 
                 if (string.IsNullOrEmpty(tokenJwt) || tokenRefresh is null)

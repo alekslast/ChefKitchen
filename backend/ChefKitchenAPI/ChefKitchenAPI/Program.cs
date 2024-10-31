@@ -1,5 +1,6 @@
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
+using BusinessLogic.Validators;
 using ChefKitchenAPI.Middleware;
 using DataAccess;
 using DataAccess.Implementations;
@@ -106,7 +107,7 @@ try
             };
         });
 
-    //builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
+    builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
     ////Added fluent validation
     //builder.Services.AddControllers().AddFluentValidation(options =>
     //{
@@ -117,7 +118,6 @@ try
     //});
 
 
-    //builder.Services.AddTransient<ExceptionHandlingMiddleware>();
     builder.Services.AddScoped<IInfrastructureServices,     InfrastructureServices>();
     builder.Services.AddScoped<IInfrastructureRepository,   InfrastructureRepository>();
     builder.Services.AddScoped<IUserRepository,             UserRepository>();
