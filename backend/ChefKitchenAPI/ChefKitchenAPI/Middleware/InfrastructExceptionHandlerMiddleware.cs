@@ -1,6 +1,5 @@
-﻿using ChefKitchenAPI.Abstractions;
-using DataAccess.Errors.MenuErrors;
-using Infrastructure.InfrastructErrors;
+﻿using BusinessLogic.BusinessErrors;
+using ChefKitchenAPI.Abstractions;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -18,7 +17,7 @@ namespace ChefKitchenAPI.Middleware
             switch (exception)
             {
                 case TokenRefreshException:
-                    code = HttpStatusCode.Inte;
+                    code = HttpStatusCode.InternalServerError;
                     break;
                 case WrongPasswordException:
                     code = HttpStatusCode.NotFound;

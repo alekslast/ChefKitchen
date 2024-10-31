@@ -50,8 +50,8 @@ namespace ChefKitchenAPI.Middleware
 
                     if (foundToken.User is not null)
                     {
-                        UserDto userDto         =   _mapper.Map<UserDto>(foundToken.User);
-                        var newJwtToken         =   infrastructure.CreateJwtToken(userDto);
+                        //UserDto userDto         =   _mapper.Map<UserDto>(foundToken.User);
+                        var newJwtToken         =   infrastructure.CreateJwtToken(foundToken.User);
 
                         context.Response.Cookies.Append(
                             "token",

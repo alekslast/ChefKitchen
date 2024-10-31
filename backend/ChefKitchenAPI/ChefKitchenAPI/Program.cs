@@ -5,6 +5,7 @@ using DataAccess;
 using DataAccess.Implementations;
 using DataAccess.Interfaces;
 using Domain;
+using FluentValidation;
 using Infrastructure.Implementations;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -105,6 +106,15 @@ try
             };
         });
 
+    //builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
+    ////Added fluent validation
+    //builder.Services.AddControllers().AddFluentValidation(options =>
+    //{
+    //    // Automatic registration of validators in assembly
+    //    //options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    //    options.RegisterValidatorsFromAssemblyContaining<Program>();
+    //    options.LocalizationEnabled = true;
+    //});
 
 
     //builder.Services.AddTransient<ExceptionHandlingMiddleware>();

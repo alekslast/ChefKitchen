@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogic.DTOs;
+//using BusinessLogic.DTOs;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using Infrastructure.InfrastructErrors;
@@ -36,66 +36,12 @@ namespace Infrastructure.Implementations
 
 
 
-        public (string tokenJwt, RefreshTokenModel? tokenRefresh) Login(LoginRequest loginRequest)
-        {
-            // TODO: Add password validation
-            // TODO: Add hash validation
-            // TODO: Add email validation
-
-
-            string tokenJwt                 =   string.Empty;
-            RefreshTokenModel? tokenRefresh =   null;
-
-            UserModel? foundUser            =   _userRepository.AuthWithEmail(loginRequest.Email);
-
-
-            bool verified                   =   VerifyPasswordAgainstHash(loginRequest.Password, foundUser.Password);
-            if (!verified)
-                throw new WrongPasswordException();
-
-
-            UserDto mappedUser              =   _mapper.Map<UserDto>(foundUser);
-            tokenJwt                        =   CreateJwtToken(mappedUser);
-
-
-            RefreshTokenModel? lastToken    =   foundUser.RefreshTokens.LastOrDefault();
-            if (lastToken is not null && lastToken.Expires > DateTime.Now)
-                return (tokenJwt, lastToken);
-
-
-            tokenRefresh                    =   GenerateRefreshToken();
-            foundUser.RefreshTokens.Add(tokenRefresh);
-
-
-            bool response                   =   _userRepository.Update(foundUser);
-            if (!response)
-                throw new TokenRefreshException();
-
-
-
-            return (tokenJwt, tokenRefresh);
-
-        }
+        
 
 
 
 
-
-        public int CreateNewUser(UserDto userDto)
-        {
-            userDto.Password    =   Hash(userDto.Password);
-
-            UserModel user      =   _mapper.Map<UserModel>(userDto);
-            int newUserId       =   _userRepository.Create(user);
-
-            return newUserId;
-        }
-
-
-
-
-
-        public string CreateJwtToken(UserDto user)
+        public string CreateJwtToken(UserModel user)
         {
             string secretKey        =   _configuration["Jwt:Secret"]!;
             var securityKey         =   new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -162,7 +108,8 @@ namespace Infrastructure.Implementations
         {
             try
             {
-                UserDto? finalUser                  =   null;
+                //UserDto? finalUser                  =   null;
+                UserModel foundUser                 =   null;
                 List<UserModel> allUsers            =   _userRepository.GetAll();
 
                 bool validToken                     =   ValidateRefreshToken(expiredToken);
@@ -173,15 +120,15 @@ namespace Infrastructure.Implementations
                 foreach (UserModel user in allUsers)
                 {
                     if (user.RefreshTokens.FirstOrDefault(x => x.Token == expiredToken) is not null)
-                        finalUser = _mapper.Map<UserDto>(user);
+                        foundUser = user;
                 }
 
 
-                if (finalUser is null)
+                if (foundUser is null)
                     return string.Empty;
 
 
-                string newToken_Jwt                 =   CreateJwtToken(finalUser);
+                string newToken_Jwt                 =   CreateJwtToken(foundUser);
                 RefreshTokenModel newToken_Refresh  =   GenerateRefreshToken();
                 _infrastructureRepository.SaveRefreshToken(newToken_Refresh);
 

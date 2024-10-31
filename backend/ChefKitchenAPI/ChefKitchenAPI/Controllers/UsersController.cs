@@ -2,7 +2,7 @@
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using Domain.Models;
-using Infrastructure;
+//using Infrastructure;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -101,7 +101,7 @@ namespace ChefKitchenAPI.Controllers
         {
             try
             {
-                var (tokenJwt, tokenRefresh) = _infrastructureServices.Login(request);
+                var (tokenJwt, tokenRefresh) = _userService.Login(request);
 
                 if (string.IsNullOrEmpty(tokenJwt) || tokenRefresh is null)
                     return new ContentResult { Content = JsonConvert.SerializeObject("Error creating tokens"), ContentType = "application/json", StatusCode = ERROR_CODE };
@@ -236,7 +236,7 @@ namespace ChefKitchenAPI.Controllers
                 };
 
                 UserDto userDto             =   _mapper.Map<UserDto>(newUser);
-                int newUserId               =   _infrastructureServices.CreateNewUser(userDto);
+                int newUserId               = _userService.CreateNewUser(userDto);
 
 
 

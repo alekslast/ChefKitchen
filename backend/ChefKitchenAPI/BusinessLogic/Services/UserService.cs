@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using BusinessLogic.BusinessErrors;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using Infrastructure.Interfaces;
 
 
 
@@ -12,16 +14,19 @@ namespace BusinessLogic.Services
 {
     public class UserService : IUserService
     {
+        readonly IInfrastructureServices    _infrastuctServices;
         readonly IUserRepository            _userRepository;
         readonly IMapper                    _mapper;
 
 
 
         public UserService(
+            IInfrastructureServices         infrastuctServices,
             IUserRepository                 userRepository,
             IMapper                         mapper
         )
         {
+            _infrastuctServices         =   infrastuctServices;
             _userRepository             =   userRepository;
             _mapper                     =   mapper;
         }
@@ -65,6 +70,67 @@ namespace BusinessLogic.Services
 
             return user;
         }
+
+
+
+
+
+        public (string tokenJwt, RefreshTokenModel? tokenRefresh) Login(LoginRequest loginRequest)
+        {
+            // TODO: Add password validation
+            // TODO: Add hash validation
+            // TODO: Add email validation
+
+
+            string tokenJwt                     =   string.Empty;
+            RefreshTokenModel? tokenRefresh     =   null;
+            
+            // There is an exeption handler inside of this method
+            UserModel? foundUser = _userRepository.AuthWithEmail(loginRequest.Email);
+
+
+            bool verified = _infrastuctServices.VerifyPasswordAgainstHash(loginRequest.Password, foundUser.Password);
+            if (!verified)
+                throw new WrongPasswordException();
+
+
+            //UserDto mappedUser = _mapper.Map<UserDto>(foundUser);
+            tokenJwt = _infrastuctServices.CreateJwtToken(foundUser);
+
+
+            RefreshTokenModel? lastToken = foundUser.RefreshTokens.LastOrDefault();
+            if (lastToken is not null && lastToken.Expires > DateTime.Now)
+                return (tokenJwt, lastToken);
+
+
+            tokenRefresh = _infrastuctServices.GenerateRefreshToken();
+            foundUser.RefreshTokens.Add(tokenRefresh);
+
+
+            bool response = _userRepository.Update(foundUser);
+            if (!response)
+                throw new TokenRefreshException();
+
+
+
+            return (tokenJwt, tokenRefresh);
+
+        }
+
+
+
+
+
+        public int CreateNewUser(UserDto userDto)
+        {
+            userDto.Password = _infrastuctServices.Hash(userDto.Password);
+
+            UserModel user = _mapper.Map<UserModel>(userDto);
+            int newUserId = _userRepository.Create(user);
+
+            return newUserId;
+        }
+
 
 
 
