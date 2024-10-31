@@ -21,8 +21,7 @@ Website for a restaurant with the opportunity to place an order, as well as requ
 ### <a name="be"></a>Backend Technologies:
 
  - ASP.NET Core
- - EntityFramework
- - Code-First approach for DB creation and management
+ - EntityFramework (code-First approach for DB creation and management)
  - PostgreSQL
  - JWT Authentication
  - AutoMapper
