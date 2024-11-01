@@ -26,3 +26,4 @@ Website for a restaurant with an opportunity to place an order, as well as reque
  - JWT Authentication
  - AutoMapper
  - NLog
+ - SMTP
