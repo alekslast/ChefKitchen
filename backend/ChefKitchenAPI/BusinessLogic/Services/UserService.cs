@@ -77,16 +77,11 @@ namespace BusinessLogic.Services
 
         public (string tokenJwt, RefreshTokenModel? tokenRefresh) Login(LoginRequest loginRequest)
         {
-            // TODO: Add password validation
-            // TODO: Add hash validation
-            // TODO: Add email validation
-
-
             string tokenJwt                     =   string.Empty;
             RefreshTokenModel? tokenRefresh     =   null;
             
             // There is an exeption handler inside of this method
-            UserModel? foundUser = _userRepository.AuthWithEmail(loginRequest.Email);
+            UserModel foundUser = _userRepository.AuthWithEmail(loginRequest.Email)!;
 
 
             bool verified = _infrastuctServices.VerifyPasswordAgainstHash(loginRequest.Password, foundUser.Password);

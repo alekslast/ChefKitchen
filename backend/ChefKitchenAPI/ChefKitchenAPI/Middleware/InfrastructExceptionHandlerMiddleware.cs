@@ -17,7 +17,7 @@ namespace ChefKitchenAPI.Middleware
             switch (exception)
             {
                 case TokenRefreshException:
-                    code = HttpStatusCode.InternalServerError;
+                    code = HttpStatusCode.BadRequest;
                     break;
                 case WrongPasswordException:
                     code = HttpStatusCode.NotFound;

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-//using BusinessLogic.DTOs;
 using DataAccess.Interfaces;
 using DataAccess.Models;
-using Infrastructure.InfrastructErrors;
 using Infrastructure.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -17,7 +17,7 @@ using System.Text;
 
 namespace Infrastructure.Implementations
 {
-    public class InfrastructureServices(
+	public class InfrastructureServices(
         IMapper                     _mapper,
         IConfiguration              _configuration,
         IUserRepository             _userRepository,
@@ -195,5 +195,41 @@ namespace Infrastructure.Implementations
             return CryptographicOperations.FixedTimeEquals(hash, convertedInputPassword); // compares based on the length of the array, not on how long it takes to compare the individual values
         }
     
+
+
+
+
+        public void SendEmail(string receiver, string subject, string body)
+        {
+			// Create SMTP-server for Gmail
+			string smtpServer       =   "smtp.gmail.com";
+			int smtpPort            =   587;
+			string smtpUsername     =   _configuration["Smtp:Email"];
+			string smtpPassword     =   _configuration["Smtp:Password"];
+
+			// Create a message
+			MailMessage mail        =   new();
+			mail.From               =   new(smtpUsername);
+			mail.Subject            =   subject;
+			mail.Body               =   body;
+			mail.To.Add(receiver);
+
+			// Configure SMTP-client
+			SmtpClient smtpClient   =   new(smtpServer, smtpPort);
+			smtpClient.Credentials  =   new NetworkCredential(smtpUsername, smtpPassword);
+			smtpClient.EnableSsl    =   true; // Gmail forces SSL usage
+
+			try
+			{
+				// Send the message
+				smtpClient.Send(mail);
+				Console.WriteLine("Email sent successfully.");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Failed to send email: " + ex.Message);
+			}
+		}
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Validators;
+using DataAccess.Errors.LoginErrors;
 using Domain.Models;
 //using Infrastructure;
 using Infrastructure.Interfaces;
@@ -14,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace ChefKitchenAPI.Controllers
 {
-    [Authorize]
+	[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -101,13 +103,16 @@ namespace ChefKitchenAPI.Controllers
         {
             try
             {
-                //if (!ModelState.IsValid)
-                //    throw new Exception();
+                var validator           =   new LoginValidator();
+                var result              =   validator.Validate(request);
+                if (!result.IsValid)
+                    throw new InvalidLoginException(result.Errors[0].ErrorMessage);
 
-                var (tokenJwt, tokenRefresh) = _userService.Login(request);
 
+
+				var (tokenJwt, tokenRefresh) = _userService.Login(request);
                 if (string.IsNullOrEmpty(tokenJwt) || tokenRefresh is null)
-                    return new ContentResult { Content = JsonConvert.SerializeObject("Error creating tokens"), ContentType = "application/json", StatusCode = ERROR_CODE };
+                    throw new CreateTokenException();
 
 
 
@@ -146,6 +151,32 @@ namespace ChefKitchenAPI.Controllers
                 return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
             }
         }
+
+
+
+
+
+        [AllowAnonymous]
+        [HttpPost("ForgotPassword")]
+        public ActionResult ForgotPassword([FromBody] PasswordRecovery recoveryModel)
+        {
+            var validator   = new ForgotPasswordValidator();
+            var result      = validator.Validate(recoveryModel);
+            if (!result.IsValid)
+                throw new ForgotPasswordException(result.Errors[0].ErrorMessage);
+
+            var foundEmail  = _userService.AuthWithEmail(recoveryModel.Email);
+
+            
+            string subject  = "Password Recovery";
+            string body     = "Your code: 45986";
+
+
+            _infrastructureServices.SendEmail(receiver: recoveryModel.Email, subject: subject, body: body);
+
+			return Ok();
+        }
+
 
 
 
@@ -227,16 +258,25 @@ namespace ChefKitchenAPI.Controllers
             {
                 User newUser = new()
                 {
-                    Name = "Mihai Vasilean",
-                    Password = "111",
-                    PhoneNumber = "+321456789123",
-                    Telegram = "misha007",
-                    Email = "user2@gmail.com",
-                    Country = "UK",
-                    City = "London",
-                    Street = "Alba-Iulie 13/1",
-                    PostalCode = "25",
-                };
+					//Name = "Mihai Vasilean",
+					//Password = "111",
+					//PhoneNumber = "+321456789123",
+					//Telegram = "misha007",
+					//Email = "user2@gmail.com",
+					//Country = "UK",
+					//City = "London",
+					//Street = "Alba-Iulie 13/1",
+					//PostalCode = "25",
+					Name = "Lex InHome",
+					Password = "M0therF#cker",
+					PhoneNumber = "+111456789123",
+					Telegram = "notIncluded",
+					Email = "lexinhome01@gmail.com",
+					Country = "UK",
+					City = "London",
+					Street = "Alba-Iulie 13/1",
+					PostalCode = "25",
+				};
 
                 UserDto userDto             =   _mapper.Map<UserDto>(newUser);
                 int newUserId               = _userService.CreateNewUser(userDto);

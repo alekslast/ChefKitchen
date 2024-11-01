@@ -17,5 +17,7 @@ namespace Infrastructure.Interfaces
         bool                ValidateJwtToken                (string token);
         string              Hash                            (string password);
         bool                VerifyPasswordAgainstHash       (string password, string passwordHash);
-    }
+        void                SendEmail                       (string receiver, string subject, string body);
+
+	}
 }

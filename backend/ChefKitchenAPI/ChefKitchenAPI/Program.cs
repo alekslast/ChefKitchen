@@ -1,12 +1,13 @@
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using BusinessLogic.Validators;
+using ChefKitchenAPI.Filters;
 using ChefKitchenAPI.Middleware;
 using DataAccess;
 using DataAccess.Implementations;
 using DataAccess.Interfaces;
 using Domain;
-using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure.Implementations;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,7 +52,17 @@ try
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers(options =>
+	{
+		options.Filters.Add<LoginErrorFilter>();
+	})
+		.AddFluentValidation(options =>
+		{
+			// Automatic registration of validators in assembly
+			//options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+			options.RegisterValidatorsFromAssemblyContaining<Program>();
+			options.LocalizationEnabled = true;
+		});
 
 
 
@@ -107,8 +118,8 @@ try
             };
         });
 
-    builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
-    ////Added fluent validation
+    //builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
+    //Added fluent validation
     //builder.Services.AddControllers().AddFluentValidation(options =>
     //{
     //    // Automatic registration of validators in assembly
@@ -127,10 +138,12 @@ try
     builder.Services.AddScoped<IOrderService,               OrderService>();
     builder.Services.AddScoped<IUserService,                UserService>();
 
+	//ValidatorViewModel validatorViewModel = new(builder.Services);
 
 
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-    builder.Services.AddEndpointsApiExplorer();
+
+	// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+	builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
     {
         options.SwaggerDoc("v1", new OpenApiInfo
