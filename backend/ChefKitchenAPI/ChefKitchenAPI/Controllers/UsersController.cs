@@ -157,19 +157,24 @@ namespace ChefKitchenAPI.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("ForgotPassword")]
-        public ActionResult ForgotPassword([FromBody] PasswordRecovery recoveryModel)
+        [HttpGet("ForgotPassword/{userEmail}")]
+        public ActionResult GetRecoveryCode(string userEmail)
         {
-            var validator   = new ForgotPasswordValidator();
-            var result      = validator.Validate(recoveryModel);
+            UserEmailForRecovery recoveryModel = new(userEmail);
+            var validator           =   new UserEmailValidator();
+            var result              =   validator.Validate(recoveryModel);
             if (!result.IsValid)
                 throw new ForgotPasswordException(result.Errors[0].ErrorMessage);
 
-            var foundEmail  = _userService.AuthWithEmail(recoveryModel.Email);
+            UserDto foundUser       =   _userService.AuthWithEmail(recoveryModel.Email);
 
+            string recoveryCode     =   _infrastructureServices.GenerateResetCode();
+
+            foundUser.RecoveryCode  =   recoveryCode;
+            var saveResponse        =   _userService.Update(foundUser);
             
-            string subject  = "Password Recovery";
-            string body     = "Your code: 45986";
+            string subject          =   "Password Recovery";
+            string body             =   $"Your code: {recoveryCode}";
 
 
             _infrastructureServices.SendEmail(receiver: recoveryModel.Email, subject: subject, body: body);
@@ -181,8 +186,62 @@ namespace ChefKitchenAPI.Controllers
 
 
 
+        [AllowAnonymous]
+        [HttpPost("ForgotPassword")]
+        public ActionResult CheckRecoveryCode([FromBody] PasswordRecoveryModel passwordRecoveryModel)
+        {
+			//var foundUser = _userService.CheckRecoveryCode(receivedCode);
+			//if (foundUser is not null)
+			//    return NotFound("Invalid recovery code");
 
-        
+
+
+			//return Ok(foundUser);
+
+			var validator = new PasswordRecoveryValidator();
+			var result = validator.Validate(passwordRecoveryModel);
+			if (!result.IsValid)
+				throw new Exception(result.Errors[0].ErrorMessage);
+
+			UserDto foundUser = _userService.AuthWithEmail(passwordRecoveryModel.UserEmail);
+            if (foundUser.RecoveryCode != passwordRecoveryModel.RecoveryCode)
+				return NotFound("Invalid recovery code");
+
+
+			string hashedPassword = _infrastructureServices.Hash(passwordRecoveryModel.Password);
+			foundUser.Password = hashedPassword;
+			_userService.Update(foundUser);
+
+
+			return Ok("Password has been successfully recovered");
+		}
+
+
+
+
+
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
+        public ActionResult CreateNewPassword([FromBody] PasswordRecoveryModel passwordRecoveryModel)
+        {
+            var validator           =   new PasswordRecoveryValidator();
+            var result              =   validator.Validate(passwordRecoveryModel);
+            if (!result.IsValid)
+                throw new Exception(result.Errors[0].ErrorMessage);
+
+            UserDto foundUser       =   _userService.AuthWithEmail(passwordRecoveryModel.UserEmail);
+            string hashedPassword   =   _infrastructureServices.Hash(passwordRecoveryModel.Password);
+            foundUser.Password      =   hashedPassword;
+            _userService.Update(foundUser);
+
+
+            return Ok("Password has been successfully recovered");
+        }
+
+
+
+
+                
         [HttpGet("RefreshToken")]
         public IActionResult RefreshToken()
         {

@@ -26,7 +26,7 @@ namespace DataAccess.Implementations
 
         public UserModel? AuthWithEmail(string email)
         {
-            return _dbContext.Users.Include(u => u.Orders).Include(u => u.RefreshTokens).FirstOrDefault(u => u.Email == email) ?? throw new UserNotFoundException();
+            return _dbContext.Users.AsNoTracking().Include(u => u.Orders).Include(u => u.RefreshTokens).FirstOrDefault(u => u.Email == email) ?? throw new UserNotFoundException();
         }
 
 

@@ -1,15 +1,19 @@
 ﻿using DataAccess.Models;
-using System.ComponentModel.DataAnnotations;
+
+
+
+
 
 namespace Domain.Models
 {
-    public class User
+	public class User
     {
         public int                  Id              { get; set; }
         public required string      Name            { get; set; }
         public required string      Email           { get; set; }
         public string?              PhoneNumber     { get; set; }
         public required string      Password        { get; set; }
+        public string?              RecoveryCode    { get; set; }
         public string?              Telegram        { get; set; }
         public string?              Country         { get; set; }
         public string?              City            { get; set; }
@@ -17,5 +21,6 @@ namespace Domain.Models
         public string?              PostalCode      { get; set; }
 
         public List<OrderModel>?    Orders          { get; set; }
+        public ICollection<RefreshTokenModel>   RefreshTokens { get; set; }
     }
 }

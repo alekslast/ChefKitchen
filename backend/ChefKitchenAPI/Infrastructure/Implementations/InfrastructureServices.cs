@@ -231,5 +231,24 @@ namespace Infrastructure.Implementations
 			}
 		}
 
+
+
+
+
+        public string GenerateResetCode()
+        {
+            var random = new Random();
+            string recoveryCode = string.Empty;
+
+            for(int i = 0; i <= 5; i++)
+            {
+                string randNumber = random.Next(0, 10).ToString();
+                recoveryCode += randNumber;
+            }
+
+
+            return recoveryCode;
+        }
+
     }
 }

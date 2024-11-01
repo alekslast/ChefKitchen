@@ -2,6 +2,7 @@
 using BusinessLogic.BusinessErrors;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
+using DataAccess.Errors.UserErrors;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using Infrastructure.Interfaces;
@@ -38,14 +39,7 @@ namespace BusinessLogic.Services
         public UserDto? AuthWithEmail(string email)
         {
             UserModel? foundUser        =   _userRepository.AuthWithEmail(email);
-
-            if (foundUser is null)
-                return null;
-
-
-
             UserDto user                =   _mapper.Map<UserDto>(foundUser);
-
 
 
             return user;
@@ -57,19 +51,27 @@ namespace BusinessLogic.Services
 
         public UserDto? AuthWithPhone(string phone)
         {
-            UserModel? foundUser = _userRepository.AuthWithPhone(phone);
-
-            if (foundUser is null)
-                return null;
-
-
-
-            UserDto user = _mapper.Map<UserDto>(foundUser);
-
+            UserModel? foundUser        =   _userRepository.AuthWithPhone(phone);
+            UserDto user                =   _mapper.Map<UserDto>(foundUser);
 
 
             return user;
         }
+
+
+
+
+
+        public UserDto CheckRecoveryCode(string recoveryCode)
+        {
+            List<UserModel>? allUsers   =   _userRepository.GetAll();
+            UserModel? foundUser        =   allUsers.FirstOrDefault(x => x.RecoveryCode == recoveryCode)
+                                            ?? throw new UserNotFoundException();
+            UserDto convertedUser = _mapper.Map<UserDto>(foundUser);
+
+
+            return convertedUser;
+		}
 
 
 

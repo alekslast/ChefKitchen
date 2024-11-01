@@ -18,6 +18,7 @@ namespace Infrastructure.Interfaces
         string              Hash                            (string password);
         bool                VerifyPasswordAgainstHash       (string password, string passwordHash);
         void                SendEmail                       (string receiver, string subject, string body);
+        string              GenerateResetCode               ();
 
 	}
 }

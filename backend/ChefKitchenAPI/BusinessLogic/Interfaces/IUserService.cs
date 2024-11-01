@@ -9,7 +9,8 @@ namespace BusinessLogic.Interfaces
 {
     public interface IUserService
     {
-        (string tokenJwt, RefreshTokenModel? tokenRefresh) Login(LoginRequest loginRequest);
+        UserDto CheckRecoveryCode(string recoveryCode);
+		(string tokenJwt, RefreshTokenModel? tokenRefresh) Login(LoginRequest loginRequest);
         int CreateNewUser(UserDto userDto);
         UserDto? AuthWithEmail(string email);
         UserDto? AuthWithPhone(string phone);
