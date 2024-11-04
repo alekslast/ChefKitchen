@@ -13,6 +13,7 @@
         public string?              City            { get; set; }
         public string?              Street          { get; set; }
         public string?              PostalCode      { get; set; }
+        public int                  Bonuses         { get; set; }
 
         public List<OrderModel>?    Orders          { get; set; }
         public ICollection<RefreshTokenModel>   RefreshTokens { get; set; }

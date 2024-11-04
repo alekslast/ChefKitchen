@@ -190,26 +190,19 @@ namespace ChefKitchenAPI.Controllers
         [HttpPost("ForgotPassword")]
         public ActionResult CheckRecoveryCode([FromBody] PasswordRecoveryModel passwordRecoveryModel)
         {
-			//var foundUser = _userService.CheckRecoveryCode(receivedCode);
-			//if (foundUser is not null)
-			//    return NotFound("Invalid recovery code");
-
-
-
-			//return Ok(foundUser);
-
-			var validator = new PasswordRecoveryValidator();
-			var result = validator.Validate(passwordRecoveryModel);
+			var validator           =   new PasswordRecoveryValidator();
+			var result              =   validator.Validate(passwordRecoveryModel);
 			if (!result.IsValid)
 				throw new Exception(result.Errors[0].ErrorMessage);
 
-			UserDto foundUser = _userService.AuthWithEmail(passwordRecoveryModel.UserEmail);
+			UserDto foundUser       =   _userService.AuthWithEmail(passwordRecoveryModel.UserEmail);
             if (foundUser.RecoveryCode != passwordRecoveryModel.RecoveryCode)
 				return NotFound("Invalid recovery code");
 
 
-			string hashedPassword = _infrastructureServices.Hash(passwordRecoveryModel.Password);
-			foundUser.Password = hashedPassword;
+			string hashedPassword   =   _infrastructureServices.Hash(passwordRecoveryModel.Password);
+			foundUser.Password      =   hashedPassword;
+            foundUser.RecoveryCode  =   null;
 			_userService.Update(foundUser);
 
 
