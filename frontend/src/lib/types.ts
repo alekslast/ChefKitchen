@@ -39,3 +39,32 @@ export type TOrder = {
     user        :   TUser,
     menuItems   :   TMenuItems
 }
+
+
+
+
+
+export type TUserInfo = {
+    id              :   number,
+    name            :   string,
+    email           :   string,
+    phoneNumber     :   string,
+    password        :   string,
+    recoveryCode    :   string,
+    telegram        :   string,
+    country         :   string,
+    city            :   string,
+    street          :   string,
+    postalCode      :   string,
+    bonuses         :   number,
+    orders          :   TUserOrders
+}
+
+
+export type TUserOrders = {
+    Id              :   number,
+    IsDelivery      :   boolean,
+    Date            :   string,
+    Time            :   string,
+    MenuItems       :   TMenuItems
+}

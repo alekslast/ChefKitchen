@@ -69,7 +69,7 @@ export default function UserAccountLayout() {
 
     return (
         <>
-            <ReplaceDishModal />
+            {/* <ReplaceDishModal /> */}
 
             <div className="w-full max-w-[1200px] pt-[77px] pb-16 flex flex-row justify-between items-start gap-[102px]">
 

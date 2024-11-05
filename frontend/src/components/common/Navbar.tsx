@@ -15,6 +15,7 @@ import ChangeLangMenu   from    "./ChangeLangMenu";
 import logo             from    "../../assets/images/logo.svg";
 import phone            from    "../../assets/icons/phone-icon.svg";
 import userIcon         from    "../../assets/icons/user-icon.svg";
+import { useEffect, useState } from "react";
 
 
 
@@ -28,6 +29,23 @@ type TNavListItem = {
 
 
 export default function Navbar() {
+
+    const [tokenValue, setTokenValue] = useState<string | null>();
+
+    useEffect(() => {
+
+        debugger
+        const cookies = document.cookie.split(";");
+        cookies.map(cookie => {
+            cookie = cookie.trim();
+            if (cookie.startsWith("token=")) {
+                const cookieValue = cookie.split("=")[1];
+                setTokenValue(cookieValue);
+            }
+        });
+
+        
+    }, [tokenValue])
 
     return (
         <nav className="relative z-50 w-[1200px] mt-[15px] flex flex-row justify-between items-center">
@@ -51,12 +69,22 @@ export default function Navbar() {
 
                 <ChangeLangMenu />
 
-                <Link   to="/auth/login"
-                        className="bg-[#FFA800] rounded-full flex flex-row items-center py-[2px] ps-[4px] ms-4 hover:bg-[#B0CC0D] transition-all duration-300"
-                >
-                    <img src={userIcon} />
-                    <span className="ps-5 pe-6 text-white">SIGN IN</span>
-                </Link>
+                {
+                    tokenValue
+                    ?
+                    <Link   to="/user/settings"
+                            className="w-[32px] bg-[#FFA800] rounded-full flex flex-row justify-center items-center py-[2px] ms-4 hover:bg-[#B0CC0D] transition-all duration-300"
+                    >
+                        <img src={userIcon} />
+                    </Link>
+                    :
+                    <Link   to="/auth/login"
+                            className="bg-[#FFA800] rounded-full flex flex-row items-center py-[2px] ps-[4px] ms-4 hover:bg-[#B0CC0D] transition-all duration-300"
+                    >
+                        <img src={userIcon} />
+                        <span className="ps-5 pe-6 text-white">SIGN IN</span>
+                    </Link>
+                }
             </div>
         </nav>
     )

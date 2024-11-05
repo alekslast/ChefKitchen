@@ -1,6 +1,6 @@
 // Custom components
 import Button                   from    "../common/Button"
-import { useEffect }            from    "react";
+import { useEffect, useState }  from    "react";
 
 
 // Constants
@@ -17,6 +17,35 @@ import UserInputElem            from    "./UserInputElem";
 // Images
 import exitIcon                 from    "../../assets/icons/UserSettings/user-settings-logOut.svg";
 import bonusIcon                from    "../../assets/icons/UserSettings/user-settings-bonuses.svg";
+import { useGetUserInfo }       from    "../../lib/hooks";
+import { TUserInfo }            from    "../../lib/types";
+
+
+
+
+
+type TFormData = {
+    accountInfo: {
+        fName: string;
+        lName: string;
+        email: string;
+        telegram: string;
+    };
+    deliveryInfo: {
+        city: string;
+        // district: string;
+        street: string;
+        postalCode: string;
+    };
+    passwordInfo: {
+        currentPassword: string;
+        newPassword: string;
+        confirmPassword: string;
+    };
+    [key: string]: {
+        [key: string]: string;
+    };
+};
 
 
 
@@ -24,9 +53,7 @@ import bonusIcon                from    "../../assets/icons/UserSettings/user-se
 
 export default function UserSettings() {
 
-    useEffect(() => {
-
-    }, [])
+    const { userInfo } = useGetUserInfo();
 
 
     const logoutClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -36,6 +63,71 @@ export default function UserSettings() {
     const buttonSubmitClick = () => {
 
     }
+
+
+    const [formData, setFormData] = useState<TFormData>({
+        accountInfo: {
+            fName: userInfo ? userInfo.name.split(" ")[0] : "",
+            lName: userInfo ? userInfo.name.split(" ")[1] : "",
+            email: userInfo?.email ?? "",
+            telegram: userInfo?.telegram ?? "",
+        },
+        deliveryInfo: {
+            city: userInfo?.city ?? "",
+            // district: userInfo?. ?? "",
+            street: userInfo?.street ?? "",
+            postalCode: userInfo?.postalCode ?? "",
+        },
+        passwordInfo: {
+            currentPassword: "",
+            newPassword: "",
+            confirmPassword: ""
+        }
+    });
+
+
+
+    const mapUserInfoToFormData = (userInfo: TUserInfo): TFormData => {
+        return {
+            accountInfo: {
+                fName: userInfo.name.split(' ')[0] || '',
+                lName: userInfo.name.split(' ')[1] || '',
+                email: userInfo.email,
+                telegram: userInfo.telegram
+            },
+            deliveryInfo: {
+                city: userInfo.city,
+                street: userInfo.street,
+                postalCode: userInfo.postalCode
+            },
+            passwordInfo: {
+                currentPassword: userInfo.password,
+                newPassword: '',
+                confirmPassword: ''
+            }
+        };
+    };
+
+
+
+    useEffect(() => {
+        if (userInfo) {
+            const mappedFormData = mapUserInfoToFormData(userInfo);
+            setFormData(mappedFormData);
+        }
+    }, [userInfo]);
+
+
+    
+    const handleInputChange = (section: string, field: string, value: string) => {
+        setFormData(prevState => ({
+            ...prevState,
+            [section]: {
+                ...prevState[section],
+                [field]: value
+            }
+        }));
+    };
 
 
     return (
@@ -74,7 +166,7 @@ export default function UserSettings() {
                                 </div>
 
                                 <span className="text-2xl text-[#212B36] font-semibold leading-[30px]">
-                                    456 bonuses
+                                    {userInfo ? userInfo.bonuses : 22} bonuses
                                 </span>
                             </div>
 
@@ -86,25 +178,25 @@ export default function UserSettings() {
 
 
                     <UserSectionCard heading="Account Info">
-                        <UserInputElem label="First Name"       placeholder="John"                  nameAttr="fName" />
-                        <UserInputElem label="Last Name"        placeholder="Doe"                   nameAttr="lName" />
-                        <UserInputElem label="Email Address"    placeholder="john.doe@gmail.com"    nameAttr="email" />
-                        <UserInputElem label="Telegram"         placeholder="johnDoe_007"           nameAttr="telegram" />
+                        <UserInputElem label="First Name"       placeholder="John"                  nameAttr="fName"            valueAttr={formData.accountInfo.fName}              onChange={(e) => handleInputChange("accountInfo", "fName", e.target.value)} />
+                        <UserInputElem label="Last Name"        placeholder="Doe"                   nameAttr="lName"            valueAttr={formData.accountInfo.lName}              onChange={(e) => handleInputChange("accountInfo", "lName", e.target.value)} />
+                        <UserInputElem label="Email Address"    placeholder="john.doe@gmail.com"    nameAttr="email"            valueAttr={formData.accountInfo.email}              onChange={(e) => handleInputChange("accountInfo", "email", e.target.value)} />
+                        <UserInputElem label="Telegram"         placeholder="johnDoe_007"           nameAttr="telegram"         valueAttr={formData.accountInfo.telegram}           onChange={(e) => handleInputChange("accountInfo", "telegram", e.target.value)} />
                     </UserSectionCard>
 
 
                     <UserSectionCard heading="Delivery information">
-                        <UserInputElem label="City"             placeholder="London"                nameAttr="fName" />
-                        <UserInputElem label="District/Area"    placeholder="Downtown"              nameAttr="lName" />
-                        <UserInputElem label="Address"          placeholder="37 Whitehall"          nameAttr="email" />
-                        <UserInputElem label="Postal Code"      placeholder="148 80"                nameAttr="telegram" />
+                        <UserInputElem label="City"             placeholder="London"                nameAttr="city"             valueAttr={formData.deliveryInfo.city}              onChange={(e) => handleInputChange("deliveryInfo", "city", e.target.value)} />
+                        <UserInputElem label="Street"           placeholder="37 Whitehall"          nameAttr="street"           valueAttr={formData.deliveryInfo.street}            onChange={(e) => handleInputChange("deliveryInfo", "street", e.target.value)} />
+                        <UserInputElem label="Postal Code"      placeholder="148 80"                nameAttr="postalCode"       valueAttr={formData.deliveryInfo.postalCode}        onChange={(e) => handleInputChange("deliveryInfo", "postalCode", e.target.value)} />
+                        {/* <UserInputElem label="District/Area"    placeholder="Downtown"              nameAttr="lName" /> */}
                     </UserSectionCard>
 
 
                     <UserSectionCard heading="Password">
-                        <UserInputElem label="Current Password" placeholder="John"                  nameAttr="fName"    typeAttr="password" />
-                        <UserInputElem label="New Password"     placeholder="Doe"                   nameAttr="lName"    typeAttr="password" />
-                        <UserInputElem label="Confirm Password" placeholder="john.doe@gmail.com"    nameAttr="email"    typeAttr="password" />
+                        <UserInputElem label="Current Password" typeAttr="password"                 nameAttr="currentPassword"  valueAttr={formData.passwordInfo.currentPassword}   onChange={(e) => handleInputChange("passwordInfo", "currentPassword", e.target.value)} />
+                        <UserInputElem label="New Password"     typeAttr="password"                 nameAttr="newPassword"      valueAttr={formData.passwordInfo.newPassword}       onChange={(e) => handleInputChange("passwordInfo", "newPassword", e.target.value)} />
+                        <UserInputElem label="Confirm Password" typeAttr="password"                 nameAttr="confirmPassword"  valueAttr={formData.passwordInfo.confirmPassword}   onChange={(e) => handleInputChange("passwordInfo", "confirmPassword", e.target.value)} />
                     </UserSectionCard>
 
 

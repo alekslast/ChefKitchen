@@ -8,7 +8,12 @@ using Domain.Models;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 
 
@@ -21,23 +26,26 @@ namespace ChefKitchenAPI.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        readonly IMapper        _mapper;
-        readonly IUserService   _userService;
-        readonly IInfrastructureServices _infrastructureServices;
+        readonly IConfiguration             _configuration;
+        readonly IMapper                    _mapper;
+        readonly IUserService               _userService;
+        readonly IInfrastructureServices    _infrastructureServices;
 
-        readonly int            ERROR_CODE = 400;
+        readonly int                        ERROR_CODE = 400;
 
 
 
         public UsersController(
-            IMapper             mapper,
-            IUserService        userService,
-            IInfrastructureServices infrastructureServices
+            IConfiguration                  configuration,
+            IMapper                         mapper,
+            IUserService                    userService,
+            IInfrastructureServices         infrastructureServices
         )
         {
-            _mapper         =   mapper;
-            _userService    =   userService;
-            _infrastructureServices = infrastructureServices;
+            _configuration              =   configuration;
+            _mapper                     =   mapper;
+            _userService                =   userService;
+            _infrastructureServices     =   infrastructureServices;
         }
 
 
@@ -134,7 +142,7 @@ namespace ChefKitchenAPI.Controllers
                     tokenJwt,
                     new CookieOptions
                     {
-                        HttpOnly        =   true,
+                        HttpOnly        =   false,
                         Secure          =   true,
                         IsEssential     =   true,
                         SameSite        =   SameSiteMode.None,
@@ -160,7 +168,7 @@ namespace ChefKitchenAPI.Controllers
         [HttpGet("ForgotPassword/{userEmail}")]
         public ActionResult GetRecoveryCode(string userEmail)
         {
-            UserEmailForRecovery recoveryModel = new(userEmail);
+            var recoveryModel       =   new UserEmailForRecovery(userEmail);
             var validator           =   new UserEmailValidator();
             var result              =   validator.Validate(recoveryModel);
             if (!result.IsValid)
@@ -171,7 +179,7 @@ namespace ChefKitchenAPI.Controllers
             string recoveryCode     =   _infrastructureServices.GenerateResetCode();
 
             foundUser.RecoveryCode  =   recoveryCode;
-            var saveResponse        =   _userService.Update(foundUser);
+            _userService.Update(foundUser);
             
             string subject          =   "Password Recovery";
             string body             =   $"Your code: {recoveryCode}";
@@ -203,6 +211,7 @@ namespace ChefKitchenAPI.Controllers
 			string hashedPassword   =   _infrastructureServices.Hash(passwordRecoveryModel.Password);
 			foundUser.Password      =   hashedPassword;
             foundUser.RecoveryCode  =   null;
+
 			_userService.Update(foundUser);
 
 
@@ -225,6 +234,7 @@ namespace ChefKitchenAPI.Controllers
             UserDto foundUser       =   _userService.AuthWithEmail(passwordRecoveryModel.UserEmail);
             string hashedPassword   =   _infrastructureServices.Hash(passwordRecoveryModel.Password);
             foundUser.Password      =   hashedPassword;
+
             _userService.Update(foundUser);
 
 
@@ -280,22 +290,46 @@ namespace ChefKitchenAPI.Controllers
 
 
 
-        [HttpGet("{userId:int}")]
-        public ActionResult<User> GetSingleUser(int userId)
+        [HttpGet("GetSingleUser")]
+        public ActionResult<UserFEModel> GetSingleUser()
         {
-            //try
-            //{
-                UserDto foundUser           =   _userService.GetOne(userId);
-                User user                   =   _mapper.Map<User>(foundUser);
+            string wantedUserId         =   string.Empty;
+            string accessToken          =   string.Empty;
+			var tokenHandler            =   new JwtSecurityTokenHandler();
+			byte[] key                  =   Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
+
+
+			bool hasToken = HttpContext.Request.Cookies.TryGetValue("token", out accessToken);
+			if (!hasToken && string.IsNullOrEmpty(accessToken))
+            {
+                string authHeader       =   Request.Headers.Authorization.ToString();
+                string tokenFromHeaders =   authHeader.Split(" ")[1];
+                accessToken             =   tokenFromHeaders;
+			}
+
+
+			var jwtToken                =   new JsonWebTokenHandler().ReadJsonWebToken(accessToken);
+			wantedUserId                =   jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+			UserDto foundUser           =   _userService.GetOne(int.Parse(wantedUserId));
+
+
+            UserFEModel user            =   new()
+            {
+                Email                   =   foundUser.Email,
+                Bonuses                 =   foundUser.Bonuses,
+                City                    =   foundUser.City,
+                Country                 =   foundUser.Country,
+                Name                    =   foundUser.Name,
+                Orders                  =   foundUser.Orders,
+                PhoneNumber             =   foundUser.PhoneNumber,
+                PostalCode              =   foundUser.PostalCode,
+                Street                  =   foundUser.Street,
+                Telegram                =   foundUser.Telegram,
+			};
 
 
 
-                return user;
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new ContentResult { Content = JsonConvert.SerializeObject(ex.Message), ContentType = "application/json", StatusCode = ERROR_CODE };
-            //}
+            return user;
         }
 
 
@@ -304,34 +338,25 @@ namespace ChefKitchenAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult CreateUser()
+        public ActionResult CreateUser([FromBody] User user)
         {
             try
             {
-                User newUser = new()
-                {
-					//Name = "Mihai Vasilean",
-					//Password = "111",
-					//PhoneNumber = "+321456789123",
-					//Telegram = "misha007",
-					//Email = "user2@gmail.com",
-					//Country = "UK",
-					//City = "London",
-					//Street = "Alba-Iulie 13/1",
-					//PostalCode = "25",
-					Name = "Lex InHome",
-					Password = "M0therF#cker",
-					PhoneNumber = "+111456789123",
-					Telegram = "notIncluded",
-					Email = "lexinhome01@gmail.com",
-					Country = "UK",
-					City = "London",
-					Street = "Alba-Iulie 13/1",
-					PostalCode = "25",
-				};
+                //  User newUser        =   new()
+                //  {
+				//	Name            =   "Lex InHome",
+				//	Password        =   "M0therF#cker",
+				//	PhoneNumber     =   "+111456789123",
+				//	Telegram        =   "notIncluded",
+				//	Email           =   "lexinhome01@gmail.com",
+				//	Country         =   "UK",
+				//	City            =   "London",
+				//	Street          =   "Alba-Iulie 13/1",
+				//	PostalCode      =   "25",
+				//};
 
-                UserDto userDto             =   _mapper.Map<UserDto>(newUser);
-                int newUserId               = _userService.CreateNewUser(userDto);
+                UserDto userDto     =   _mapper.Map<UserDto>(user);
+                int newUserId       =   _userService.CreateNewUser(userDto);
 
 
 
@@ -352,9 +377,8 @@ namespace ChefKitchenAPI.Controllers
         {
             try
             {
-                UserDto userDto             =   _mapper.Map<UserDto>(user);
-                bool response               =   _userService.Update(userDto);
-
+                UserDto userDto     =   _mapper.Map<UserDto>(user);
+                bool response       =   _userService.Update(userDto);
 
 
                 return Ok();
@@ -375,7 +399,6 @@ namespace ChefKitchenAPI.Controllers
             try
             {
                 _userService.Delete(userId);
-
 
 
                 return Ok();

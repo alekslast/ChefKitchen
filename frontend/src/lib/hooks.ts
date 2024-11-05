@@ -5,7 +5,7 @@ import { useQuery }                 from    "@tanstack/react-query";
 
 
 // Types
-import { TMenuItems }               from    "./types";
+import { TMenuItems, TUserInfo }               from    "./types";
 
 
 // Constants
@@ -21,7 +21,6 @@ export function useMenuItems() {
     const [isLoading, setIsLoading]             =   useState(false);
 
 
-
     useEffect(() => {
         setIsLoading(true);
 
@@ -32,7 +31,7 @@ export function useMenuItems() {
         // )
         axios.get(BASE_URL + `/MenuItems`, { withCredentials: true })
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 return response.data;
             })
             .then(data => {
@@ -42,8 +41,63 @@ export function useMenuItems() {
     }, []);
 
 
-
     return { menuItems, isLoading };
+}
+
+
+
+
+
+// type TUserInfo = {
+//     id              :   number,
+//     name            :   string,
+//     email           :   string,
+//     phoneNumber     :   string,
+//     password        :   string,
+//     recoveryCode    :   string,
+//     telegram        :   string,
+//     country         :   string,
+//     city            :   string,
+//     street          :   string,
+//     postalCode      :   string,
+//     bonuses         :   number,
+//     orders          :   TUserOrders
+// }
+
+
+// type TUserOrders = {
+//     Id              :   number,
+//     IsDelivery      :   boolean,
+//     Date            :   string,
+//     Time            :   string,
+//     MenuItems       :   TMenuItems
+// }
+
+
+
+export function useGetUserInfo() {
+
+    debugger
+    const [ userInfo, setUserInfo ]     =   useState<TUserInfo | null>(null);
+    const [ isLoading, setIsLoading ]   =   useState(true);
+
+    useEffect(() => {
+        setIsLoading(true);
+
+
+        axios.get(BASE_URL + "/Users/0", { withCredentials: true })
+        .then(response => {
+            console.log(response.data)
+            return response.data;
+        })
+        .then(data => {
+            setUserInfo(data);
+            setIsLoading(false);
+        })
+    }, []);
+
+
+    return { userInfo, isLoading };
 }
 
 
@@ -93,23 +147,23 @@ const fetchMenuItem = async (id: number): Promise<TMenuItems> => {
 }
 
 
-export function useGetSingleUser(id: number | null) {
+// export function useGetSingleUser(id: number | null) {
 
-    const { data, isLoading } = useQuery({
-        queryKey                :   ["menu-item", id],
-        queryFn                 :   () => (id ? fetchMenuItem(id) : null),
-        staleTime               :   1000 * 60 * 60,
-        refetchOnWindowFocus    :   false,
-        enabled                 :   Boolean(id)
-    });
+//     const { data, isLoading } = useQuery({
+//         queryKey                :   ["menu-item", id],
+//         queryFn                 :   () => (id ? fetchMenuItem(id) : null),
+//         staleTime               :   1000 * 60 * 60,
+//         refetchOnWindowFocus    :   false,
+//         enabled                 :   Boolean(id)
+//     });
 
 
 
-    if (!data) return undefined;
+//     if (!data) return undefined;
     
     
-    return { data, isLoading } as const;
-}
+//     return { data, isLoading } as const;
+// }
 
 
 
@@ -168,49 +222,49 @@ export function useAuthUser(emailOrPhone: string, authMethod: string) {
 
 
 
-type TRegisterUser = {
-    email: string,
-    phone: string,
-    name: string
-}
+// type TRegisterUser = {
+//     email: string,
+//     phone: string,
+//     name: string
+// }
 
 
 
-export const registerUser = async ({ email, phone, name } : TRegisterUser) => {
-    const response = await fetch(
-        BASE_URL + "/Users",
-        { 
-            method  : "POST",
-            body    : JSON.stringify({  })
-        }
-    )
-}
+// export const registerUser = async ({ email, phone, name } : TRegisterUser) => {
+//     const response = await fetch(
+//         BASE_URL + "/Users",
+//         { 
+//             method  : "POST",
+//             body    : JSON.stringify({  })
+//         }
+//     )
+// }
 
 
 
 
 
-export const useAuthToken = () => {
-    const [token, setToken] = useState(localStorage.getItem('token'));
+// export const useAuthToken = () => {
+//     const [token, setToken] = useState(localStorage.getItem('token'));
 
-    const refreshToken = async () => {
+//     const refreshToken = async () => {
 
-        debugger
+//         debugger
 
-        return await axios.post("https://localhost:44338/Users/RefreshToken", { withCredentials: true })
-            .then(response => {
-                debugger
-                console.log("At least we're here...");
-                localStorage.setItem('token', response.data.token); // Сохраняем новый JWT токен
-                setToken(response.data.token); // Обновляем состояние токена
-                return response.data.token;
-            })
-            .catch(error => {
-                debugger
-                console.error('Error refreshing token:', error);
-                // Логика выхода или другие действия
-            });
-    };
+//         return await axios.post("https://localhost:44338/Users/RefreshToken", { withCredentials: true })
+//             .then(response => {
+//                 debugger
+//                 console.log("At least we're here...");
+//                 localStorage.setItem('token', response.data.token); // Сохраняем новый JWT токен
+//                 setToken(response.data.token); // Обновляем состояние токена
+//                 return response.data.token;
+//             })
+//             .catch(error => {
+//                 debugger
+//                 console.error('Error refreshing token:', error);
+//                 // Логика выхода или другие действия
+//             });
+//     };
 
-    return { token, refreshToken };
-};
+//     return { token, refreshToken };
+// };

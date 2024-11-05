@@ -36,6 +36,7 @@ namespace ChefKitchenAPI.Middleware
             var recievedUrl         =   context.Request.Path;
             string loginUrl         =   "/Users/Login";
 
+            //if (recievedUrl == loginUrl)
             if (recievedUrl == loginUrl)
             {
                 await _next(context);
@@ -58,7 +59,7 @@ namespace ChefKitchenAPI.Middleware
                             newJwtToken,
                             new CookieOptions
                             {
-                                HttpOnly        =   true,
+                                HttpOnly        =   false,
                                 Secure          =   true,
                                 IsEssential     =   true,
                                 SameSite        =   SameSiteMode.None,
