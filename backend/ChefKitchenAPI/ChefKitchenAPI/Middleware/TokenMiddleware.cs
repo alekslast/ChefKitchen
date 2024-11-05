@@ -37,7 +37,7 @@ namespace ChefKitchenAPI.Middleware
             string loginUrl         =   "/Users/Login";
 
             //if (recievedUrl == loginUrl)
-            if (recievedUrl == loginUrl)
+            if (recievedUrl != loginUrl)
             {
                 await _next(context);
                 return;

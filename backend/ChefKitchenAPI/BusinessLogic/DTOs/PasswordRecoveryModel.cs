@@ -1,10 +1,8 @@
 ﻿namespace BusinessLogic.DTOs
 {
-	public class PasswordRecoveryModel
+	public class PasswordRecoveryModel : RecoveryCodeModel
 	{
-		public string	UserEmail			{ get; set; }
-		public string	RecoveryCode		{ get; set; }
-		public string	Password			{ get; set; }
+		public string	NewPassword			{ get; set; }
 		public string	ConfirmPassword		{ get; set; }
 	}
 }

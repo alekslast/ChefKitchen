@@ -28,6 +28,9 @@ import { useAuthToken }             from    "./lib/hooks";
 
 // Helpers
 import { setupAxiosInterceptors }   from    "./lib/helpers";
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import RecoveryCodeScreen from "./components/ForgotPassword/RecoveryCodeScreen";
+import ResetPasswordScreen from "./components/ForgotPassword/ResetPasswordScreen";
 
 
 
@@ -105,6 +108,18 @@ export default function App() {
                 </Route>
 
                 <Route path="/tokenTest" element={<LoginTestToken />} />
+
+                <Route  path="/forgotPassword">
+                        <Route  path="/forgotPassword/email"
+                                element={<ForgotPassword />}
+                        />
+                        <Route  path="/forgotPassword/code"
+                                element={<RecoveryCodeScreen />}
+                        />
+                        <Route  path="/forgotPassword/resetPassword"
+                                element={<ResetPasswordScreen />}
+                        />
+                </Route>
             </Routes>
         </AnimatePresence>
     )
