@@ -1,5 +1,5 @@
 // React inputs
-import { useEffect, useState }      from    "react";
+import { useEffect, useRef, useState }      from    "react";
 import axios, { HttpStatusCode }    from    "axios";
 import { useQuery }                 from    "@tanstack/react-query";
 
@@ -77,7 +77,6 @@ export function useMenuItems() {
 
 export function useGetUserInfo() {
 
-    debugger
     const [ userInfo, setUserInfo ]     =   useState<TUserInfo | null>(null);
     const [ isLoading, setIsLoading ]   =   useState(true);
 
@@ -268,3 +267,15 @@ export function useAuthUser(emailOrPhone: string, authMethod: string) {
 
 //     return { token, refreshToken };
 // };
+
+
+export function useSetFocus() {
+    const htmlElemRef = useRef(null);
+    const setFocus = () => {
+        // htmlElemRef.current && htmlElemRef.current.focus();
+        if (htmlElemRef.current) htmlElemRef.current.focus();
+    }
+
+
+    return [ htmlElemRef, setFocus ]
+}

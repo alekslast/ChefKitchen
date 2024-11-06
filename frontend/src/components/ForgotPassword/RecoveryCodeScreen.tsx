@@ -1,5 +1,5 @@
 // React imports
-import { useEffect, useState }  from    "react";
+import { useEffect, useRef, useState }  from    "react";
 
 
 // Custom components
@@ -10,17 +10,7 @@ import Button                   from    "../common/Button";
 import { GetCookies }           from    "../../lib/helpers";
 import axios                    from    "axios";
 import { BASE_URL }             from    "../../lib/constants";
-
-
-
-type TCodeForm = {
-    firstDigit  :   string,
-    secondDigit :   string,
-    thirdDigit  :   string,
-    fourthDigit :   string,
-    fifthDigit  :   string,
-    sixthDigit  :   string,
-}
+import { useSetFocus } from "../../lib/hooks";
 
 
 
@@ -28,26 +18,56 @@ type TCodeForm = {
 
 export default function RecoveryCodeScreen() {
 
-    const wantedCookie = "chefKitchenEmail"
-    const [ userEmail, setUserEmail ] = useState<string | null>(null);
+    const wantedCookie                  =   "chefKitchenEmail"
+    const [ userEmail, setUserEmail ]   =   useState<string | null>(null);
+
+    // const [ firstDigitRef, setFirstDigitRef ] = useSetFocus();
+    // const [ secondDigitRef, setSecondDigitRef ] = useSetFocus();
+    // const [ thirdDigitRef, setThirdDigitRef ] = useSetFocus();
+    // const [ fourthDigitRef, setFourthDigitRef ] = useSetFocus();
+    // const [ fifthDigitRef, setFifthDigitRef ] = useSetFocus();
+    // const [ sixthDigitRef, setSixthDigitRef ] = useSetFocus();
 
     useEffect(() => {
         const cookieValue = GetCookies(wantedCookie);
         setUserEmail(cookieValue);
     }, []);
 
+    // useEffect(() => {
+    //     // document.addEventListener("load", setFirstDigitRef);
 
-    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    //     // return () => {
+    //     //     document.removeEventListener("load", setFirstDigitRef);
+    //     // }
+    //     setFirstDigitRef()
+    // }, [setFirstDigitRef])
+
+
+    const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(6).fill(null));
+
+    useEffect(() => {
+        // Устанавливаем фокус на первый input при загрузке страницы
+        if (inputRefs.current[0]) {
+            inputRefs.current[0]?.focus();
+        }
+    }, []);
+
+    const handleInputChange = (index: number) => {
+        return (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = event.target.value;
+            if (value && index < inputRefs.current.length - 1) {
+                inputRefs.current[index + 1]?.focus();
+            }
+        };
+    };
+
+
+
     const handleClick = () => {
-
-        debugger
-        let recoveryCode = "";
+        let recoveryCode    =   "";
 
 
-        const elem = document.querySelector("form#codeRecoveryForm") as HTMLFormElement;
-        // const emailValue = elem.value;
-
-        // event.preventDefault();
+        const elem          =   document.querySelector("form#codeRecoveryForm") as HTMLFormElement;
 
         const target = elem as typeof elem & {
             firstDigit  :   { value: string };
@@ -77,12 +97,11 @@ export default function RecoveryCodeScreen() {
         <div className="flex flex-col justify-center items-center">
             <form   id="codeRecoveryForm"
                     className="h-[300px] py-8 flex flex-col justify-between items-center"
-                    // onSubmit={handleSubmit}
             >
                 <span className="w-">Enter recovery code:</span>
 
                 <div className="w-80 flex flex-row justify-between">
-                    <InputElemForogtPass nameAttr="firstDigit" />
+                    <InputElemForogtPass nameAttr="firstDigit"  refElem={firstDigitRef}/>
                     <InputElemForogtPass nameAttr="secondDigit" />
                     <InputElemForogtPass nameAttr="thirdDigit" />
                     <InputElemForogtPass nameAttr="fourthDigit" />
@@ -99,7 +118,7 @@ export default function RecoveryCodeScreen() {
 
 
 
-function InputElemForogtPass({ nameAttr } : { nameAttr : string })
+function InputElemForogtPass({ nameAttr, refElem } : { nameAttr : string, refElem? : React.MutableRefObject<null> | (() => void) })
 {
-    return <input type="text" pattern="[0-9]" maxLength={1} name={`${nameAttr}`} className="w-10 h-10 bg-[#FCFDFE] border border-[#E9EDF4] text-base font-['Montserrat'] text-center rounded-[4px]" />;
+    return <input ref={refElem} type="text" pattern="[0-9]" maxLength={1} name={`${nameAttr}`} className="w-10 h-10 bg-[#FCFDFE] border border-[#E9EDF4] text-base font-['Montserrat'] text-center rounded-[4px]" />;
 }
