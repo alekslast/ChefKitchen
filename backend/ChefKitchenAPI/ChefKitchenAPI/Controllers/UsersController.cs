@@ -3,6 +3,7 @@ using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Validators;
 using DataAccess.Errors.LoginErrors;
+using DataAccess.Errors.UserErrors;
 using Domain.Models;
 //using Infrastructure;
 using Infrastructure.Interfaces;
@@ -180,6 +181,19 @@ namespace ChefKitchenAPI.Controllers
 
             foundUser.RecoveryCode  =   recoveryCode;
             _userService.Update(foundUser);
+
+            HttpContext.Response.Cookies.Append(
+                "chefKitchenEmail",
+                userEmail,
+                new CookieOptions
+                {
+					HttpOnly = false,
+					Secure = true,
+					IsEssential = true,
+					SameSite = SameSiteMode.None,
+					Expires = DateTime.UtcNow.AddMinutes(5)
+				}
+            );
             
             string subject          =   "Password Recovery";
             string body             =   $"Your code: {recoveryCode}";
@@ -187,7 +201,7 @@ namespace ChefKitchenAPI.Controllers
 
             _infrastructureServices.SendEmail(receiver: recoveryModel.Email, subject: subject, body: body);
 
-			return Ok(userEmail);
+			return Ok();
         }
 
 
@@ -198,24 +212,40 @@ namespace ChefKitchenAPI.Controllers
         [HttpPost("ForgotPassword/RecoveryCode")]
         public ActionResult CheckRecoveryCode([FromBody] RecoveryCodeModel recoveryCodeModel)
         {
-			var validator           =   new RecoveryCodeValidator();
-			var result              =   validator.Validate(recoveryCodeModel);
-			if (!result.IsValid)
-				throw new Exception(result.Errors[0].ErrorMessage);
+            //var validator           =   new RecoveryCodeValidator();
+            //var result              =   validator.Validate(recoveryCodeModel);
+            //if (!result.IsValid)
+            //	throw new Exception(result.Errors[0].ErrorMessage);
 
-			UserDto foundUser       =   _userService.AuthWithEmail(recoveryCodeModel.UserEmail);
+            string formatedEmail = recoveryCodeModel.UserEmail.Replace("%40", "@");
+
+			UserDto foundUser       =   _userService.AuthWithEmail(formatedEmail);
             if (foundUser.RecoveryCode != recoveryCodeModel.RecoveryCode)
 				return NotFound("Invalid recovery code");
 
 
+			HttpContext.Response.Cookies.Append(
+				"chefKitchenCode",
+				recoveryCodeModel.RecoveryCode,
+				new CookieOptions
+				{
+					HttpOnly = false,
+					Secure = true,
+					IsEssential = true,
+					SameSite = SameSiteMode.None,
+					Expires = DateTime.UtcNow.AddMinutes(5)
+				}
+			);
+
+
 			//string hashedPassword   =   _infrastructureServices.Hash(passwordRecoveryModel.Password);
 			//foundUser.Password      =   hashedPassword;
-            //foundUser.RecoveryCode  =   null;
+			//foundUser.RecoveryCode  =   null;
 
 			//_userService.Update(foundUser);
 
 
-			return Ok(recoveryCodeModel);
+			return Ok();
 		}
 
 
@@ -231,9 +261,17 @@ namespace ChefKitchenAPI.Controllers
             //if (!result.IsValid)
             //    throw new Exception(result.Errors[0].ErrorMessage);
 
-            UserDto foundUser       =   _userService.AuthWithEmail(passwordRecoveryModel.UserEmail);
-            string hashedPassword   =   _infrastructureServices.Hash(passwordRecoveryModel.NewPassword);
-            foundUser.Password      =   hashedPassword;
+            string formatedEmail = passwordRecoveryModel.UserEmail.Replace("%40", "@");
+
+
+
+
+			UserDto foundUser    =   _userService.AuthWithEmail(formatedEmail)!;
+			if (foundUser.RecoveryCode != passwordRecoveryModel.RecoveryCode)
+				return NotFound("Invalid recovery code");
+
+			string hashedPassword       =   _infrastructureServices.Hash(passwordRecoveryModel.NewPassword);
+			foundUser.Password    =   hashedPassword;
 
             _userService.Update(foundUser);
 
@@ -345,7 +383,7 @@ namespace ChefKitchenAPI.Controllers
                 //  User newUser        =   new()
                 //  {
 				//	Name            =   "Lex InHome",
-				//	Password        =   "M0therF#cker",
+				//	Password        =   "M0therF#cker1",
 				//	PhoneNumber     =   "+111456789123",
 				//	Telegram        =   "notIncluded",
 				//	Email           =   "lexinhome01@gmail.com",

@@ -67,7 +67,8 @@ namespace BusinessLogic.Services
             List<UserModel>? allUsers   =   _userRepository.GetAll();
             UserModel? foundUser        =   allUsers.FirstOrDefault(x => x.RecoveryCode == recoveryCode)
                                             ?? throw new UserNotFoundException();
-            UserDto convertedUser = _mapper.Map<UserDto>(foundUser);
+
+            UserDto convertedUser       =   _mapper.Map<UserDto>(foundUser);
 
 
             return convertedUser;

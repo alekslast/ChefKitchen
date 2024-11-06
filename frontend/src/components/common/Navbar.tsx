@@ -16,6 +16,7 @@ import logo             from    "../../assets/images/logo.svg";
 import phone            from    "../../assets/icons/phone-icon.svg";
 import userIcon         from    "../../assets/icons/user-icon.svg";
 import { useEffect, useState } from "react";
+import { GetCookies } from "../../lib/helpers";
 
 
 
@@ -30,19 +31,22 @@ type TNavListItem = {
 
 export default function Navbar() {
 
-    const [tokenValue, setTokenValue] = useState<string | null>();
+    const wantedCookie                  =   "token="
+    const [tokenValue, setTokenValue]   =   useState<string | null>();
 
     useEffect(() => {
 
         debugger
-        const cookies = document.cookie.split(";");
-        cookies.map(cookie => {
-            cookie = cookie.trim();
-            if (cookie.startsWith("token=")) {
-                const cookieValue = cookie.split("=")[1];
-                setTokenValue(cookieValue);
-            }
-        });
+        // const cookies = document.cookie.split(";");
+        // cookies.map(cookie => {
+        //     cookie = cookie.trim();
+        //     if (cookie.startsWith("token=")) {
+        //         const cookieValue = cookie.split("=")[1];
+        //         setTokenValue(cookieValue);
+        //     }
+        // });
+        const cookieValue = GetCookies(wantedCookie);
+        setTokenValue(cookieValue);
 
         
     }, [tokenValue])

@@ -52,4 +52,29 @@ export const setupAxiosInterceptors = () => {
             return Promise.reject(error);
         }
     );
-};
+}
+
+
+
+
+
+export function GetCookies(cookieName : string) {
+
+    debugger
+    let wantedCookie: string = "";
+    const cookies = document.cookie.split(";");
+
+    cookies.map(cookie => {
+
+        debugger
+        cookie = cookie.trim();
+        if (cookie.startsWith(`${cookieName}=`)) {
+            const cookieValue = cookie.split("=")[1];
+            // setTokenValue(cookieValue);
+            wantedCookie = cookieValue;
+        }
+    });
+
+
+    return wantedCookie;
+}

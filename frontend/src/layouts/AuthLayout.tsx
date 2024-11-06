@@ -38,11 +38,11 @@ export default function AuthLayout() {
                             exit={{ opacity: 0 }}
                             className="w-screen flex flex-row font-['Montserrat']"
             >
-                <div className="h-screen w-1/2 flex flex-row">
+                <div className="h-screen w-1/3 flex flex-row">
                     <img src={loginImages[number]} className="h-full" />
                 </div>
 
-                <div className="realative w-1/2 flex flex-col items-start">
+                <div className="relative w-2/3 flex flex-col items-center">
                         <div className="absolute right-[15%] top-11">
                             <ChangeLangMenu />
                         </div>

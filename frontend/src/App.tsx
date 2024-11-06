@@ -109,14 +109,16 @@ export default function App() {
 
                 <Route path="/tokenTest" element={<LoginTestToken />} />
 
-                <Route  path="/forgotPassword">
+                <Route  path="/forgotPassword"
+                        element={<AuthLayout />}
+                >
                         <Route  path="/forgotPassword/email"
                                 element={<ForgotPassword />}
                         />
                         <Route  path="/forgotPassword/code"
                                 element={<RecoveryCodeScreen />}
                         />
-                        <Route  path="/forgotPassword/resetPassword"
+                        <Route  path="/forgotPassword/newPassword"
                                 element={<ResetPasswordScreen />}
                         />
                 </Route>

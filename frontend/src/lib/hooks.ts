@@ -85,7 +85,7 @@ export function useGetUserInfo() {
         setIsLoading(true);
 
 
-        axios.get(BASE_URL + "/Users/0", { withCredentials: true })
+        axios.get(BASE_URL + "/Users/GetSingleUser", { withCredentials: true })
         .then(response => {
             console.log(response.data)
             return response.data;

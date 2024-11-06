@@ -32,4 +32,12 @@ body {
     .custom-horizontal-scroll::-webkit-scrollbar {
         display: none; /* Hides horizontal scrollbar for Chrome, Safari */
     }
+
+
+    /* Remove arrows on input of type number */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+  }
 }
